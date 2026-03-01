@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Singapore Helper Cards Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8293B;
+    --white: #FFFFFF;
+    --sky: #4FC3F7;
+    --green: #4CAF50;
+    --yellow: #FFD600;
+    --coral: #FF6B6B;
+    --navy: #1A237E;
+    --soft: #F0F7FF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #E8F5FD 0%, #FFF9F0 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  header {
+    background: linear-gradient(90deg, var(--red) 0%, #C62828 100%);
+    color: white;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 20px rgba(232,41,59,0.4);
+  }
+
+  .sg-flag {
+    width: 50px; height: 33px;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid rgba(255,255,255,0.3);
+  }
+  .flag-red { background: #EF2626; flex: 1; display: flex; align-items: center; padding-left: 6px; gap: 3px; }
+  .flag-white { background: white; flex: 1; }
+  .flag-star { color: white; font-size: 7px; }
+  .flag-moon { color: white; font-size: 10px; margin-right: 2px; }
+
+  header h1 { font-family: 'Baloo 2', cursive; font-size: 1.5rem; font-weight: 800; letter-spacing: 0.5px; }
+  header p { font-size: 0.8rem; opacity: 0.85; }
+
+  .score-badge {
+    margin-left: auto;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+
+  /* Main layout */
+  .game-area {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px;
+  }
+
+  .instruction-bar {
+    background: white;
+    border-left: 5px solid var(--sky);
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  /* Map + Drop zones */
+  .map-section {
+    position: relative;
+    background: #D4EDDA;
+    border-radius: 24px;
+    overflow: hidden;
+    padding: 20px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+    margin-bottom: 28px;
+    border: 3px solid #A5D6A7;
+  }
+
+  .map-title {
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    color: #2E7D32;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  /* Singapore silhouette (CSS art) */
+  .sg-map {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px; height: 160px;
+    background: #B8D9B8;
+    border-radius: 40% 60% 50% 70% / 50% 40% 60% 50%;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .drop-zones-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .drop-zone {
+    background: white;
+    border: 3px dashed #90CAF9;
+    border-radius: 16px;
+    padding: 14px 8px;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: default;
+    position: relative;
+  }
+
+  .drop-zone.drag-over {
+    border-color: var(--sky);
+    background: #E3F2FD;
+    transform: scale(1.03);
+    box-shadow: 0 0 0 4px rgba(79,195,247,0.3);
+  }
+
+  .drop-zone.correct {
+    border-color: var(--green);
+    border-style: solid;
+    background: #E8F5E9;
+    pointer-events: none;
+  }
+
+  .drop-zone.wrong {
+    animation: shake 0.4s ease;
+    border-color: var(--coral);
+    background: #FFEBEE;
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+
+  .zone-question {
+    font-size: 0.72rem;
+    color: #555;
+    line-height: 1.4;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .zone-label {
+    font-size: 0.65rem;
+    color: #999;
+    font-style: italic;
+  }
+
+  .zone-answer {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #2E7D32;
+    display: none;
+  }
+
+  .drop-zone.correct .zone-answer { display: block; }
+  .drop-zone.correct .zone-label { display: none; }
+
+  /* Entity Cards */
+  .cards-section {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  .cards-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    color: #555;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .cards-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+  }
+
+  .entity-card {
+    background: linear-gradient(135deg, var(--card-color-1), var(--card-color-2));
+    border-radius: 16px;
+    padding: 16px 20px;
+    width: 170px;
+    text-align: center;
+    cursor: grab;
+    user-select: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+    border: 3px solid rgba(255,255,255,0.5);
+  }
+
+  .entity-card:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
+  .entity-card:active { cursor: grabbing; }
+  .entity-card.dragging { opacity: 0.4; transform: scale(0.95); }
+  .entity-card.used { display: none; }
+
+  .card-emoji { font-size: 2rem; margin-bottom: 8px; display: block; }
+  .card-name { font-weight: 800; font-size: 0.85rem; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.3); line-height: 1.3; }
+  .card-sub { font-size: 0.65rem; color: rgba(255,255,255,0.8); margin-top: 3px; }
+
+  /* Butterfly mascot */
+  .butterfly {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 20px;
+    padding: 14px 18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    max-width: 260px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border: 3px solid var(--yellow);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 100;
+  }
+
+  .butterfly.hidden { transform: translateY(120%); opacity: 0; }
+  .butterfly.show { transform: translateY(0); opacity: 1; }
+
+  .bf-icon { font-size: 2rem; flex-shrink: 0; animation: flutter 0.6s ease-in-out infinite alternate; }
+  @keyframes flutter { from { transform: rotate(-10deg) scale(1); } to { transform: rotate(10deg) scale(1.1); } }
+
+  .bf-text { font-size: 0.82rem; font-weight: 700; color: #333; line-height: 1.5; }
+  .bf-text.correct { color: #2E7D32; }
+  .bf-text.wrong { color: #C62828; }
+
+  /* Win screen */
+  .win-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+  }
+  .win-overlay.show { display: flex; }
+
+  .win-box {
+    background: white;
+    border-radius: 28px;
+    padding: 40px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .win-emoji { font-size: 4rem; margin-bottom: 10px; }
+  .win-title { font-family: 'Baloo 2', cursive; font-size: 2rem; font-weight: 800; color: var(--red); margin-bottom: 8px; }
+  .win-msg { font-size: 1rem; color: #555; margin-bottom: 24px; line-height: 1.6; }
+
+  .btn-restart {
+    background: linear-gradient(135deg, var(--red), #C62828);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(232,41,59,0.4);
+    transition: transform 0.15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    animation: confettiFall 3s ease-in forwards;
+    z-index: 300;
+    pointer-events: none;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Sound indicator */
+  .sound-bing {
+    position: fixed;
+    top: 80px; left: 50%;
+    transform: translateX(-50%) scale(0);
+    background: var(--green);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    padding: 8px 24px;
+    border-radius: 50px;
+    z-index: 150;
+    transition: transform 0.2s;
+    pointer-events: none;
+  }
+  .sound-bing.pop { transform: translateX(-50%) scale(1); }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="sg-flag">
+    <div class="flag-red">
+      <span class="flag-moon">☽</span>
+      <span class="flag-star">★</span><span class="flag-star">★</span><span class="flag-star">★</span><span class="flag-star">★</span><span class="flag-star">★</span>
+    </div>
+    <div class="flag-white"></div>
+  </div>
+  <div>
+    <h1>🇸🇬 Who Helps You in Singapore?</h1>
+    <p>Drag each card to the correct role!</p>
+  </div>
+  <div class="score-badge">⭐ <span id="scoreNum">0</span> / 5</div>
+</header>
+
+<div class="game-area">
+
+  <!-- Drop zones (map) -->
+  <div class="map-section">
+    <div class="sg-map"></div>
+    <div class="map-title">📍 SINGAPORE MAP — Drop the Cards Below!</div>
+
+    <div class="drop-zones-grid">
+
+      <div class="drop-zone" data-answer="employer"
+           ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <div class="zone-question">💼 Pays your salary and sets your work schedule.</div>
+        <div class="zone-label">Drop card here</div>
+        <div class="zone-answer">✅ Your Employer<br>(Moral Home)</div>
+      </div>
+
+      <div class="drop-zone" data-answer="mom"
+           ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <div class="zone-question">🛡️ Issues your Work Permit and protects your rights in Singapore.</div>
+        <div class="zone-label">Drop card here</div>
+        <div class="zone-answer">✅ MOM<br>(Ministry of Manpower)</div>
+      </div>
+
+      <div class="drop-zone" data-answer="bank"
+           ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <div class="zone-question">🏦 A safe place to keep your money so it doesn't get stolen or lost.</div>
+        <div class="zone-label">Drop card here</div>
+        <div class="zone-answer">✅ The Bank<br>(POSB/DBS/OCBC)</div>
+      </div>
+
+      <div class="drop-zone" data-answer="insurance"
+           ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <div class="zone-question">🏥 Pays for your hospital bills if you fall sick or get injured.</div>
+        <div class="zone-label">Drop card here</div>
+        <div class="zone-answer">✅ Employer Medical Insurance</div>
+      </div>
+
+      <div class="drop-zone" data-answer="remittance"
+           ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <div class="zone-question">💸 The service you use to send money back to your family.</div>
+        <div class="zone-label">Drop card here</div>
+        <div class="zone-answer">✅ Remittance Service</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Entity cards -->
+  <div class="cards-section">
+    <div class="cards-title">🃏 ENTITY CARDS — Drag these up to match!</div>
+    <div class="cards-grid" id="cardsGrid">
+
+      <div class="entity-card" id="card-mom" draggable="true"
+           data-id="mom"
+           style="--card-color-1:#1565C0;--card-color-2:#283593"
+           ondragstart="onDragStart(event)">
+        <span class="card-emoji">🏛️</span>
+        <div class="card-name">MOM</div>
+        <div class="card-sub">Ministry of Manpower</div>
+      </div>
+
+      <div class="entity-card" id="card-bank" draggable="true"
+           data-id="bank"
+           style="--card-color-1:#00695C;--card-color-2:#004D40"
+           ondragstart="onDragStart(event)">
+        <span class="card-emoji">🏦</span>
+        <div class="card-name">The Bank</div>
+        <div class="card-sub">POSB / DBS / OCBC</div>
+      </div>
+
+      <div class="entity-card" id="card-employer" draggable="true"
+           data-id="employer"
+           style="--card-color-1:#E65100;--card-color-2:#BF360C"
+           ondragstart="onDragStart(event)">
+        <span class="card-emoji">🏠</span>
+        <div class="card-name">Your Employer</div>
+        <div class="card-sub">Moral Home</div>
+      </div>
+
+      <div class="entity-card" id="card-remittance" draggable="true"
+           data-id="remittance"
+           style="--card-color-1:#6A1B9A;--card-color-2:#4A148C"
+           ondragstart="onDragStart(event)">
+        <span class="card-emoji">✈️</span>
+        <div class="card-name">Remittance Service</div>
+        <div class="card-sub">Send money home</div>
+      </div>
+
+      <div class="entity-card" id="card-insurance" draggable="true"
+           data-id="insurance"
+           style="--card-color-1:#C62828;--card-color-2:#880E4F"
+           ondragstart="onDragStart(event)">
+        <span class="card-emoji">❤️‍🩹</span>
+        <div class="card-name">Employer Medical Insurance</div>
+        <div class="card-sub">Your health cover</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Butterfly -->
+<div class="butterfly hidden" id="butterfly">
+  <span class="bf-icon">🦋</span>
+  <div class="bf-text" id="bfText"></div>
+</div>
+
+<!-- Bing indicator -->
+<div class="sound-bing" id="soundBing">🎉 BING!</div>
+
+<!-- Win overlay -->
+<div class="win-overlay" id="winOverlay">
+  <div class="win-box">
+    <div class="win-emoji">🎊🦋🎊</div>
+    <div class="win-title">Excellent!</div>
+    <div class="win-msg">You matched all 5 cards correctly!<br>You now know who helps you in Singapore. Stay safe, stay informed! 🇸🇬</div>
+    <div style="margin-bottom:16px;font-size:0.9rem;color:#888;">Returning to Gametize in <span id="countdown" style="font-weight:800;color:var(--red);">5</span>s...</div>
+    <button class="btn-restart" onclick="restartGame()">🔄 Play Again</button>
+    <a href="https://app.gametize.com/topic/154466" style="display:block;margin-top:12px;font-size:0.85rem;color:#1565C0;text-decoration:underline;">↩ Go back now</a>
+  </div>
+</div>
+
+<script>
+let dragging = null;
+let score = 0;
+let bfTimer = null;
+
+function onDragStart(e) {
+  dragging = e.currentTarget;
+  dragging.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+document.addEventListener('dragend', () => {
+  if (dragging) dragging.classList.remove('dragging');
+});
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+
+function onDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function onDrop(e) {
+  e.preventDefault();
+  const zone = e.currentTarget;
+  zone.classList.remove('drag-over');
+
+  if (!dragging) return;
+  const cardId = dragging.dataset.id;
+  const answer = zone.dataset.answer;
+
+  if (cardId === answer) {
+    // Correct!
+    zone.classList.add('correct');
+    dragging.classList.add('used');
+    score++;
+    document.getElementById('scoreNum').textContent = score;
+    showButterfly('correct', '🌟 Correct! Knowing this keeps you safe. Great job!');
+    showBing();
+    confetti();
+    if (score === 5) setTimeout(showWin, 800);
+  } else {
+    // Wrong
+    zone.classList.add('wrong');
+    dragging.classList.remove('dragging');
+    dragging = null;
+    showButterfly('wrong', '❌ Not quite. Try again! MOM protects rights, Banks protect money.');
+    setTimeout(() => zone.classList.remove('wrong'), 500);
+  }
+  dragging = null;
+}
+
+function showButterfly(type, msg) {
+  const bf = document.getElementById('butterfly');
+  const txt = document.getElementById('bfText');
+  txt.textContent = msg;
+  txt.className = 'bf-text ' + type;
+  bf.classList.remove('hidden');
+  bf.classList.add('show');
+  clearTimeout(bfTimer);
+  bfTimer = setTimeout(() => {
+    bf.classList.remove('show');
+    bf.classList.add('hidden');
+  }, 3500);
+}
+
+function showBing() {
+  const el = document.getElementById('soundBing');
+  el.classList.add('pop');
+  setTimeout(() => el.classList.remove('pop'), 800);
+}
+
+function confetti() {
+  const colors = ['#E8293B','#FFD600','#4FC3F7','#4CAF50','#FF6B6B','#7C4DFF'];
+  for (let i = 0; i < 20; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.top = '-20px';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDelay = Math.random() * 0.5 + 's';
+    c.style.width = c.style.height = (8 + Math.random()*8) + 'px';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3500);
+  }
+}
+
+let countdownTimer = null;
+function showWin() {
+  confetti(); confetti(); confetti();
+  document.getElementById('winOverlay').classList.add('show');
+  let secs = 5;
+  document.getElementById('countdown').textContent = secs;
+  clearInterval(countdownTimer);
+  countdownTimer = setInterval(() => {
+    secs--;
+    const el = document.getElementById('countdown');
+    if (el) el.textContent = secs;
+    if (secs <= 0) {
+      clearInterval(countdownTimer);
+      window.location.href = 'https://app.gametize.com/topic/154466';
+    }
+  }, 1000);
+}
+
+function restartGame() {
+  clearInterval(countdownTimer);
+  document.getElementById('winOverlay').classList.remove('show');
+  score = 0;
+  document.getElementById('scoreNum').textContent = 0;
+  document.querySelectorAll('.drop-zone').forEach(z => z.className = 'drop-zone');
+  document.querySelectorAll('.entity-card').forEach(c => c.classList.remove('used', 'dragging'));
+  document.getElementById('butterfly').classList.add('hidden');
+}
+
+// Touch support
+let touchCard = null;
+let clone = null;
+
+document.querySelectorAll('.entity-card').forEach(card => {
+  card.addEventListener('touchstart', e => {
+    if (card.classList.contains('used')) return;
+    touchCard = card;
+    const rect = card.getBoundingClientRect();
+    clone = card.cloneNode(true);
+    clone.style.cssText = `position:fixed;width:${rect.width}px;opacity:0.85;pointer-events:none;z-index:999;top:${rect.top}px;left:${rect.left}px;transition:none;`;
+    document.body.appendChild(clone);
+    card.style.opacity = '0.3';
+  }, {passive: true});
+
+  card.addEventListener('touchmove', e => {
+    if (!clone) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    clone.style.top = (t.clientY - 60) + 'px';
+    clone.style.left = (t.clientX - 85) + 'px';
+  }, {passive: false});
+
+  card.addEventListener('touchend', e => {
+    if (!clone || !touchCard) return;
+    const t = e.changedTouches[0];
+    clone.remove(); clone = null;
+    touchCard.style.opacity = '';
+
+    const el = document.elementFromPoint(t.clientX, t.clientY);
+    const zone = el ? el.closest('.drop-zone') : null;
+    if (zone && !zone.classList.contains('correct')) {
+      dragging = touchCard;
+      const evt = { currentTarget: zone, preventDefault: () => {} };
+      onDrop({ ...evt, currentTarget: zone, preventDefault: () => {} });
+      dragging = touchCard;
+      if (touchCard.dataset.id === zone.dataset.answer) {
+        touchCard.classList.add('used');
+      }
+      dragging = null;
+    }
+    touchCard = null;
+  });
+});
+
+// Manually handle touch drop since we mimic drag
+document.querySelectorAll('.entity-card').forEach(card => {
+  card.addEventListener('touchend', e => {}, { passive: true });
+});
+</script>
+</body>
+</html>
