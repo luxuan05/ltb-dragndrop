@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Need It or Want It?</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Syne+Mono&family=Bricolage+Grotesque:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5f0e8;
+  --ink: #1a1208;
+  --need: #1d6b3e;
+  --need-light: #d4f0e0;
+  --need-border: #2e9458;
+  --want: #c0392b;
+  --want-light: #fde8e6;
+  --want-border: #e05242;
+  --gold: #d4a017;
+  --gold-light: #fff3cc;
+  --card-bg: #fffdf7;
+  --shadow: rgba(26,18,8,0.12);
+  --muted: #8a7d6b;
+  --penalty: #8b1a1a;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* Subtle grid bg */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26,18,8,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,18,8,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== SCREENS ===== */
+.screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ===== INTRO ===== */
+#screen-intro {
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.wallet-visual {
+  position: relative;
+  width: 160px;
+  height: 120px;
+  margin: 0 auto 2rem;
+  animation: walletBob 3s ease-in-out infinite;
+}
+@keyframes walletBob {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+.wallet-body {
+  width: 140px;
+  height: 90px;
+  background: linear-gradient(135deg, #8B4513, #6b3410);
+  border-radius: 12px;
+  position: absolute;
+  top: 15px; left: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.wallet-body::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4a017, #b8860b);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.wallet-bills {
+  position: absolute;
+  bottom: 0; left: 20px;
+  display: flex; gap: 4px;
+}
+.bill {
+  width: 50px; height: 25px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.bill:nth-child(1) { background: #85bb65; transform: rotate(-8deg) translateY(4px); }
+.bill:nth-child(2) { background: #85bb65; transform: rotate(-3deg) translateY(2px); }
+.bill:nth-child(3) { background: #85bb65; transform: rotate(4deg); }
+
+.intro-eyebrow {
+  font-family: 'Syne Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-light);
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  border: 1px solid var(--gold);
+  display: inline-block;
+  margin-bottom: 1.25rem;
+}
+
+.intro-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 0.75rem;
+  color: var(--ink);
+}
+.intro-title .accent {
+  color: var(--need);
+  position: relative;
+  display: inline-block;
+}
+.intro-title .accent2 { color: var(--want); }
+
+.intro-desc {
+  color: var(--muted);
+  font-size: 0.95rem;
+  max-width: 400px;
+  margin: 0 auto 1rem;
+  line-height: 1.65;
+}
+
+.wallet-balance-intro {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--ink);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  letter-spacing: 0.05em;
+}
+.wallet-balance-intro .green { color: #85bb65; }
+
+.rules-box {
+  background: var(--card-bg);
+  border: 1.5px solid rgba(26,18,8,0.12);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  max-width: 420px;
+  margin: 0 auto 2rem;
+  text-align: left;
+}
+.rules-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+}
+.rule {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+.rule-icon { flex-shrink: 0; }
+
+.btn-start {
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  padding: 1rem 2.5rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+  box-shadow: 4px 4px 0 var(--gold);
+}
+.btn-start:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--gold); }
+.btn-start:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--gold); }
+
+/* ===== GAME SCREEN ===== */
+#screen-game {
+  padding: 0;
+  flex-direction: column;
+}
+
+.game-header {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.balance-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Syne Mono', monospace;
+  font-size: 1.1rem;
+}
+.balance-label { color: var(--muted); font-size: 0.7rem; font-family: 'Bricolage Grotesque', sans-serif; }
+.balance-amount { color: #85bb65; font-weight: 700; }
+.balance-amount.dropping { color: #e05242; animation: shake 0.4s ease; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.progress-info {
+  font-family: 'Syne Mono', monospace;
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.5);
+}
+
+/* Items floating zone */
+.items-zone {
+  flex: 1;
+  padding: 1.5rem;
+  position: relative;
+  min-height: 340px;
+  overflow: hidden;
+}
+
+.floating-items {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+}
+
+.item-card {
+  position: absolute;
+  background: var(--card-bg);
+  border: 2px solid rgba(26,18,8,0.14);
+  border-radius: 14px;
+  padding: 0.9rem 1.1rem;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  max-width: 200px;
+  min-width: 140px;
+  box-shadow: 3px 3px 0 rgba(26,18,8,0.1);
+  transition: box-shadow 0.15s, border-color 0.15s, opacity 0.3s;
+  z-index: 10;
+}
+.item-card:hover {
+  border-color: rgba(26,18,8,0.3);
+  box-shadow: 5px 5px 0 rgba(26,18,8,0.12);
+}
+.item-card.dragging {
+  cursor: grabbing;
+  z-index: 100;
+  box-shadow: 12px 12px 30px rgba(0,0,0,0.2);
+  border-color: var(--gold);
+  transform: rotate(3deg) scale(1.05);
+  transition: none;
+}
+.item-card.sorted { opacity: 0; pointer-events: none; transform: scale(0.5); transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+.item-card.sorted.to-need { border-color: var(--need-border); background: var(--need-light); }
+.item-card.sorted.to-want { border-color: var(--want-border); background: var(--want-light); }
+
+.item-emoji { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; }
+.item-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
+.item-cost {
+  font-family: 'Syne Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--want);
+  font-weight: 600;
+}
+.item-hint {
+  font-size: 0.67rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+  line-height: 1.3;
+  display: none;
+}
+
+/* Drop zones */
+.drop-zones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 0 1.5rem 1.5rem;
+}
+
+.drop-zone {
+  border: 2.5px dashed;
+  border-radius: 16px;
+  padding: 1.25rem 1rem;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.drop-zone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.drop-zone.need-zone {
+  border-color: var(--need-border);
+  background: rgba(29,107,62,0.04);
+}
+.drop-zone.want-zone {
+  border-color: var(--want-border);
+  background: rgba(192,57,43,0.04);
+}
+.drop-zone.need-zone::before { background: var(--need-light); }
+.drop-zone.want-zone::before { background: var(--want-light); }
+.drop-zone.drag-over::before { opacity: 1; }
+.drop-zone.drag-over { transform: scale(1.02); }
+
+.zone-icon { font-size: 2rem; margin-bottom: 0.4rem; position: relative; z-index: 1; }
+.zone-label {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  position: relative;
+  z-index: 1;
+}
+.zone-label.need { color: var(--need); }
+.zone-label.want { color: var(--want); }
+.zone-sub {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+  position: relative;
+  z-index: 1;
+}
+.zone-count {
+  position: absolute;
+  top: 0.75rem; right: 0.75rem;
+  background: var(--ink);
+  color: var(--bg);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  font-family: 'Syne Mono', monospace;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  max-width: 300px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.correct { background: var(--need); color: white; }
+.toast.wrong { background: var(--want); color: white; }
+
+/* ===== RESULTS SCREEN ===== */
+#screen-results {
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.result-trophy { font-size: 4rem; margin-bottom: 1rem; animation: walletBob 2s ease-in-out infinite; }
+
+.result-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.result-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.score-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: 400px;
+  margin: 0 auto 1.5rem;
+  width: 100%;
+}
+
+.score-card {
+  background: var(--card-bg);
+  border: 2px solid rgba(26,18,8,0.12);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+.score-card.full { grid-column: 1/-1; }
+.score-card-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: 'Syne Mono', monospace;
+  margin-bottom: 0.4rem;
+}
+.score-card-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+.score-card-value.green { color: var(--need); }
+.score-card-value.red { color: var(--want); }
+.score-card-value.gold { color: var(--gold); }
+
+.result-breakdown {
+  max-width: 440px;
+  margin: 0 auto 2rem;
+  width: 100%;
+}
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid rgba(26,18,8,0.07);
+  font-size: 0.82rem;
+}
+.breakdown-row:last-child { border-bottom: none; }
+.breakdown-name { display: flex; gap: 0.5rem; align-items: center; }
+.breakdown-tag {
+  font-family: 'Syne Mono', monospace;
+  font-size: 0.65rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 50px;
+  font-weight: 700;
+}
+.tag-need { background: var(--need-light); color: var(--need); border: 1px solid var(--need-border); }
+.tag-want { background: var(--want-light); color: var(--want); border: 1px solid var(--want-border); }
+.tag-penalty { background: #fde8e6; color: var(--penalty); border: 1px solid #e05242; }
+.breakdown-amount { font-family: 'Syne Mono', monospace; font-size: 0.8rem; font-weight: 600; }
+
+.motivational-msg {
+  background: var(--gold-light);
+  border: 1.5px solid var(--gold);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  max-width: 440px;
+  margin: 0 auto 2rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink);
+  font-style: italic;
+  position: relative;
+}
+.motivational-msg::before {
+  content: '💡';
+  font-style: normal;
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.result-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  padding: 0.85rem 2rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 3px 3px 0 rgba(26,18,8,0.15);
+}
+.btn-secondary:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 rgba(26,18,8,0.15); }
+.btn-hub {
+  background: var(--ink);
+  color: var(--bg);
+  border: 2px solid var(--ink);
+  padding: 0.85rem 2rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 3px 3px 0 var(--gold);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.btn-hub:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--gold); }
+
+/* Mobile touch hint */
+.touch-hint {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--muted);
+  padding: 0.5rem 1.5rem 0;
+  font-family: 'Syne Mono', monospace;
+}
+</style>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<!-- ===== INTRO ===== -->
+<div id="screen-intro" class="screen active">
+  <div style="max-width:500px;margin:auto;padding:2rem;display:flex;flex-direction:column;align-items:center;">
+    <div class="wallet-visual">
+      <div class="wallet-body"></div>
+      <div class="wallet-bills">
+        <div class="bill"></div>
+        <div class="bill"></div>
+        <div class="bill"></div>
+      </div>
+    </div>
+
+    <div class="intro-eyebrow">Mini Game · Budget Edition</div>
+    <h1 class="intro-title">
+      <span class="accent">Need</span> it or<br><span class="accent2">Want</span> it?
+    </h1>
+    <p class="intro-desc">Look at what's left in your wallet. Objects are floating across the screen — drag each one into the right box before your money runs out!</p>
+
+    <div class="wallet-balance-intro">
+      💵 Balance: <span class="green">$600.00</span>
+    </div>
+
+    <div class="rules-box">
+      <div class="rules-title">How to Play</div>
+      <div class="rule"><span class="rule-icon">👆</span><span>Drag each item into the <strong>NEED</strong> or <strong>WANT</strong> box</span></div>
+      <div class="rule"><span class="rule-icon">✅</span><span>Correct answers: item cost is tracked as essential spending</span></div>
+      <div class="rule"><span class="rule-icon">❌</span><span>Wrong answers: <strong>penalty charge</strong> added on top of the item cost</span></div>
+      <div class="rule"><span class="rule-icon">💰</span><span>Sort wisely — accuracy saves money!</span></div>
+    </div>
+
+    <button class="btn-start" onclick="startGame()">Start Sorting →</button>
+  </div>
+</div>
+
+<!-- ===== GAME ===== -->
+<div id="screen-game" class="screen">
+  <div class="game-header">
+    <div class="header-title">💳 Need It or Want It?</div>
+    <div class="balance-display">
+      <div>
+        <div class="balance-label">WALLET</div>
+        <div class="balance-amount" id="balanceDisplay">$600.00</div>
+      </div>
+    </div>
+    <div class="progress-info" id="progressInfo">0 / 11</div>
+  </div>
+
+  <div class="touch-hint" id="touchHint">👆 Drag items into the boxes below</div>
+
+  <div class="items-zone">
+    <div class="floating-items" id="floatingItems"></div>
+  </div>
+
+  <div class="drop-zones">
+    <div class="drop-zone need-zone" id="needZone"
+         ondragover="onDragOver(event,'need')" ondragleave="onDragLeave(event,'need')" ondrop="onDrop(event,'need')">
+      <div class="zone-count" id="needCount">0</div>
+      <div class="zone-icon">🛒</div>
+      <div class="zone-label need">NEED</div>
+      <div class="zone-sub">Essential spending</div>
+    </div>
+    <div class="drop-zone want-zone" id="wantZone"
+         ondragover="onDragOver(event,'want')" ondragleave="onDragLeave(event,'want')" ondrop="onDrop(event,'want')">
+      <div class="zone-count" id="wantCount">0</div>
+      <div class="zone-icon">✨</div>
+      <div class="zone-label want">WANT</div>
+      <div class="zone-sub">Discretionary splurge</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESULTS ===== -->
+<div id="screen-results" class="screen">
+  <div id="resultTrophy" class="result-trophy"></div>
+  <h2 class="result-title" id="resultTitle"></h2>
+  <p class="result-subtitle" id="resultSubtitle"></p>
+
+  <div class="score-cards">
+    <div class="score-card">
+      <div class="score-card-label">Final Balance</div>
+      <div class="score-card-value green" id="resultBalance"></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">Correct Sorts</div>
+      <div class="score-card-value gold" id="resultAccuracy"></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">Penalties Paid</div>
+      <div class="score-card-value red" id="resultPenalties"></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">Needs Spent</div>
+      <div class="score-card-value" id="resultNeeds"></div>
+    </div>
+  </div>
+
+  <div class="result-breakdown" id="resultBreakdown"></div>
+
+  <div class="motivational-msg" id="motivationalMsg"></div>
+
+  <div class="result-buttons">
+    <button class="btn-secondary" onclick="restartGame()">↩ Try Again</button>
+    <a class="btn-hub" href="https://app.gametize.com/topic/154466">Return to Game Hub →</a>
+  </div>
+</div>
+
+<script>
+const ITEMS = [
+  { id:1,  emoji:'📱', name:'New Smartphone',      cost:200, isNeed:false, hint:'Your current one works fine — this is a luxury', penalty:30 },
+  { id:2,  emoji:'💊', name:'Medicine for Cough',  cost:20,  isNeed:true,  hint:'Your health is your wealth', penalty:20 },
+  { id:3,  emoji:'🚌', name:'Public Transport',    cost:20,  isNeed:true,  hint:'How else do you get to work?', penalty:20 },
+  { id:4,  emoji:'👕', name:'Branded Clothes',     cost:50,  isNeed:false, hint:'Looks nice, but is it a must-have?', penalty:15 },
+  { id:5,  emoji:'☕', name:'Sunday Fancy Coffee', cost:7,   isNeed:false, hint:'A treat is nice, but every bit adds up!', penalty:10 },
+  { id:6,  emoji:'🧴', name:'Toiletries',          cost:10,  isNeed:true,  hint:'Definitely a need', penalty:15 },
+  { id:7,  emoji:'🍽️', name:'Expensive Café Meal', cost:30,  isNeed:false, hint:'Yummy treat but it costs you!', penalty:15 },
+  { id:8,  emoji:'🍚', name:'Kopitiam Chicken Rice',cost:5,  isNeed:true,  hint:'Nice plate of chicken rice — affordable & filling!', penalty:10 },
+  { id:9,  emoji:'🧸', name:'PopMart Figurine',    cost:50,  isNeed:false, hint:'Cute, but definitely a want!', penalty:15 },
+  { id:10, emoji:'🎢', name:'USS Sentosa Trip',    cost:80,  isNeed:false, hint:'Treating yourself — a want!', penalty:20 },
+  { id:11, emoji:'🎰', name:'TOTO 50 Quickpicks',  cost:50,  isNeed:false, hint:'Might win $12M… but probably not!', penalty:25 },
+];
+
+const PENALTY_RATE = 1; // multiplier per wrong sort (penalty is item.penalty)
+const STARTING_BALANCE = 600;
+
+let balance = STARTING_BALANCE;
+let sorted = []; // { item, placedAs, correct }
+let draggingId = null;
+let needCount = 0;
+let wantCount = 0;
+
+// Touch drag state
+let touchItem = null;
+let touchClone = null;
+let touchOffX = 0, touchOffY = 0;
+
+function startGame() {
+  balance = STARTING_BALANCE;
+  sorted = [];
+  needCount = 0;
+  wantCount = 0;
+  updateHeader();
+  buildItems();
+  goScreen('game');
+}
+
+function buildItems() {
+  const container = document.getElementById('floatingItems');
+  container.innerHTML = '';
+
+  // Position items in a scattered layout
+  const positions = [
+    [5, 5], [35, 2], [62, 8], [5, 42], [38, 38], [65, 45],
+    [15, 68], [50, 65], [72, 70], [25, 30], [55, 20]
+  ];
+
+  ITEMS.forEach((item, i) => {
+    const [lp, tp] = positions[i] || [Math.random()*60+5, Math.random()*60+5];
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.id = 'item-' + item.id;
+    card.draggable = true;
+    card.style.left = lp + '%';
+    card.style.top = tp + '%';
+    card.style.animationDelay = (i * 0.08) + 's';
+    card.innerHTML = `
+      <span class="item-emoji">${item.emoji}</span>
+      <div class="item-name">${item.name}</div>
+      <div class="item-cost">-$${item.cost}</div>
+    `;
+
+    // Slight random rotation
+    const rot = (Math.random() - 0.5) * 8;
+    card.style.transform = `rotate(${rot}deg)`;
+    card.dataset.rot = rot;
+    card.dataset.id = item.id;
+
+    // Desktop drag
+    card.addEventListener('dragstart', e => {
+      draggingId = item.id;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+    });
+
+    // Touch drag
+    card.addEventListener('touchstart', onTouchStart, { passive: false });
+    card.addEventListener('touchmove', onTouchMove, { passive: false });
+    card.addEventListener('touchend', onTouchEnd, { passive: false });
+
+    container.appendChild(card);
+  });
+}
+
+// ---- DESKTOP DRAG ----
+function onDragOver(e, zone) {
+  e.preventDefault();
+  document.getElementById(zone + 'Zone').classList.add('drag-over');
+}
+function onDragLeave(e, zone) {
+  document.getElementById(zone + 'Zone').classList.remove('drag-over');
+}
+function onDrop(e, zone) {
+  e.preventDefault();
+  document.getElementById(zone + 'Zone').classList.remove('drag-over');
+  if (!draggingId) return;
+  placeItem(draggingId, zone);
+  draggingId = null;
+}
+
+// ---- TOUCH DRAG ----
+function onTouchStart(e) {
+  const card = e.currentTarget;
+  const id = parseInt(card.dataset.id);
+  touchItem = id;
+  const touch = e.touches[0];
+  const rect = card.getBoundingClientRect();
+  touchOffX = touch.clientX - rect.left;
+  touchOffY = touch.clientY - rect.top;
+
+  touchClone = card.cloneNode(true);
+  touchClone.style.position = 'fixed';
+  touchClone.style.zIndex = 999;
+  touchClone.style.width = rect.width + 'px';
+  touchClone.style.pointerEvents = 'none';
+  touchClone.style.opacity = '0.85';
+  touchClone.style.transform = `rotate(4deg) scale(1.05)`;
+  touchClone.style.left = (touch.clientX - touchOffX) + 'px';
+  touchClone.style.top = (touch.clientY - touchOffY) + 'px';
+  touchClone.style.boxShadow = '12px 12px 30px rgba(0,0,0,0.2)';
+  touchClone.style.borderColor = '#d4a017';
+  touchClone.style.transition = 'none';
+  document.body.appendChild(touchClone);
+  card.style.opacity = '0.3';
+  e.preventDefault();
+}
+
+function onTouchMove(e) {
+  if (!touchClone) return;
+  const touch = e.touches[0];
+  touchClone.style.left = (touch.clientX - touchOffX) + 'px';
+  touchClone.style.top = (touch.clientY - touchOffY) + 'px';
+
+  // Highlight drop zones
+  ['needZone','wantZone'].forEach(zid => {
+    const zone = document.getElementById(zid);
+    const r = zone.getBoundingClientRect();
+    const over = touch.clientX >= r.left && touch.clientX <= r.right &&
+                 touch.clientY >= r.top  && touch.clientY <= r.bottom;
+    zone.classList.toggle('drag-over', over);
+  });
+  e.preventDefault();
+}
+
+function onTouchEnd(e) {
+  if (!touchClone) return;
+  const touch = e.changedTouches[0];
+  document.body.removeChild(touchClone);
+  touchClone = null;
+  ['needZone','wantZone'].forEach(z => document.getElementById(z).classList.remove('drag-over'));
+
+  // Restore card opacity
+  const card = document.getElementById('item-' + touchItem);
+  if (card) card.style.opacity = '1';
+
+  // Find which zone
+  for (const [zone, zid] of [['need','needZone'],['want','wantZone']]) {
+    const r = document.getElementById(zid).getBoundingClientRect();
+    if (touch.clientX >= r.left && touch.clientX <= r.right &&
+        touch.clientY >= r.top  && touch.clientY <= r.bottom) {
+      placeItem(touchItem, zone);
+      touchItem = null;
+      return;
+    }
+  }
+  touchItem = null;
+}
+
+// ---- CORE LOGIC ----
+function placeItem(itemId, zone) {
+  const item = ITEMS.find(i => i.id === itemId);
+  if (!item) return;
+  const correct = (zone === 'need') === item.isNeed;
+  const penalty = correct ? 0 : item.penalty;
+
+  // Deduct cost + penalty
+  balance -= item.cost;
+  balance -= penalty;
+
+  sorted.push({ item, placedAs: zone, correct, penalty });
+
+  // Animate card out
+  const card = document.getElementById('item-' + itemId);
+  if (card) {
+    card.classList.add('sorted', correct ? 'to-need' : 'to-want');
+  }
+
+  // Update counts
+  if (zone === 'need') needCount++;
+  else wantCount++;
+  document.getElementById('needCount').textContent = needCount;
+  document.getElementById('wantCount').textContent = wantCount;
+
+  updateHeader(correct);
+  showToast(item, correct, penalty);
+
+  if (sorted.length === ITEMS.length) {
+    setTimeout(showResults, 800);
+  }
+}
+
+function updateHeader(flash) {
+  const el = document.getElementById('balanceDisplay');
+  el.textContent = '$' + Math.max(0, balance).toFixed(2);
+  document.getElementById('progressInfo').textContent = sorted.length + ' / ' + ITEMS.length;
+  if (flash === false) {
+    el.classList.add('dropping');
+    setTimeout(() => el.classList.remove('dropping'), 500);
+  }
+}
+
+function showToast(item, correct, penalty) {
+  const toast = document.getElementById('toast');
+  if (correct) {
+    toast.textContent = `✅ Correct! ${item.emoji} "${item.name}" is a ${item.isNeed ? 'NEED' : 'WANT'}. Smart move!`;
+    toast.className = 'toast correct';
+  } else {
+    toast.textContent = `❌ Oops! That's a ${item.isNeed ? 'NEED' : 'WANT'} — penalty: -$${penalty}`;
+    toast.className = 'toast wrong';
+  }
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+function showResults() {
+  const correct = sorted.filter(s => s.correct).length;
+  const total = sorted.length;
+  const accuracy = Math.round((correct / total) * 100);
+  const totalPenalties = sorted.reduce((acc, s) => acc + s.penalty, 0);
+  const needsSpent = sorted.filter(s => s.item.isNeed).reduce((acc,s) => acc + s.item.cost, 0);
+  const finalBalance = Math.max(0, balance);
+
+  // Title & trophy
+  let trophy, title, subtitle, msg;
+  if (accuracy >= 90) {
+    trophy = '🏆'; title = 'Financial Genius!';
+    subtitle = 'You nailed it — almost every item sorted correctly.';
+    msg = '"Smart move! You managed to save more by knowing exactly what you need versus what you want. Keep this mindset and watch your savings grow!"';
+  } else if (accuracy >= 70) {
+    trophy = '👍'; title = 'Pretty Smart Spender!';
+    subtitle = 'Good effort — a few slip-ups, but you mostly got it right.';
+    msg = '"Not bad! A few wants snuck in as needs, but you\'re on the right track. Review your choices and try to be even more intentional next time!"';
+  } else if (accuracy >= 50) {
+    trophy = '🤔'; title = 'Room to Improve!';
+    subtitle = 'You mixed up a few needs and wants — those penalties add up!';
+    msg = '"Accuracy saves money! Each wrong sort cost you extra. Take a moment to think: can I survive without this? If yes — it\'s a want."';
+  } else {
+    trophy = '😬'; title = 'Wallet Feeling Empty…';
+    subtitle = 'Lots of penalty charges! But every mistake is a lesson.';
+    msg = '"Don\'t worry — this is exactly why we practice! Needs keep you going. Wants are for when you have extra. Try again and see how much you save!"';
+  }
+
+  document.getElementById('resultTrophy').textContent = trophy;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultSubtitle').textContent = subtitle;
+  document.getElementById('resultBalance').textContent = '$' + finalBalance.toFixed(2);
+  document.getElementById('resultAccuracy').textContent = correct + '/' + total;
+  document.getElementById('resultPenalties').textContent = '-$' + totalPenalties.toFixed(2);
+  document.getElementById('resultNeeds').textContent = '$' + needsSpent.toFixed(2);
+  document.getElementById('motivationalMsg').textContent = msg;
+
+  // Breakdown
+  const breakdown = document.getElementById('resultBreakdown');
+  breakdown.innerHTML = '<div style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);padding:0.5rem;margin-bottom:0.25rem;">Item Breakdown</div>';
+  sorted.forEach(({ item, placedAs, correct, penalty }) => {
+    const row = document.createElement('div');
+    row.className = 'breakdown-row';
+    const correctLabel = item.isNeed ? 'need' : 'want';
+    row.innerHTML = `
+      <div class="breakdown-name">
+        ${item.emoji}
+        <span>${item.name}</span>
+        <span class="breakdown-tag tag-${correctLabel}">${correctLabel.toUpperCase()}</span>
+        ${!correct ? `<span class="breakdown-tag tag-penalty">-$${penalty} penalty</span>` : ''}
+      </div>
+      <div class="breakdown-amount" style="color:${correct ? 'var(--need)' : 'var(--want)'}">
+        ${correct ? '✓' : '✗'} -$${item.cost + penalty}
+      </div>
+    `;
+    breakdown.appendChild(row);
+  });
+
+  goScreen('results');
+}
+
+function restartGame() {
+  startGame();
+}
+
+function goScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
