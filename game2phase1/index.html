@@ -516,7 +516,21 @@
       </div>
       <div class="goal-summary" id="goalSummary"></div>
 
-      <!-- PASSCODE BLOCK -->
+      <div class="cta-row">
+        <button class="cta-primary" onclick="showPasscode()" style="padding:16px 32px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#e8a820);border:none;color:#0d0d1a;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif;box-shadow:0 8px 30px rgba(245,200,66,0.35);">
+          Get Your Passcode ✦
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCREEN 4: Passcode ── -->
+  <div class="screen" id="screen-passcode">
+    <div class="success-screen">
+      <span class="success-emoji" style="font-size:56px">🔑</span>
+      <div class="success-title" style="font-size:clamp(24px,4vw,36px)">Game Complete!</div>
+      <div class="success-tagline">Use this code to unlock the next game.</div>
+
       <div class="passcode-block">
         <div class="passcode-label">Your Passcode for the Next Game</div>
         <div class="passcode-instruction">
@@ -574,7 +588,7 @@ const pathData = {
     },
     R: {
       title: 'Her future is your proudest investment',
-      detail: 'Education opens doors your child can walk through for life. Every dollar you save now reduces the burden on them later. This is the most relevant goal for a parent.',
+      detail: 'Education opens doors your child can walk through for life. Every dollar you save now reduces the burden on her later. This is the most relevant goal for a parent.',
       badge: 'Deeply Personal ❤️',
       badgeColor: 'rgba(167,139,250,0.15)',
       badgeText: '#a78bfa'
@@ -1004,6 +1018,11 @@ function setStep(n){
   });
 }
 
+function showPasscode(){
+  document.getElementById('screen-success').classList.remove('active');
+  document.getElementById('screen-passcode').classList.add('active');
+}
+
 function restartGame(){
   selectedPath=null;
   droppedCards={};
@@ -1012,6 +1031,7 @@ function restartGame(){
   document.getElementById('chooseBtn').classList.remove('visible');
   document.getElementById('screen-success').classList.remove('active');
   document.getElementById('screen-smart').classList.remove('active');
+  document.getElementById('screen-passcode').classList.remove('active');
   document.getElementById('screen-paths').classList.add('active');
   setStep(0);
   document.getElementById('mascotQuote').textContent=`"What are you working for? If you don't name your goal, the money will find its own way out. Let's fix that — together."`;

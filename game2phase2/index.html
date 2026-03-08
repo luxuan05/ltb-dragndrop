@@ -354,11 +354,20 @@
   <div class="motivation-note" id="motivationNote"></div>
   <div class="choices-recap" id="choicesRecap"></div>
 
-  <!-- PASSCODE BLOCK -->
+  <button class="btn-primary" onclick="goToScreen('passcode')" style="margin-top:0.5rem">Get Your Passcode →</button>
+</div>
+
+<!-- ========= SCREEN 5: PASSCODE ========= -->
+<div id="screen-passcode" class="screen" style="background:radial-gradient(ellipse at 60% 40%, #1c1008 0%, #0d0d18 70%);align-items:center;justify-content:center;padding:2.5rem 2rem;text-align:center;">
+  <div style="font-size:4rem;margin-bottom:1.5rem;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(201,168,76,0.3))">🔑</div>
+  <p style="font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Game Complete</p>
+  <p style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--text);margin-bottom:0.5rem;">Well done!</p>
+  <p style="color:var(--muted);font-size:0.88rem;max-width:360px;margin:0 auto 2rem;line-height:1.55;">Use this code to unlock the next game.</p>
+
   <div class="passcode-block">
     <div class="passcode-label">🔑 Your Passcode for the Next Game</div>
     <div class="passcode-instruction">
-      Well done! <strong>Enter this 6-digit password</strong> to unlock the next game.
+      <strong>Enter this 6-digit password</strong> to unlock the next game.
     </div>
     <div class="passcode-digits">
       <div class="pc-digit">1</div>
@@ -498,7 +507,7 @@
 
   function goToScreen(name) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    const map = { 'intro': 'screen-intro', 'remittance': 'screen-remittance', 'family': 'screen-family', 'motivation': 'screen-motivation' };
+    const map = { 'intro': 'screen-intro', 'remittance': 'screen-remittance', 'family': 'screen-family', 'motivation': 'screen-motivation', 'passcode': 'screen-passcode' };
     const el = document.getElementById(map[name]);
     if (el) el.classList.add('active');
     updateDots(name);

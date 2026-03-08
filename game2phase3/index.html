@@ -34,7 +34,6 @@ body {
   cursor: default;
 }
 
-/* Subtle grid bg */
 body::before {
   content: '';
   position: fixed;
@@ -47,7 +46,6 @@ body::before {
   z-index: 0;
 }
 
-/* ===== SCREENS ===== */
 .screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
 .screen.active { display: flex; flex-direction: column; }
 
@@ -90,16 +88,8 @@ body::before {
   background: linear-gradient(135deg, #d4a017, #b8860b);
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
-.wallet-bills {
-  position: absolute;
-  bottom: 0; left: 20px;
-  display: flex; gap: 4px;
-}
-.bill {
-  width: 50px; height: 25px;
-  border-radius: 3px;
-  border: 1px solid rgba(0,0,0,0.1);
-}
+.wallet-bills { position: absolute; bottom: 0; left: 20px; display: flex; gap: 4px; }
+.bill { width: 50px; height: 25px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
 .bill:nth-child(1) { background: #85bb65; transform: rotate(-8deg) translateY(4px); }
 .bill:nth-child(2) { background: #85bb65; transform: rotate(-3deg) translateY(2px); }
 .bill:nth-child(3) { background: #85bb65; transform: rotate(4deg); }
@@ -126,20 +116,10 @@ body::before {
   margin-bottom: 0.75rem;
   color: var(--ink);
 }
-.intro-title .accent {
-  color: var(--need);
-  position: relative;
-  display: inline-block;
-}
+.intro-title .accent { color: var(--need); position: relative; display: inline-block; }
 .intro-title .accent2 { color: var(--want); }
 
-.intro-desc {
-  color: var(--muted);
-  font-size: 0.95rem;
-  max-width: 400px;
-  margin: 0 auto 1rem;
-  line-height: 1.65;
-}
+.intro-desc { color: var(--muted); font-size: 0.95rem; max-width: 400px; margin: 0 auto 1rem; line-height: 1.65; }
 
 .wallet-balance-intro {
   display: inline-flex;
@@ -165,23 +145,8 @@ body::before {
   margin: 0 auto 2rem;
   text-align: left;
 }
-.rules-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.75rem;
-  color: var(--muted);
-}
-.rule {
-  display: flex;
-  gap: 0.6rem;
-  font-size: 0.85rem;
-  color: var(--ink);
-  margin-bottom: 0.5rem;
-  line-height: 1.4;
-}
+.rules-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; color: var(--muted); }
+.rule { display: flex; gap: 0.6rem; font-size: 0.85rem; color: var(--ink); margin-bottom: 0.5rem; line-height: 1.4; }
 .rule-icon { flex-shrink: 0; }
 
 .btn-start {
@@ -202,10 +167,7 @@ body::before {
 .btn-start:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--gold); }
 
 /* ===== GAME SCREEN ===== */
-#screen-game {
-  padding: 0;
-  flex-direction: column;
-}
+#screen-game { padding: 0; flex-direction: column; }
 
 .game-header {
   background: var(--ink);
@@ -220,53 +182,16 @@ body::before {
   top: 0;
   z-index: 50;
 }
-
-.header-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 1rem;
-  letter-spacing: 0.05em;
-}
-
-.balance-display {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: 'Syne Mono', monospace;
-  font-size: 1.1rem;
-}
+.header-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: 0.05em; }
+.balance-display { display: flex; align-items: center; gap: 0.5rem; font-family: 'Syne Mono', monospace; font-size: 1.1rem; }
 .balance-label { color: var(--muted); font-size: 0.7rem; font-family: 'Bricolage Grotesque', sans-serif; }
 .balance-amount { color: #85bb65; font-weight: 700; }
 .balance-amount.dropping { color: #e05242; animation: shake 0.4s ease; }
-@keyframes shake {
-  0%,100% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
-}
+@keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+.progress-info { font-family: 'Syne Mono', monospace; font-size: 0.75rem; color: rgba(245,240,232,0.5); }
 
-.progress-info {
-  font-family: 'Syne Mono', monospace;
-  font-size: 0.75rem;
-  color: rgba(245,240,232,0.5);
-}
-
-/* Items floating zone */
-.items-zone {
-  flex: 1;
-  padding: 1.5rem;
-  position: relative;
-  min-height: 340px;
-  overflow: hidden;
-}
-
-.floating-items {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 300px;
-}
+.items-zone { flex: 1; padding: 1.5rem; position: relative; min-height: 340px; overflow: hidden; }
+.floating-items { position: relative; width: 100%; height: 100%; min-height: 300px; }
 
 .item-card {
   position: absolute;
@@ -283,52 +208,17 @@ body::before {
   transition: box-shadow 0.15s, border-color 0.15s, opacity 0.3s;
   z-index: 10;
 }
-.item-card:hover {
-  border-color: rgba(26,18,8,0.3);
-  box-shadow: 5px 5px 0 rgba(26,18,8,0.12);
-}
-.item-card.dragging {
-  cursor: grabbing;
-  z-index: 100;
-  box-shadow: 12px 12px 30px rgba(0,0,0,0.2);
-  border-color: var(--gold);
-  transform: rotate(3deg) scale(1.05);
-  transition: none;
-}
+.item-card:hover { border-color: rgba(26,18,8,0.3); box-shadow: 5px 5px 0 rgba(26,18,8,0.12); }
+.item-card.dragging { cursor: grabbing; z-index: 100; box-shadow: 12px 12px 30px rgba(0,0,0,0.2); border-color: var(--gold); transform: rotate(3deg) scale(1.05); transition: none; }
 .item-card.sorted { opacity: 0; pointer-events: none; transform: scale(0.5); transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); }
 .item-card.sorted.to-need { border-color: var(--need-border); background: var(--need-light); }
 .item-card.sorted.to-want { border-color: var(--want-border); background: var(--want-light); }
 
 .item-emoji { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; }
-.item-name {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  line-height: 1.3;
-  margin-bottom: 0.25rem;
-}
-.item-cost {
-  font-family: 'Syne Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--want);
-  font-weight: 600;
-}
-.item-hint {
-  font-size: 0.67rem;
-  color: var(--muted);
-  margin-top: 0.3rem;
-  line-height: 1.3;
-  display: none;
-}
+.item-name { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.25rem; }
+.item-cost { font-family: 'Syne Mono', monospace; font-size: 0.75rem; color: var(--want); font-weight: 600; }
 
-/* Drop zones */
-.drop-zones {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  padding: 0 1.5rem 1.5rem;
-}
-
+.drop-zones { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 0 1.5rem 1.5rem; }
 .drop-zone {
   border: 2.5px dashed;
   border-radius: 16px;
@@ -343,59 +233,20 @@ body::before {
   position: relative;
   overflow: hidden;
 }
-.drop-zone::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.drop-zone.need-zone {
-  border-color: var(--need-border);
-  background: rgba(29,107,62,0.04);
-}
-.drop-zone.want-zone {
-  border-color: var(--want-border);
-  background: rgba(192,57,43,0.04);
-}
+.drop-zone::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.2s; }
+.drop-zone.need-zone { border-color: var(--need-border); background: rgba(29,107,62,0.04); }
+.drop-zone.want-zone { border-color: var(--want-border); background: rgba(192,57,43,0.04); }
 .drop-zone.need-zone::before { background: var(--need-light); }
 .drop-zone.want-zone::before { background: var(--want-light); }
 .drop-zone.drag-over::before { opacity: 1; }
 .drop-zone.drag-over { transform: scale(1.02); }
-
 .zone-icon { font-size: 2rem; margin-bottom: 0.4rem; position: relative; z-index: 1; }
-.zone-label {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 1.1rem;
-  position: relative;
-  z-index: 1;
-}
+.zone-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; position: relative; z-index: 1; }
 .zone-label.need { color: var(--need); }
 .zone-label.want { color: var(--want); }
-.zone-sub {
-  font-size: 0.7rem;
-  color: var(--muted);
-  margin-top: 0.2rem;
-  position: relative;
-  z-index: 1;
-}
-.zone-count {
-  position: absolute;
-  top: 0.75rem; right: 0.75rem;
-  background: var(--ink);
-  color: var(--bg);
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  font-family: 'Syne Mono', monospace;
-  font-size: 0.7rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-}
+.zone-sub { font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; position: relative; z-index: 1; }
+.zone-count { position: absolute; top: 0.75rem; right: 0.75rem; background: var(--ink); color: var(--bg); width: 22px; height: 22px; border-radius: 50%; font-family: 'Syne Mono', monospace; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-/* Toast notification */
 .toast {
   position: fixed;
   top: 80px;
@@ -419,84 +270,26 @@ body::before {
 .toast.wrong { background: var(--want); color: white; }
 
 /* ===== RESULTS SCREEN ===== */
-#screen-results {
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  text-align: center;
-}
+#screen-results { align-items: center; justify-content: center; padding: 2rem; text-align: center; }
 
 .result-trophy { font-size: 4rem; margin-bottom: 1rem; animation: walletBob 2s ease-in-out infinite; }
+.result-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800; margin-bottom: 0.5rem; }
+.result-subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.5; }
 
-.result-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(1.8rem, 5vw, 2.8rem);
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-}
-
-.result-subtitle {
-  color: var(--muted);
-  font-size: 0.9rem;
-  margin-bottom: 2rem;
-  line-height: 1.5;
-}
-
-.score-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  max-width: 400px;
-  margin: 0 auto 1.5rem;
-  width: 100%;
-}
-
-.score-card {
-  background: var(--card-bg);
-  border: 2px solid rgba(26,18,8,0.12);
-  border-radius: 14px;
-  padding: 1.25rem;
-}
+.score-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 400px; margin: 0 auto 1.5rem; width: 100%; }
+.score-card { background: var(--card-bg); border: 2px solid rgba(26,18,8,0.12); border-radius: 14px; padding: 1.25rem; }
 .score-card.full { grid-column: 1/-1; }
-.score-card-label {
-  font-size: 0.72rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-family: 'Syne Mono', monospace;
-  margin-bottom: 0.4rem;
-}
-.score-card-value {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.6rem;
-  font-weight: 800;
-}
+.score-card-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Syne Mono', monospace; margin-bottom: 0.4rem; }
+.score-card-value { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; }
 .score-card-value.green { color: var(--need); }
 .score-card-value.red { color: var(--want); }
 .score-card-value.gold { color: var(--gold); }
 
-.result-breakdown {
-  max-width: 440px;
-  margin: 0 auto 2rem;
-  width: 100%;
-}
-.breakdown-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.65rem 0.5rem;
-  border-bottom: 1px solid rgba(26,18,8,0.07);
-  font-size: 0.82rem;
-}
+.result-breakdown { max-width: 440px; margin: 0 auto 2rem; width: 100%; }
+.breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 0.5rem; border-bottom: 1px solid rgba(26,18,8,0.07); font-size: 0.82rem; }
 .breakdown-row:last-child { border-bottom: none; }
 .breakdown-name { display: flex; gap: 0.5rem; align-items: center; }
-.breakdown-tag {
-  font-family: 'Syne Mono', monospace;
-  font-size: 0.65rem;
-  padding: 0.15rem 0.5rem;
-  border-radius: 50px;
-  font-weight: 700;
-}
+.breakdown-tag { font-family: 'Syne Mono', monospace; font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 50px; font-weight: 700; }
 .tag-need { background: var(--need-light); color: var(--need); border: 1px solid var(--need-border); }
 .tag-want { background: var(--want-light); color: var(--want); border: 1px solid var(--want-border); }
 .tag-penalty { background: #fde8e6; color: var(--penalty); border: 1px solid #e05242; }
@@ -515,21 +308,85 @@ body::before {
   font-style: italic;
   position: relative;
 }
-.motivational-msg::before {
-  content: '💡';
-  font-style: normal;
-  display: block;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
+.motivational-msg::before { content: '💡'; font-style: normal; display: block; font-size: 1.5rem; margin-bottom: 0.5rem; }
 
-.result-buttons {
+/* ===== PASSCODE BLOCK ===== */
+.passcode-block {
+  max-width: 440px;
+  margin: 0 auto 2rem;
+  background: linear-gradient(135deg, rgba(26,18,8,0.05), rgba(212,160,23,0.06));
+  border: 1.5px solid rgba(212,160,23,0.45);
+  border-radius: 16px;
+  padding: 22px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.passcode-block::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,160,23,0.1), transparent 70%);
+  pointer-events: none;
+}
+.passcode-label {
+  font-family: 'Syne Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 8px;
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
+  gap: 6px;
+}
+.passcode-instruction {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 18px;
+  line-height: 1.5;
+  text-align: center;
+}
+.passcode-instruction strong { color: var(--ink); }
+.passcode-digits {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.pc-digit {
+  width: 48px; height: 60px;
+  background: var(--card-bg);
+  border: 2px solid rgba(212,160,23,0.4);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--ink);
+  position: relative;
+  box-shadow: 3px 3px 0 rgba(212,160,23,0.2);
+  animation: digitPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes digitPop { from { opacity: 0; transform: translateY(12px) scale(0.7); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.pc-digit:nth-child(1){animation-delay:0.05s;} .pc-digit:nth-child(2){animation-delay:0.11s;}
+.pc-digit:nth-child(3){animation-delay:0.17s;} .pc-digit:nth-child(4){animation-delay:0.23s;}
+.pc-digit:nth-child(5){animation-delay:0.29s;} .pc-digit:nth-child(6){animation-delay:0.35s;}
+.passcode-note {
+  font-family: 'Syne Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 0.08em;
 }
 
+.result-buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 .btn-secondary {
   background: transparent;
   color: var(--ink);
@@ -544,32 +401,127 @@ body::before {
   box-shadow: 3px 3px 0 rgba(26,18,8,0.15);
 }
 .btn-secondary:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 rgba(26,18,8,0.15); }
-.btn-hub {
-  background: var(--ink);
-  color: var(--bg);
-  border: 2px solid var(--ink);
-  padding: 0.85rem 2rem;
-  font-family: 'Syne', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 3px 3px 0 var(--gold);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-.btn-hub:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--gold); }
 
-/* Mobile touch hint */
-.touch-hint {
+.touch-hint { text-align: center; font-size: 0.72rem; color: var(--muted); padding: 0.5rem 1.5rem 0; font-family: 'Syne Mono', monospace; }
+
+/* ===== PASSCODE SCREEN ===== */
+#screen-passcode {
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
   text-align: center;
-  font-size: 0.72rem;
+  background: var(--bg);
+}
+
+.passcode-screen-inner {
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.passcode-trophy {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  animation: walletBob 2.5s ease-in-out infinite;
+}
+
+.passcode-screen-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+}
+
+.passcode-screen-sub {
   color: var(--muted);
-  padding: 0.5rem 1.5rem 0;
+  font-size: 0.88rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.passcode-block-screen {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(26,18,8,0.05), rgba(212,160,23,0.06));
+  border: 2px solid rgba(212,160,23,0.5);
+  border-radius: 18px;
+  padding: 28px 24px;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 4px 4px 0 rgba(212,160,23,0.2);
+}
+.passcode-block-screen::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,160,23,0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.passcode-block-label {
   font-family: 'Syne Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.passcode-block-instruction {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 22px;
+  line-height: 1.5;
+}
+.passcode-block-instruction strong { color: var(--ink); }
+
+.passcode-digits-screen {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.pcd {
+  width: 52px; height: 64px;
+  background: var(--card-bg);
+  border: 2px solid rgba(212,160,23,0.45);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--ink);
+  box-shadow: 3px 3px 0 rgba(212,160,23,0.25);
+  animation: digitPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes digitPop { from { opacity: 0; transform: translateY(14px) scale(0.7); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.pcd:nth-child(1){animation-delay:0.05s;} .pcd:nth-child(2){animation-delay:0.12s;}
+.pcd:nth-child(3){animation-delay:0.19s;} .pcd:nth-child(4){animation-delay:0.26s;}
+.pcd:nth-child(5){animation-delay:0.33s;} .pcd:nth-child(6){animation-delay:0.40s;}
+
+.passcode-note-screen {
+  font-family: 'Syne Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.passcode-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
 }
 </style>
 </head>
@@ -677,9 +629,37 @@ body::before {
 
   <div class="motivational-msg" id="motivationalMsg"></div>
 
-  <div class="result-buttons">
-    <button class="btn-secondary" onclick="restartGame()">↩ Try Again</button>
-    <a class="btn-hub" href="https://app.gametize.com/topic/154466">Return to Game Hub →</a>
+  <div class="result-buttons" style="margin-top:1rem">
+    <button class="btn-start" onclick="goScreen('passcode')">Get Your Passcode →</button>
+  </div>
+</div>
+
+<!-- ===== PASSCODE ===== -->
+<div id="screen-passcode" class="screen">
+  <div class="passcode-screen-inner">
+    <div class="passcode-trophy">🔑</div>
+    <h2 class="passcode-screen-title">Game Complete!</h2>
+    <p class="passcode-screen-sub">Use this code to unlock the next game.</p>
+
+    <div class="passcode-block-screen">
+      <div class="passcode-block-label">Your Passcode for the Next Game</div>
+      <div class="passcode-block-instruction">
+        <strong>Enter this 6-digit password</strong> to unlock the next game.
+      </div>
+      <div class="passcode-digits-screen">
+        <div class="pcd">2</div>
+        <div class="pcd">5</div>
+        <div class="pcd">1</div>
+        <div class="pcd">1</div>
+        <div class="pcd">7</div>
+        <div class="pcd">0</div>
+      </div>
+      <div class="passcode-note-screen">Write it down — you'll need it!</div>
+    </div>
+
+    <div class="passcode-buttons">
+      <button class="btn-secondary" onclick="restartGame()">↩ Try Again</button>
+    </div>
   </div>
 </div>
 
@@ -698,16 +678,12 @@ const ITEMS = [
   { id:11, emoji:'🎰', name:'TOTO 50 Quickpicks',  cost:50,  isNeed:false, hint:'Might win $12M… but probably not!', penalty:25 },
 ];
 
-const PENALTY_RATE = 1; // multiplier per wrong sort (penalty is item.penalty)
 const STARTING_BALANCE = 600;
-
 let balance = STARTING_BALANCE;
-let sorted = []; // { item, placedAs, correct }
+let sorted = [];
 let draggingId = null;
 let needCount = 0;
 let wantCount = 0;
-
-// Touch drag state
 let touchItem = null;
 let touchClone = null;
 let touchOffX = 0, touchOffY = 0;
@@ -725,8 +701,6 @@ function startGame() {
 function buildItems() {
   const container = document.getElementById('floatingItems');
   container.innerHTML = '';
-
-  // Position items in a scattered layout
   const positions = [
     [5, 5], [35, 2], [62, 8], [5, 42], [38, 38], [65, 45],
     [15, 68], [50, 65], [72, 70], [25, 30], [55, 20]
@@ -740,30 +714,22 @@ function buildItems() {
     card.draggable = true;
     card.style.left = lp + '%';
     card.style.top = tp + '%';
-    card.style.animationDelay = (i * 0.08) + 's';
     card.innerHTML = `
       <span class="item-emoji">${item.emoji}</span>
       <div class="item-name">${item.name}</div>
       <div class="item-cost">-$${item.cost}</div>
     `;
-
-    // Slight random rotation
     const rot = (Math.random() - 0.5) * 8;
     card.style.transform = `rotate(${rot}deg)`;
     card.dataset.rot = rot;
     card.dataset.id = item.id;
 
-    // Desktop drag
     card.addEventListener('dragstart', e => {
       draggingId = item.id;
       card.classList.add('dragging');
       e.dataTransfer.effectAllowed = 'move';
     });
-    card.addEventListener('dragend', () => {
-      card.classList.remove('dragging');
-    });
-
-    // Touch drag
+    card.addEventListener('dragend', () => { card.classList.remove('dragging'); });
     card.addEventListener('touchstart', onTouchStart, { passive: false });
     card.addEventListener('touchmove', onTouchMove, { passive: false });
     card.addEventListener('touchend', onTouchEnd, { passive: false });
@@ -772,14 +738,8 @@ function buildItems() {
   });
 }
 
-// ---- DESKTOP DRAG ----
-function onDragOver(e, zone) {
-  e.preventDefault();
-  document.getElementById(zone + 'Zone').classList.add('drag-over');
-}
-function onDragLeave(e, zone) {
-  document.getElementById(zone + 'Zone').classList.remove('drag-over');
-}
+function onDragOver(e, zone) { e.preventDefault(); document.getElementById(zone + 'Zone').classList.add('drag-over'); }
+function onDragLeave(e, zone) { document.getElementById(zone + 'Zone').classList.remove('drag-over'); }
 function onDrop(e, zone) {
   e.preventDefault();
   document.getElementById(zone + 'Zone').classList.remove('drag-over');
@@ -788,7 +748,6 @@ function onDrop(e, zone) {
   draggingId = null;
 }
 
-// ---- TOUCH DRAG ----
 function onTouchStart(e) {
   const card = e.currentTarget;
   const id = parseInt(card.dataset.id);
@@ -797,19 +756,8 @@ function onTouchStart(e) {
   const rect = card.getBoundingClientRect();
   touchOffX = touch.clientX - rect.left;
   touchOffY = touch.clientY - rect.top;
-
   touchClone = card.cloneNode(true);
-  touchClone.style.position = 'fixed';
-  touchClone.style.zIndex = 999;
-  touchClone.style.width = rect.width + 'px';
-  touchClone.style.pointerEvents = 'none';
-  touchClone.style.opacity = '0.85';
-  touchClone.style.transform = `rotate(4deg) scale(1.05)`;
-  touchClone.style.left = (touch.clientX - touchOffX) + 'px';
-  touchClone.style.top = (touch.clientY - touchOffY) + 'px';
-  touchClone.style.boxShadow = '12px 12px 30px rgba(0,0,0,0.2)';
-  touchClone.style.borderColor = '#d4a017';
-  touchClone.style.transition = 'none';
+  touchClone.style.cssText = `position:fixed;z-index:999;width:${rect.width}px;pointer-events:none;opacity:0.85;transform:rotate(4deg) scale(1.05);left:${touch.clientX - touchOffX}px;top:${touch.clientY - touchOffY}px;box-shadow:12px 12px 30px rgba(0,0,0,0.2);border-color:#d4a017;transition:none;`;
   document.body.appendChild(touchClone);
   card.style.opacity = '0.3';
   e.preventDefault();
@@ -820,13 +768,10 @@ function onTouchMove(e) {
   const touch = e.touches[0];
   touchClone.style.left = (touch.clientX - touchOffX) + 'px';
   touchClone.style.top = (touch.clientY - touchOffY) + 'px';
-
-  // Highlight drop zones
   ['needZone','wantZone'].forEach(zid => {
     const zone = document.getElementById(zid);
     const r = zone.getBoundingClientRect();
-    const over = touch.clientX >= r.left && touch.clientX <= r.right &&
-                 touch.clientY >= r.top  && touch.clientY <= r.bottom;
+    const over = touch.clientX >= r.left && touch.clientX <= r.right && touch.clientY >= r.top && touch.clientY <= r.bottom;
     zone.classList.toggle('drag-over', over);
   });
   e.preventDefault();
@@ -838,16 +783,11 @@ function onTouchEnd(e) {
   document.body.removeChild(touchClone);
   touchClone = null;
   ['needZone','wantZone'].forEach(z => document.getElementById(z).classList.remove('drag-over'));
-
-  // Restore card opacity
   const card = document.getElementById('item-' + touchItem);
   if (card) card.style.opacity = '1';
-
-  // Find which zone
   for (const [zone, zid] of [['need','needZone'],['want','wantZone']]) {
     const r = document.getElementById(zid).getBoundingClientRect();
-    if (touch.clientX >= r.left && touch.clientX <= r.right &&
-        touch.clientY >= r.top  && touch.clientY <= r.bottom) {
+    if (touch.clientX >= r.left && touch.clientX <= r.right && touch.clientY >= r.top && touch.clientY <= r.bottom) {
       placeItem(touchItem, zone);
       touchItem = null;
       return;
@@ -856,37 +796,22 @@ function onTouchEnd(e) {
   touchItem = null;
 }
 
-// ---- CORE LOGIC ----
 function placeItem(itemId, zone) {
   const item = ITEMS.find(i => i.id === itemId);
   if (!item) return;
   const correct = (zone === 'need') === item.isNeed;
   const penalty = correct ? 0 : item.penalty;
-
-  // Deduct cost + penalty
   balance -= item.cost;
   balance -= penalty;
-
   sorted.push({ item, placedAs: zone, correct, penalty });
-
-  // Animate card out
   const card = document.getElementById('item-' + itemId);
-  if (card) {
-    card.classList.add('sorted', correct ? 'to-need' : 'to-want');
-  }
-
-  // Update counts
-  if (zone === 'need') needCount++;
-  else wantCount++;
+  if (card) card.classList.add('sorted', correct ? 'to-need' : 'to-want');
+  if (zone === 'need') needCount++; else wantCount++;
   document.getElementById('needCount').textContent = needCount;
   document.getElementById('wantCount').textContent = wantCount;
-
   updateHeader(correct);
   showToast(item, correct, penalty);
-
-  if (sorted.length === ITEMS.length) {
-    setTimeout(showResults, 800);
-  }
+  if (sorted.length === ITEMS.length) setTimeout(showResults, 800);
 }
 
 function updateHeader(flash) {
@@ -920,7 +845,6 @@ function showResults() {
   const needsSpent = sorted.filter(s => s.item.isNeed).reduce((acc,s) => acc + s.item.cost, 0);
   const finalBalance = Math.max(0, balance);
 
-  // Title & trophy
   let trophy, title, subtitle, msg;
   if (accuracy >= 90) {
     trophy = '🏆'; title = 'Financial Genius!';
@@ -949,7 +873,6 @@ function showResults() {
   document.getElementById('resultNeeds').textContent = '$' + needsSpent.toFixed(2);
   document.getElementById('motivationalMsg').textContent = msg;
 
-  // Breakdown
   const breakdown = document.getElementById('resultBreakdown');
   breakdown.innerHTML = '<div style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);padding:0.5rem;margin-bottom:0.25rem;">Item Breakdown</div>';
   sorted.forEach(({ item, placedAs, correct, penalty }) => {
@@ -973,9 +896,7 @@ function showResults() {
   goScreen('results');
 }
 
-function restartGame() {
-  startGame();
-}
+function restartGame() { startGame(); }
 
 function goScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
