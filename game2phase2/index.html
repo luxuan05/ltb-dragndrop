@@ -28,7 +28,6 @@
     overflow-x: hidden;
   }
 
-  /* Noise overlay */
   body::before {
     content: '';
     position: fixed;
@@ -39,12 +38,7 @@
     opacity: 0.4;
   }
 
-  /* ============ SCREENS ============ */
-  .screen {
-    display: none;
-    min-height: 100vh;
-    position: relative;
-  }
+  .screen { display: none; min-height: 100vh; position: relative; }
   .screen.active { display: flex; flex-direction: column; }
 
   /* ============ INTRO SCREEN ============ */
@@ -57,643 +51,229 @@
     overflow: hidden;
   }
 
-  .intro-bg-lines {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-  }
+  .intro-bg-lines { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
   .intro-bg-lines span {
-    position: absolute;
-    display: block;
-    width: 1px;
+    position: absolute; display: block; width: 1px;
     background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-    opacity: 0.12;
-    animation: lineFall 6s linear infinite;
+    opacity: 0.12; animation: lineFall 6s linear infinite;
   }
+  @keyframes lineFall { 0% { transform: translateY(-100%); } 100% { transform: translateY(200vh); } }
 
-  @keyframes lineFall {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(200vh); }
-  }
-
-  .atm-container {
-    width: min(380px, 90vw);
-    height: 320px;
-    margin-bottom: 2rem;
-    position: relative;
-    filter: drop-shadow(0 0 60px rgba(201,168,76,0.3));
-  }
-
-  .atm-iframe-wrapper {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    overflow: hidden;
-    border: 1px solid rgba(201,168,76,0.25);
-  }
-
-  .atm-iframe-wrapper iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-
-  /* Floating ATM fallback */
+  .atm-container { width: min(380px, 90vw); height: 320px; margin-bottom: 2rem; position: relative; filter: drop-shadow(0 0 60px rgba(201,168,76,0.3)); }
   .atm-fallback {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     background: linear-gradient(135deg, #1e2a3a, #0d1520);
-    border-radius: 20px;
-    border: 2px solid rgba(201,168,76,0.4);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
+    border-radius: 20px; border: 2px solid rgba(201,168,76,0.4);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
   }
   .atm-fallback::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
     background: conic-gradient(from 0deg, transparent, rgba(201,168,76,0.06), transparent, rgba(201,168,76,0.03));
     animation: spin 12s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .atm-body {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-  }
+  .atm-body { position: relative; z-index: 1; text-align: center; }
   .atm-emoji { font-size: 5rem; animation: float 3s ease-in-out infinite; display: block; }
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
-  }
-  .atm-label {
-    font-family: 'Playfair Display', serif;
-    color: var(--gold);
-    font-size: 1.1rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    margin-top: 0.5rem;
-  }
-
-  /* Screen glow effect on the ATM */
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+  .atm-label { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-top: 0.5rem; }
   .atm-screen-glow {
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 55%;
-    height: 25%;
-    background: rgba(78,203,113,0.15);
-    border-radius: 4px;
+    position: absolute; top: 30%; left: 50%; transform: translateX(-50%);
+    width: 55%; height: 25%; background: rgba(78,203,113,0.15); border-radius: 4px;
     animation: screenBlink 3s ease-in-out infinite;
   }
-  @keyframes screenBlink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
+  @keyframes screenBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-  .intro-kicker {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-    opacity: 0.9;
-  }
-
-  .intro-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    line-height: 1.15;
-    color: var(--text);
-    margin-bottom: 0.75rem;
-  }
-  .intro-title em {
-    color: var(--gold-light);
-    font-style: italic;
-  }
-
-  .intro-sub {
-    color: var(--muted);
-    font-size: 0.95rem;
-    max-width: 400px;
-    line-height: 1.6;
-    margin: 0 auto 2rem;
-  }
+  .intro-kicker { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; opacity: 0.9; }
+  .intro-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.15; color: var(--text); margin-bottom: 0.75rem; }
+  .intro-title em { color: var(--gold-light); font-style: italic; }
+  .intro-sub { color: var(--muted); font-size: 0.95rem; max-width: 400px; line-height: 1.6; margin: 0 auto 2rem; }
 
   .btn-primary {
     background: linear-gradient(135deg, var(--gold), #a8732a);
-    color: #0d0d00;
-    border: none;
-    padding: 1rem 2.5rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    border-radius: 50px;
-    cursor: pointer;
+    color: #0d0d00; border: none; padding: 1rem 2.5rem;
+    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+    letter-spacing: 0.05em; border-radius: 50px; cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 8px 30px rgba(201,168,76,0.3);
-    position: relative;
-    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(201,168,76,0.3); position: relative; overflow: hidden;
   }
-  .btn-primary::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-    border-radius: 50px;
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(201,168,76,0.45);
-  }
+  .btn-primary::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent); border-radius: 50px; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.45); }
   .btn-primary:active { transform: translateY(0); }
 
   /* ============ REMITTANCE SCREEN ============ */
-  #screen-remittance {
-    background: var(--surface);
-    padding: 0;
-    align-items: stretch;
-  }
-
+  #screen-remittance { background: var(--surface); padding: 0; align-items: stretch; }
   .remit-header {
     background: linear-gradient(to right, #0d0d18, #16162b, #0d0d18);
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid rgba(201,168,76,0.15);
-    text-align: center;
-    position: relative;
+    padding: 1.5rem 2rem; border-bottom: 1px solid rgba(201,168,76,0.15);
+    text-align: center; position: relative;
   }
-  .remit-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--gold), transparent);
-  }
+  .remit-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+  .remit-logo { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.25rem; }
+  .remit-bank-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--text); }
 
-  .remit-logo {
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.25rem;
-  }
-  .remit-bank-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    color: var(--text);
-  }
-
-  .remit-body {
-    flex: 1;
-    padding: 2rem;
-    max-width: 600px;
-    margin: 0 auto;
-    width: 100%;
-  }
+  .remit-body { flex: 1; padding: 2rem; max-width: 600px; margin: 0 auto; width: 100%; }
 
   .wage-card {
-    background: var(--card);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    position: relative;
-    overflow: hidden;
+    background: var(--card); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem;
+    position: relative; overflow: hidden;
   }
-  .wage-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(to right, var(--gold), var(--accent-green));
-  }
-
-  .wage-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
-  }
+  .wage-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, var(--gold), var(--accent-green)); }
+  .wage-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
   .wage-row:last-child { margin-bottom: 0; }
   .wage-label { color: var(--muted); font-size: 0.85rem; }
   .wage-value { font-size: 1.1rem; font-weight: 600; }
   .wage-value.green { color: var(--accent-green); }
-  .wage-divider {
-    height: 1px;
-    background: rgba(255,255,255,0.06);
-    margin: 0.75rem 0;
-  }
 
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    margin-bottom: 0.4rem;
-    color: var(--text);
-  }
-  .section-sub {
-    color: var(--muted);
-    font-size: 0.85rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
-  }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.4rem; color: var(--text); }
+  .section-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; line-height: 1.5; }
 
-  .choices-grid {
-    display: grid;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
+  .choices-grid { display: grid; gap: 1rem; margin-bottom: 2rem; }
 
   .choice-card {
-    background: var(--card);
-    border: 2px solid rgba(255,255,255,0.07);
-    border-radius: 16px;
-    padding: 1.25rem 1.5rem;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
+    background: var(--card); border: 2px solid rgba(255,255,255,0.07);
+    border-radius: 16px; padding: 1.25rem 1.5rem; cursor: pointer;
+    transition: all 0.25s ease; position: relative; overflow: hidden;
+    display: flex; align-items: center; gap: 1.25rem;
   }
-  .choice-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--choice-color, var(--gold));
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
+  .choice-card::before { content: ''; position: absolute; inset: 0; background: var(--choice-color, var(--gold)); opacity: 0; transition: opacity 0.25s; }
   .choice-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
   .choice-card:hover::before { opacity: 0.05; }
-  .choice-card.selected {
-    border-color: var(--choice-color, var(--gold));
-    transform: translateY(-2px);
-  }
+  .choice-card.selected { border-color: var(--choice-color, var(--gold)); transform: translateY(-2px); }
   .choice-card.selected::before { opacity: 0.1; }
-
-  .choice-pct {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--choice-color, var(--gold));
-    line-height: 1;
-    min-width: 3rem;
-    position: relative;
-    z-index: 1;
-  }
-
+  .choice-pct { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--choice-color, var(--gold)); line-height: 1; min-width: 3rem; position: relative; z-index: 1; }
   .choice-info { position: relative; z-index: 1; flex: 1; }
-  .choice-amount {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.2rem;
-  }
-  .choice-desc {
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-  .choice-radio {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.2);
-    position: relative;
-    z-index: 1;
-    transition: border-color 0.2s;
-    flex-shrink: 0;
-  }
-  .choice-card.selected .choice-radio {
-    border-color: var(--choice-color, var(--gold));
-    background: var(--choice-color, var(--gold));
-  }
-  .choice-card.selected .choice-radio::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: white;
-  }
+  .choice-amount { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .choice-desc { font-size: 0.8rem; color: var(--muted); }
+  .choice-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); position: relative; z-index: 1; transition: border-color 0.2s; flex-shrink: 0; }
+  .choice-card.selected .choice-radio { border-color: var(--choice-color, var(--gold)); background: var(--choice-color, var(--gold)); }
+  .choice-card.selected .choice-radio::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; border-radius: 50%; background: white; }
 
   .confirm-btn {
-    width: 100%;
-    background: linear-gradient(135deg, var(--gold), #9a6820);
-    color: #050500;
-    border: none;
-    padding: 1.1rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    border-radius: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    opacity: 0.4;
-    pointer-events: none;
+    width: 100%; background: linear-gradient(135deg, var(--gold), #9a6820);
+    color: #050500; border: none; padding: 1.1rem;
+    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700;
+    letter-spacing: 0.05em; border-radius: 14px; cursor: pointer;
+    transition: all 0.2s; opacity: 0.4; pointer-events: none;
   }
-  .confirm-btn.ready {
-    opacity: 1;
-    pointer-events: all;
-    box-shadow: 0 8px 30px rgba(201,168,76,0.3);
-  }
+  .confirm-btn.ready { opacity: 1; pointer-events: all; box-shadow: 0 8px 30px rgba(201,168,76,0.3); }
   .confirm-btn.ready:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.45); }
 
   /* ============ FAMILY SCREEN ============ */
   #screen-family {
     background: linear-gradient(160deg, #0a1a0f 0%, #0d0d18 50%, #1a0d0d 100%);
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    align-items: center; justify-content: center; padding: 2rem;
+    text-align: center; position: relative; overflow: hidden;
   }
-
-  /* Floating confetti-like particles */
-  .particle {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: particleDrift linear infinite;
-  }
-  @keyframes particleDrift {
-    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
-  }
-
-  .family-scene {
-    position: relative;
-    margin-bottom: 2rem;
-  }
-
-  .family-members {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-  }
-
-  .family-member {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-    animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
-  }
-  @keyframes popIn {
-    from { transform: scale(0) rotate(-10deg); opacity: 0; }
-    to { transform: scale(1) rotate(0deg); opacity: 1; }
-  }
-
-  .member-avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: var(--card);
-    border: 3px solid var(--accent-green);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    position: relative;
-    box-shadow: 0 0 20px rgba(78,203,113,0.3);
-    animation: memberGlow 2s ease-in-out infinite alternate;
-  }
-  @keyframes memberGlow {
-    from { box-shadow: 0 0 15px rgba(78,203,113,0.2); }
-    to { box-shadow: 0 0 30px rgba(78,203,113,0.5); }
-  }
-
-  .member-name {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-weight: 500;
-  }
-
-  .heart-burst {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    font-size: 1rem;
-    animation: heartFloat 1.5s ease-in-out infinite;
-  }
-  @keyframes heartFloat {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-8px) scale(1.2); }
-  }
-
-  .house-icon {
-    font-size: 4rem;
-    margin: 1rem 0;
-    filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
-    animation: houseShine 3s ease-in-out infinite;
-  }
-  @keyframes houseShine {
-    0%, 100% { filter: drop-shadow(0 0 20px rgba(201,168,76,0.4)); }
-    50% { filter: drop-shadow(0 0 40px rgba(201,168,76,0.7)); }
-  }
-
-  .transfer-amount {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    color: var(--accent-green);
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    animation: countUp 0.8s ease-out both;
-  }
-  @keyframes countUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  .transfer-label {
-    color: var(--muted);
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-  }
-
-  .reaction-text {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(1.1rem, 3vw, 1.4rem);
-    line-height: 1.6;
-    color: var(--text);
-    max-width: 480px;
-    margin: 0 auto 1.5rem;
-    font-style: italic;
-  }
-
-  .happiness-bar {
-    width: min(300px, 90%);
-    height: 8px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 50px;
-    margin: 0 auto 0.5rem;
-    overflow: hidden;
-  }
-  .happiness-fill {
-    height: 100%;
-    border-radius: 50px;
-    background: linear-gradient(to right, var(--accent-green), #a8e063);
-    transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-    width: 0%;
-  }
-  .happiness-label {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-bottom: 2rem;
-    letter-spacing: 0.1em;
-  }
+  .particle { position: absolute; border-radius: 50%; pointer-events: none; animation: particleDrift linear infinite; }
+  @keyframes particleDrift { 0% { transform: translateY(110vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; } }
+  .family-scene { position: relative; margin-bottom: 2rem; }
+  .family-members { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .family-member { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+  @keyframes popIn { from { transform: scale(0) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0deg); opacity: 1; } }
+  .member-avatar { width: 70px; height: 70px; border-radius: 50%; background: var(--card); border: 3px solid var(--accent-green); display: flex; align-items: center; justify-content: center; font-size: 2rem; position: relative; box-shadow: 0 0 20px rgba(78,203,113,0.3); animation: memberGlow 2s ease-in-out infinite alternate; }
+  @keyframes memberGlow { from { box-shadow: 0 0 15px rgba(78,203,113,0.2); } to { box-shadow: 0 0 30px rgba(78,203,113,0.5); } }
+  .member-name { font-size: 0.7rem; color: var(--muted); font-weight: 500; }
+  .heart-burst { position: absolute; top: -5px; right: -5px; font-size: 1rem; animation: heartFloat 1.5s ease-in-out infinite; }
+  @keyframes heartFloat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.2); } }
+  .house-icon { font-size: 4rem; margin: 1rem 0; filter: drop-shadow(0 0 20px rgba(201,168,76,0.4)); animation: houseShine 3s ease-in-out infinite; }
+  @keyframes houseShine { 0%, 100% { filter: drop-shadow(0 0 20px rgba(201,168,76,0.4)); } 50% { filter: drop-shadow(0 0 40px rgba(201,168,76,0.7)); } }
+  .transfer-amount { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4rem); color: var(--accent-green); font-weight: 700; margin-bottom: 0.25rem; animation: countUp 0.8s ease-out both; }
+  @keyframes countUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .transfer-label { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem; }
+  .reaction-text { font-family: 'Instrument Serif', serif; font-size: clamp(1.1rem, 3vw, 1.4rem); line-height: 1.6; color: var(--text); max-width: 480px; margin: 0 auto 1.5rem; font-style: italic; }
+  .happiness-bar { width: min(300px, 90%); height: 8px; background: rgba(255,255,255,0.08); border-radius: 50px; margin: 0 auto 0.5rem; overflow: hidden; }
+  .happiness-fill { height: 100%; border-radius: 50px; background: linear-gradient(to right, var(--accent-green), #a8e063); transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1); width: 0%; }
+  .happiness-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 2rem; letter-spacing: 0.1em; }
 
   /* ============ MOTIVATION SCREEN ============ */
   #screen-motivation {
     background: radial-gradient(ellipse at 60% 40%, #1c1008 0%, #0d0d18 70%);
-    align-items: center;
-    justify-content: center;
-    padding: 2.5rem 2rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    align-items: center; justify-content: center; padding: 2.5rem 2rem;
+    text-align: center; position: relative; overflow: hidden;
   }
-
-  .cup-icon {
-    font-size: 5rem;
-    margin-bottom: 1.5rem;
-    animation: float 3s ease-in-out infinite;
-    filter: drop-shadow(0 0 30px rgba(201,168,76,0.3));
-  }
-
-  .motivation-eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
-
-  .motivation-quote {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(1.3rem, 4vw, 2rem);
-    line-height: 1.55;
-    color: var(--text);
-    max-width: 520px;
-    margin: 0 auto 1.5rem;
-    position: relative;
-  }
-  .motivation-quote::before,
-  .motivation-quote::after {
-    content: '"';
-    font-family: 'Playfair Display', serif;
-    font-size: 4rem;
-    color: var(--gold);
-    opacity: 0.3;
-    position: absolute;
-    line-height: 1;
-  }
+  .cup-icon { font-size: 5rem; margin-bottom: 1.5rem; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(201,168,76,0.3)); }
+  .motivation-eyebrow { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .motivation-quote { font-family: 'Instrument Serif', serif; font-size: clamp(1.3rem, 4vw, 2rem); line-height: 1.55; color: var(--text); max-width: 520px; margin: 0 auto 1.5rem; position: relative; }
+  .motivation-quote::before, .motivation-quote::after { content: '"'; font-family: 'Playfair Display', serif; font-size: 4rem; color: var(--gold); opacity: 0.3; position: absolute; line-height: 1; }
   .motivation-quote::before { top: -0.5rem; left: -0.5rem; }
   .motivation-quote::after { content: '"'; bottom: -1.5rem; right: -0.5rem; }
+  .motivation-note { color: var(--muted); font-size: 0.85rem; max-width: 380px; margin: 2rem auto; line-height: 1.6; }
+  .choices-recap { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+  .recap-pill { padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600; border: 1px solid; }
+  .recap-pill.sent { background: rgba(78,203,113,0.12); border-color: rgba(78,203,113,0.4); color: var(--accent-green); }
+  .recap-pill.kept { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.4); color: var(--gold-light); }
 
-  .motivation-note {
-    color: var(--muted);
-    font-size: 0.85rem;
-    max-width: 380px;
-    margin: 2rem auto;
-    line-height: 1.6;
+  /* ============ PASSCODE BLOCK ============ */
+  .passcode-block {
+    max-width: 420px; margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(61,232,200,0.05));
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 22px; padding: 24px 20px;
+    position: relative; overflow: hidden;
   }
-
-  .choices-recap {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 2rem;
+  .passcode-block::before {
+    content: ''; position: absolute; top: -60px; right: -60px;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(167,139,250,0.12), transparent 70%);
+    pointer-events: none;
   }
-
-  .recap-pill {
-    padding: 0.5rem 1.2rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border: 1px solid;
+  .passcode-label {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: #a78bfa; font-weight: 700; margin-bottom: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .recap-pill.sent {
-    background: rgba(78,203,113,0.12);
-    border-color: rgba(78,203,113,0.4);
-    color: var(--accent-green);
+  .passcode-instruction {
+    font-size: 14px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; text-align: center;
   }
-  .recap-pill.kept {
-    background: rgba(201,168,76,0.12);
-    border-color: rgba(201,168,76,0.4);
-    color: var(--gold-light);
+  .passcode-instruction strong { color: var(--text); }
+  .passcode-digits {
+    display: flex; gap: 10px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap;
   }
+  .pc-digit {
+    width: 52px; height: 64px;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(167,139,250,0.35);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 30px; font-weight: 900;
+    color: var(--gold);
+    position: relative; overflow: hidden;
+    animation: digitReveal 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  .pc-digit::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(201,168,76,0.06), transparent);
+    pointer-events: none;
+  }
+  @keyframes digitReveal { from { opacity: 0; transform: translateY(20px) scale(0.7); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .pc-digit:nth-child(1){animation-delay:0.05s;} .pc-digit:nth-child(2){animation-delay:0.12s;}
+  .pc-digit:nth-child(3){animation-delay:0.19s;} .pc-digit:nth-child(4){animation-delay:0.26s;}
+  .pc-digit:nth-child(5){animation-delay:0.33s;} .pc-digit:nth-child(6){animation-delay:0.40s;}
+  .passcode-note {
+    font-size: 12px; color: var(--muted); text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .passcode-note::before { content: '✦'; color: var(--gold); font-size: 10px; }
+  .passcode-note::after { content: '✦'; color: var(--gold); font-size: 10px; }
 
   .btn-restart {
-    background: transparent;
-    border: 1px solid rgba(201,168,76,0.4);
-    color: var(--gold-light);
-    padding: 0.85rem 2rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 1rem;
+    background: transparent; border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light);
+    padding: 0.85rem 2rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    font-weight: 500; letter-spacing: 0.05em; border-radius: 50px; cursor: pointer;
+    transition: all 0.2s; margin-top: 0.5rem;
   }
-  .btn-restart:hover {
-    background: rgba(201,168,76,0.08);
-    border-color: var(--gold);
-  }
+  .btn-restart:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
 
-  /* ============ TRANSITIONS ============ */
   .screen { animation: fadeSlide 0.5s ease both; }
-  @keyframes fadeSlide {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ============ PROGRESS DOTS ============ */
-  .progress-dots {
-    position: fixed;
-    top: 1.25rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0.4rem;
-    z-index: 100;
-  }
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.15);
-    transition: background 0.3s;
-  }
+  .progress-dots { position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.4rem; z-index: 100; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: background 0.3s; }
   .dot.active { background: var(--gold); }
   .dot.done { background: var(--accent-green); }
-
-  /* Utility */
-  .spacer { flex: 1; }
 
   @media (max-width: 400px) {
     .member-avatar { width: 56px; height: 56px; font-size: 1.5rem; }
@@ -703,7 +283,6 @@
 </head>
 <body>
 
-<!-- Progress dots -->
 <div class="progress-dots" id="progressDots">
   <div class="dot active" id="dot0"></div>
   <div class="dot" id="dot1"></div>
@@ -714,7 +293,6 @@
 <!-- ========= SCREEN 1: INTRO ========= -->
 <div id="screen-intro" class="screen active">
   <div class="intro-bg-lines" id="bgLines"></div>
-
   <div class="atm-container">
     <div class="atm-fallback">
       <div class="atm-screen-glow"></div>
@@ -724,7 +302,6 @@
       </div>
     </div>
   </div>
-
   <p class="intro-kicker">A Remittance Story</p>
   <h1 class="intro-title">How much<br><em>goes home?</em></h1>
   <p class="intro-sub">The screen shifts. The heavy question hangs in the air. Every peso, every dollar — a thread connecting you to those you left behind.</p>
@@ -744,17 +321,10 @@
         <span class="wage-value green">$1,500.00</span>
       </div>
     </div>
-
     <h2 class="section-title">Choose the amount</h2>
     <p class="section-sub">How much of your $1,500 monthly wage will you send back this month?</p>
-
-    <div class="choices-grid" id="choicesGrid">
-      <!-- generated by JS -->
-    </div>
-
-    <button class="confirm-btn" id="confirmBtn" onclick="confirmChoice()">
-      Send Transfer →
-    </button>
+    <div class="choices-grid" id="choicesGrid"></div>
+    <button class="confirm-btn" id="confirmBtn" onclick="confirmChoice()">Send Transfer →</button>
   </div>
 </div>
 
@@ -764,114 +334,75 @@
     <div class="house-icon">🏡</div>
     <div class="family-members" id="familyMembers"></div>
   </div>
-
   <div class="transfer-amount" id="transferAmount"></div>
   <div class="transfer-label">Transferred Home ✓</div>
-
   <p class="reaction-text" id="reactionText"></p>
-
   <div class="happiness-bar">
     <div class="happiness-fill" id="happinessFill"></div>
   </div>
   <div class="happiness-label" id="happinessLabel"></div>
-
-  <button class="btn-primary" onclick="goToScreen('motivation')" style="margin-top:1rem">
-    Continue →
-  </button>
+  <button class="btn-primary" onclick="goToScreen('motivation')" style="margin-top:1rem">Continue →</button>
 </div>
 
 <!-- ========= SCREEN 4: MOTIVATION ========= -->
 <div id="screen-motivation" class="screen">
   <div class="cup-icon">☕</div>
   <p class="motivation-eyebrow">A word of wisdom</p>
-
   <p class="motivation-quote">
     Remember, you cannot pour from an empty cup. If you send too much and get sick, who will help you then?
   </p>
-
   <div class="motivation-note" id="motivationNote"></div>
-
   <div class="choices-recap" id="choicesRecap"></div>
 
-  <button class="btn-primary" onclick="goToScreen('motivation-next')" style="display:none" id="nextBtn">Play Again</button>
+  <!-- PASSCODE BLOCK -->
+  <div class="passcode-block">
+    <div class="passcode-label">🔑 Your Passcode for the Next Game</div>
+    <div class="passcode-instruction">
+      Well done! <strong>Enter this 6-digit password</strong> to unlock the next game.
+    </div>
+    <div class="passcode-digits">
+      <div class="pc-digit">1</div>
+      <div class="pc-digit">4</div>
+      <div class="pc-digit">7</div>
+      <div class="pc-digit">3</div>
+      <div class="pc-digit">0</div>
+      <div class="pc-digit">9</div>
+    </div>
+    <div class="passcode-note">Write it down — you'll need it!</div>
+  </div>
+
   <button class="btn-restart" onclick="restart()">↩ Play Again</button>
-  <button class="btn-primary" onclick="window.location.href='https://app.gametize.com/topic/154466'" style="margin-top:0.75rem">
-    Return to Game Hub →
-  </button>
 </div>
 
 <script>
   const choices = [
     {
-      pct: 30,
-      amount: '$450',
-      desc: 'Healthy balance — you keep enough for yourself',
-      color: '#4ecb71',
-      happiness: 72,
+      pct: 30, amount: '$450', desc: 'Healthy balance — you keep enough for yourself', color: '#4ecb71', happiness: 72,
       reaction: 'Your family lights up. The children cheer as Mama reads the transfer notice. There\'s enough for school fees this month — and even a small celebration dinner.',
-      members: [
-        { emoji: '👩', name: 'Mama', delay: 0 },
-        { emoji: '👨', name: 'Papa', delay: 0.15 },
-        { emoji: '👧', name: 'Ana', delay: 0.3 },
-        { emoji: '👦', name: 'Rico', delay: 0.45 },
-      ],
+      members: [{ emoji: '👩', name: 'Mama', delay: 0 }, { emoji: '👨', name: 'Papa', delay: 0.15 }, { emoji: '👧', name: 'Ana', delay: 0.3 }, { emoji: '👦', name: 'Rico', delay: 0.45 }],
       note: 'You sent 30% home. You kept $1,050 — enough to live well, save a little, and stay healthy. A sustainable rhythm.',
     },
     {
-      pct: 40,
-      amount: '$600',
-      desc: 'The steady middle ground',
-      color: '#c9a84c',
-      happiness: 85,
+      pct: 40, amount: '$600', desc: 'The steady middle ground', color: '#c9a84c', happiness: 85,
       reaction: 'Laughter fills the small home. Papa calls to say they paid off a debt. Mama buys vegetables — fresh ones, not wilted. The kids sleep easier tonight.',
-      members: [
-        { emoji: '👩', name: 'Mama', delay: 0 },
-        { emoji: '👨', name: 'Papa', delay: 0.12 },
-        { emoji: '👧', name: 'Ana', delay: 0.24 },
-        { emoji: '👦', name: 'Rico', delay: 0.36 },
-        { emoji: '👴', name: 'Lolo', delay: 0.48 },
-      ],
+      members: [{ emoji: '👩', name: 'Mama', delay: 0 }, { emoji: '👨', name: 'Papa', delay: 0.12 }, { emoji: '👧', name: 'Ana', delay: 0.24 }, { emoji: '👦', name: 'Rico', delay: 0.36 }, { emoji: '👴', name: 'Lolo', delay: 0.48 }],
       note: 'You sent 40% home. You kept $900. A solid balance — family thrives and you can still manage your own needs.',
     },
     {
-      pct: 50,
-      amount: '$750',
-      desc: 'Tightening your belt',
-      color: '#f4845f',
-      happiness: 92,
+      pct: 50, amount: '$750', desc: 'Tightening your belt', color: '#f4845f', happiness: 92,
       reaction: 'Your family is overjoyed — they can finally repair the leaking roof before rainy season. But tonight, you eat instant noodles again, alone.',
-      members: [
-        { emoji: '👩', name: 'Mama', delay: 0 },
-        { emoji: '👨', name: 'Papa', delay: 0.1 },
-        { emoji: '👧', name: 'Ana', delay: 0.2 },
-        { emoji: '👦', name: 'Rico', delay: 0.3 },
-        { emoji: '👴', name: 'Lolo', delay: 0.4 },
-        { emoji: '👵', name: 'Lola', delay: 0.5 },
-      ],
+      members: [{ emoji: '👩', name: 'Mama', delay: 0 }, { emoji: '👨', name: 'Papa', delay: 0.1 }, { emoji: '👧', name: 'Ana', delay: 0.2 }, { emoji: '👦', name: 'Rico', delay: 0.3 }, { emoji: '👴', name: 'Lolo', delay: 0.4 }, { emoji: '👵', name: 'Lola', delay: 0.5 }],
       note: 'You sent 50% home. You kept $750 — workable, but thin. Make sure you\'re not skipping meals or medical care.',
     },
     {
-      pct: 60,
-      amount: '$900',
-      desc: 'Maximum sacrifice',
-      color: '#e05252',
-      happiness: 98,
+      pct: 60, amount: '$900', desc: 'Maximum sacrifice', color: '#e05252', happiness: 98,
       reaction: 'Pure joy back home — they cry happy tears. But you\'re left with $600. One unexpected bill could break you. Your family\'s happiness rests on you staying well.',
-      members: [
-        { emoji: '👩', name: 'Mama', delay: 0 },
-        { emoji: '👨', name: 'Papa', delay: 0.08 },
-        { emoji: '👧', name: 'Ana', delay: 0.16 },
-        { emoji: '👦', name: 'Rico', delay: 0.24 },
-        { emoji: '👴', name: 'Lolo', delay: 0.32 },
-        { emoji: '👵', name: 'Lola', delay: 0.4 },
-        { emoji: '🧒', name: 'Bunso', delay: 0.48 },
-      ],
+      members: [{ emoji: '👩', name: 'Mama', delay: 0 }, { emoji: '👨', name: 'Papa', delay: 0.08 }, { emoji: '👧', name: 'Ana', delay: 0.16 }, { emoji: '👦', name: 'Rico', delay: 0.24 }, { emoji: '👴', name: 'Lolo', delay: 0.32 }, { emoji: '👵', name: 'Lola', delay: 0.4 }, { emoji: '🧒', name: 'Bunso', delay: 0.48 }],
       note: 'You sent 60% home. You kept only $600. This is maximum sacrifice — be very careful about your own health and safety.',
     },
   ];
 
   let selectedChoice = null;
-  let currentScreen = 'intro';
 
   // Build bg lines
   const bgLines = document.getElementById('bgLines');
@@ -905,11 +436,8 @@
 
   function selectChoice(index) {
     selectedChoice = index;
-    document.querySelectorAll('.choice-card').forEach((c, i) => {
-      c.classList.toggle('selected', i === index);
-    });
-    const btn = document.getElementById('confirmBtn');
-    btn.classList.add('ready');
+    document.querySelectorAll('.choice-card').forEach((c, i) => c.classList.toggle('selected', i === index));
+    document.getElementById('confirmBtn').classList.add('ready');
   }
 
   function confirmChoice() {
@@ -920,37 +448,23 @@
 
   function buildFamilyScreen() {
     const c = choices[selectedChoice];
-
     document.getElementById('transferAmount').textContent = c.amount;
     document.getElementById('reactionText').textContent = c.reaction;
     document.getElementById('happinessLabel').textContent = `Family Happiness: ${c.happiness}%`;
 
-    // Family members
     const container = document.getElementById('familyMembers');
     container.innerHTML = '';
     c.members.forEach(m => {
       const div = document.createElement('div');
       div.className = 'family-member';
       div.style.animationDelay = m.delay + 's';
-      div.innerHTML = `
-        <div class="member-avatar">
-          ${m.emoji}
-          <span class="heart-burst" style="animation-delay:${m.delay + 0.3}s">❤️</span>
-        </div>
-        <span class="member-name">${m.name}</span>
-      `;
+      div.innerHTML = `<div class="member-avatar">${m.emoji}<span class="heart-burst" style="animation-delay:${m.delay + 0.3}s">❤️</span></div><span class="member-name">${m.name}</span>`;
       container.appendChild(div);
     });
 
-    // Happiness bar (delayed)
-    setTimeout(() => {
-      document.getElementById('happinessFill').style.width = c.happiness + '%';
-    }, 300);
-
-    // Particles
+    setTimeout(() => { document.getElementById('happinessFill').style.width = c.happiness + '%'; }, 300);
     spawnParticles(c.color);
 
-    // Build motivation screen data
     const kept = 1500 - parseInt(c.amount.replace('$','').replace(',',''));
     document.getElementById('motivationNote').textContent = c.note;
     document.getElementById('choicesRecap').innerHTML = `
@@ -961,7 +475,6 @@
 
   function spawnParticles(color) {
     const screen = document.getElementById('screen-family');
-    // Remove old particles
     screen.querySelectorAll('.particle').forEach(p => p.remove());
     const emojis = ['❤️','💚','✨','💛','🌸','💫'];
     for (let i = 0; i < 18; i++) {
@@ -973,13 +486,11 @@
       p.style.opacity = 0.4 + Math.random() * 0.4;
       p.style.animationDuration = (5 + Math.random() * 10) + 's';
       p.style.animationDelay = (Math.random() * 4) + 's';
-      // Some as emoji text
       if (Math.random() > 0.5) {
         p.style.background = 'transparent';
         p.style.fontSize = (14 + Math.random() * 10) + 'px';
         p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        p.style.width = 'auto';
-        p.style.height = 'auto';
+        p.style.width = 'auto'; p.style.height = 'auto';
       }
       screen.appendChild(p);
     }
@@ -987,21 +498,11 @@
 
   function goToScreen(name) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    currentScreen = name;
-    const map = {
-      'intro': 'screen-intro',
-      'remittance': 'screen-remittance',
-      'family': 'screen-family',
-      'motivation': 'screen-motivation',
-    };
+    const map = { 'intro': 'screen-intro', 'remittance': 'screen-remittance', 'family': 'screen-family', 'motivation': 'screen-motivation' };
     const el = document.getElementById(map[name]);
     if (el) el.classList.add('active');
     updateDots(name);
-
-    // Reset happiness bar on family visit
-    if (name === 'family') {
-      document.getElementById('happinessFill').style.width = '0%';
-    }
+    if (name === 'family') document.getElementById('happinessFill').style.width = '0%';
   }
 
   function updateDots(name) {
