@@ -42,16 +42,6 @@
   /* ── LAYOUT ── */
   .container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:30px 20px 80px;}
 
-  /* ── BACK BUTTON ── */
-  .back-btn{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:10px 20px;border-radius:40px;
-    background:rgba(255,255,255,0.05);border:1px solid var(--border);
-    color:var(--muted);font-size:13px;cursor:pointer;
-    text-decoration:none;transition:all 0.3s;margin-bottom:30px;
-  }
-  .back-btn:hover{background:rgba(245,200,66,0.1);color:var(--gold);border-color:var(--gold);}
-
   /* ── HEADER ── */
   .phase-badge{
     display:inline-block;padding:5px 16px;border-radius:40px;
@@ -252,15 +242,66 @@
   .gs-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:0.5;font-weight:600;margin-bottom:3px;}
   .gs-val{font-size:14px;line-height:1.4;}
 
-  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-  .cta-primary{
-    padding:16px 32px;border-radius:14px;
-    background:linear-gradient(135deg,var(--gold),#e8a820);
-    border:none;color:#0d0d1a;font-size:15px;font-weight:700;
-    cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
-    font-family:'DM Sans',sans-serif;
+  /* ── PASSCODE BLOCK ── */
+  .passcode-block{
+    max-width:500px;margin:0 auto 28px;
+    background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(61,232,200,0.05));
+    border:1px solid rgba(167,139,250,0.3);
+    border-radius:22px;padding:28px 24px;
+    position:relative;overflow:hidden;
   }
-  .cta-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(245,200,66,0.35);}
+  .passcode-block::before{
+    content:'';position:absolute;top:-60px;right:-60px;
+    width:180px;height:180px;border-radius:50%;
+    background:radial-gradient(circle,rgba(167,139,250,0.12),transparent 70%);
+    pointer-events:none;
+  }
+  .passcode-label{
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--lavender);font-weight:700;margin-bottom:8px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .passcode-label::before{content:'🔑';}
+  .passcode-instruction{
+    font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.5;
+  }
+  .passcode-instruction strong{color:var(--cream);}
+  .passcode-digits{
+    display:flex;gap:10px;justify-content:center;margin-bottom:18px;
+    flex-wrap:wrap;
+  }
+  .pc-digit{
+    width:52px;height:64px;
+    background:rgba(255,255,255,0.04);
+    border:1.5px solid rgba(167,139,250,0.35);
+    border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;
+    font-size:30px;font-weight:900;
+    color:var(--gold);
+    position:relative;overflow:hidden;
+    animation:digitReveal 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  .pc-digit::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(245,200,66,0.06),transparent);
+    pointer-events:none;
+  }
+  @keyframes digitReveal{
+    from{opacity:0;transform:translateY(20px) scale(0.7);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+  }
+  .pc-digit:nth-child(1){animation-delay:0.05s;} .pc-digit:nth-child(2){animation-delay:0.12s;}
+  .pc-digit:nth-child(3){animation-delay:0.19s;} .pc-digit:nth-child(4){animation-delay:0.26s;}
+  .pc-digit:nth-child(5){animation-delay:0.33s;} .pc-digit:nth-child(6){animation-delay:0.40s;}
+  .passcode-note{
+    font-size:12px;color:var(--muted);text-align:center;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .passcode-note::before{content:'✦';color:var(--gold);font-size:10px;}
+  .passcode-note::after{content:'✦';color:var(--gold);font-size:10px;}
+
+  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
   .cta-secondary{
     padding:16px 28px;border-radius:14px;
     background:transparent;border:1.5px solid rgba(255,255,255,0.15);
@@ -310,10 +351,6 @@
 <div class="bg-butterflies" id="bgBf"></div>
 
 <div class="container">
-  <!-- Back -->
-  <a class="back-btn" href="https://app.gametize.com/topic/154466">
-    ← Back to Gametize
-  </a>
 
   <!-- Phase Badge + Title -->
   <div class="phase-badge">Phase 1</div>
@@ -478,10 +515,25 @@
         "You aren't just saving — you are building a bridge to your future. Every dollar is a plank, every month a step closer."
       </div>
       <div class="goal-summary" id="goalSummary"></div>
+
+      <!-- PASSCODE BLOCK -->
+      <div class="passcode-block">
+        <div class="passcode-label">Your Passcode for the Next Game</div>
+        <div class="passcode-instruction">
+          You've unlocked the next challenge! <strong>Enter this 6-digit password</strong> to enter the next game.
+        </div>
+        <div class="passcode-digits">
+          <div class="pc-digit">8</div>
+          <div class="pc-digit">4</div>
+          <div class="pc-digit">2</div>
+          <div class="pc-digit">7</div>
+          <div class="pc-digit">1</div>
+          <div class="pc-digit">9</div>
+        </div>
+        <div class="passcode-note">Write it down — you'll need it!</div>
+      </div>
+
       <div class="cta-row">
-        <a class="cta-primary" href="https://app.gametize.com/topic/154466">
-          Continue Journey ✦
-        </a>
         <button class="cta-secondary" onclick="restartGame()">
           Try Another Path ↺
         </button>
@@ -730,6 +782,8 @@ function goToSmartBuilder(){
     const c=document.getElementById('card-'+l);
     c.style.display='block';
     c.style.opacity='1';
+    c.style.pointerEvents='auto';
+    c.draggable=true;
   });
 }
 
@@ -844,7 +898,6 @@ function chooseAchievable(choice, path){
 
   if(choice === 'yes'){
     document.querySelector('.achieve-btn.yes').classList.add('chosen');
-    // Add positive message
     const existing = document.querySelector('.achieve-tip');
     existing.style.background = 'rgba(61,232,200,0.08)';
     existing.style.borderColor = 'rgba(61,232,200,0.25)';
@@ -856,7 +909,7 @@ function chooseAchievable(choice, path){
     const existing = document.querySelector('.achieve-tip');
     existing.innerHTML = `<div class="tip-label">${cardData.tipLabel}</div>${cardData.tip}`;
     existing.classList.add('visible');
-    droppedCards['A'] = true; // Still allow progression
+    droppedCards['A'] = true;
   }
 
   updateProgress();
@@ -920,7 +973,7 @@ function showSuccess(){
   document.getElementById('goalSummary').innerHTML=`
     <div class="gs-title">${d.icon} My SMART Goal</div>${rows}`;
 
-  document.getElementById('mascotQuote').textContent=`"Goal Locked! You aren't just saving — you are building a bridge to your future. Every step forward is a brick in that bridge. Keep going!"`;
+  document.getElementById('mascotQuote').textContent=`"Goal Locked! You've earned your passcode — use it to unlock the next challenge. Every step forward is a brick in your bridge. Keep going!"`;
 
   launchConfetti();
 }
