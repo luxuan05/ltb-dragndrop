@@ -644,17 +644,25 @@ body::before {
     <div class="passcode-block-screen">
       <div class="passcode-block-label">Your Passcode for the Next Game</div>
       <div class="passcode-block-instruction">
-        <strong>Enter this 6-digit password</strong> to unlock the next game.
+        <strong>Enter this passcode</strong> to unlock the next game. <strong>Tap it to copy!</strong>
       </div>
-      <div class="passcode-digits-screen">
-        <div class="pcd">2</div>
-        <div class="pcd">5</div>
-        <div class="pcd">1</div>
-        <div class="pcd">1</div>
-        <div class="pcd">7</div>
-        <div class="pcd">0</div>
-      </div>
-      <div class="passcode-note-screen">Write it down — you'll need it!</div>
+      <div id="passcodeBox" onclick="copyPasscode()" title="Tap to copy" style="
+        cursor: pointer;
+        background: rgba(255,255,255,0.04);
+        border: 1.5px solid rgba(167,139,250,0.35);
+        border-radius: 14px;
+        padding: 18px 24px;
+        text-align: center;
+        font-family: 'Playfair Display', serif;
+        font-size: 28px;
+        font-weight: 900;
+        color: var(--gold, #c9a84c);
+        letter-spacing: 3px;
+        transition: background 0.2s, border-color 0.2s, color 0.2s;
+        margin-bottom: 18px;
+        user-select: none;
+      ">NeedOrWantLeh</div>
+      <div class="passcode-note-screen" id="passcodeNote">Tap the code to copy it!</div>
     </div>
 
     <div class="passcode-buttons">
@@ -894,6 +902,28 @@ function showResults() {
   });
 
   goScreen('results');
+}
+
+function copyPasscode() {
+  const box = document.getElementById('passcodeBox');
+  const note = document.getElementById('passcodeNote');
+  navigator.clipboard.writeText('NeedOrWantLeh').then(() => {
+    box.style.background = 'rgba(78,203,113,0.12)';
+    box.style.borderColor = 'rgba(78,203,113,0.6)';
+    box.style.color = '#4ecb71';
+    note.textContent = '✓ Copied to clipboard!';
+    note.style.color = '#4ecb71';
+    setTimeout(() => {
+      box.style.background = '';
+      box.style.borderColor = '';
+      box.style.color = '';
+      note.textContent = 'Tap the code to copy it!';
+      note.style.color = '';
+    }, 2500);
+  }).catch(() => {
+    note.textContent = 'Passcode: NeedOrWantLeh';
+    note.style.color = '#c9a84c';
+  });
 }
 
 function restartGame() { startGame(); }

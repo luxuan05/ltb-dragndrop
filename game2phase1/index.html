@@ -271,16 +271,27 @@
     flex-wrap:wrap;
   }
   .pc-digit{
-    width:52px;height:64px;
+    width:44px;height:56px;
     background:rgba(255,255,255,0.04);
     border:1.5px solid rgba(167,139,250,0.35);
     border-radius:12px;
     display:flex;align-items:center;justify-content:center;
     font-family:'Playfair Display',serif;
-    font-size:30px;font-weight:900;
+    font-size:22px;font-weight:900;
     color:var(--gold);
     position:relative;overflow:hidden;
     animation:digitReveal 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    transition:background 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .passcode-digits:hover .pc-digit{
+    border-color:rgba(245,200,66,0.6);
+    background:rgba(245,200,66,0.07);
+  }
+  .passcode-digits.copied .pc-digit{
+    background:rgba(61,232,200,0.15);
+    border-color:rgba(61,232,200,0.6);
+    color:var(--teal);
+    transform:scale(1.05);
   }
   .pc-digit::after{
     content:'';position:absolute;inset:0;
@@ -291,9 +302,11 @@
     from{opacity:0;transform:translateY(20px) scale(0.7);}
     to{opacity:1;transform:translateY(0) scale(1);}
   }
-  .pc-digit:nth-child(1){animation-delay:0.05s;} .pc-digit:nth-child(2){animation-delay:0.12s;}
-  .pc-digit:nth-child(3){animation-delay:0.19s;} .pc-digit:nth-child(4){animation-delay:0.26s;}
-  .pc-digit:nth-child(5){animation-delay:0.33s;} .pc-digit:nth-child(6){animation-delay:0.40s;}
+  .pc-digit:nth-child(1){animation-delay:0.05s;} .pc-digit:nth-child(2){animation-delay:0.10s;}
+  .pc-digit:nth-child(3){animation-delay:0.15s;} .pc-digit:nth-child(4){animation-delay:0.20s;}
+  .pc-digit:nth-child(5){animation-delay:0.25s;} .pc-digit:nth-child(6){animation-delay:0.30s;}
+  .pc-digit:nth-child(7){animation-delay:0.35s;} .pc-digit:nth-child(8){animation-delay:0.40s;}
+  .pc-digit:nth-child(9){animation-delay:0.45s;} .pc-digit:nth-child(10){animation-delay:0.50s;}
   .passcode-note{
     font-size:12px;color:var(--muted);text-align:center;
     display:flex;align-items:center;justify-content:center;gap:6px;
@@ -395,7 +408,7 @@
       <div class="path-card" data-path="provider" onclick="selectPath(this)">
         <span class="path-icon">👶</span>
         <div class="path-label">The Provider</div>
-        <div class="path-title">"I want to save for my daughter's education fees"</div>
+        <div class="path-title">"I want to save for my child's education fees"</div>
         <div class="path-desc">By next year — build her future brick by brick.</div>
         <div class="path-check">✓</div>
       </div>
@@ -534,17 +547,25 @@
       <div class="passcode-block">
         <div class="passcode-label">Your Passcode for the Next Game</div>
         <div class="passcode-instruction">
-          You've unlocked the next challenge! <strong>Enter this 6-digit password</strong> to enter the next game.
+          You've unlocked the next challenge! <strong>Enter this passcode</strong> to enter the next game. <strong>Tap it to copy!</strong>
         </div>
-        <div class="passcode-digits">
-          <div class="pc-digit">8</div>
-          <div class="pc-digit">4</div>
-          <div class="pc-digit">2</div>
-          <div class="pc-digit">7</div>
-          <div class="pc-digit">1</div>
-          <div class="pc-digit">9</div>
-        </div>
-        <div class="passcode-note">Write it down — you'll need it!</div>
+        <div id="passcodeDigits" onclick="copyPasscode()" title="Tap to copy" style="
+          cursor:pointer;
+          background:rgba(255,255,255,0.04);
+          border:1.5px solid rgba(167,139,250,0.35);
+          border-radius:14px;
+          padding:18px 24px;
+          text-align:center;
+          font-family:'Playfair Display',serif;
+          font-size:28px;
+          font-weight:900;
+          color:var(--gold);
+          letter-spacing:3px;
+          transition:background 0.2s, border-color 0.2s;
+          margin-bottom:18px;
+          user-select:none;
+        ">SMARTforMe</div>
+        <div class="passcode-note" id="passcodeNote">Tap the code to copy it!</div>
       </div>
 
       <div class="cta-row">
@@ -1007,6 +1028,29 @@ function launchConfetti(){
       setTimeout(()=>c.remove(),4000);
     },i*40);
   }
+}
+
+function copyPasscode(){
+  const passcode = 'SMARTforMe';
+  const box = document.getElementById('passcodeDigits');
+  const note = document.getElementById('passcodeNote');
+  navigator.clipboard.writeText(passcode).then(()=>{
+    box.style.background = 'rgba(61,232,200,0.12)';
+    box.style.borderColor = 'rgba(61,232,200,0.6)';
+    box.style.color = '#3de8c8';
+    note.textContent = '✓ Copied to clipboard!';
+    note.style.color = '#3de8c8';
+    setTimeout(()=>{
+      box.style.background = '';
+      box.style.borderColor = '';
+      box.style.color = '';
+      note.textContent = 'Tap the code to copy it!';
+      note.style.color = '';
+    }, 2500);
+  }).catch(()=>{
+    note.textContent = 'Passcode: SMARTforMe';
+    note.style.color = '#f5c842';
+  });
 }
 
 function setStep(n){

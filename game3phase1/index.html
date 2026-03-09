@@ -217,6 +217,22 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .flash.g{background:rgba(0,214,143,0.15);}.flash.r{background:rgba(255,59,59,0.15);}
 .flash.on{opacity:1;}
 @media(max-width:420px){.caifan-grid{grid-template-columns:repeat(2,1fr);}}
+
+#passcodeCopyBox:hover{
+  transform:translateY(-2px);
+  border-color:rgba(245,200,66,0.5);
+}
+#passcodeCopyBox.copied{
+  background:rgba(0,214,143,0.14)!important;
+  border-color:rgba(0,214,143,0.55)!important;
+  box-shadow:0 0 24px rgba(0,214,143,0.18);
+}
+#passcodeCopyBox.copied #passcodeMain{
+  color:var(--legit)!important;
+}
+#passcodeCopyBox.copied #passcodeSub{
+  color:var(--legit)!important;
+}
 </style>
 </head>
 <body>
@@ -268,19 +284,27 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     <button class="r-btn-p" id="btnRestart">&#8617; Play Again</button>
   </div>
 
-  <div id="passcodeBox" style="
-    display:none;
-    margin-top:20px;
+<div id="passcodeBox" style="display:none; margin-top:20px; width:100%; max-width:420px;">
+  <button id="passcodeCopyBox" type="button" style="
+    width:100%;
     background:rgba(245,200,66,0.08);
     border:1.5px solid rgba(245,200,66,0.3);
     padding:18px;
-    border-radius:12px;
+    border-radius:14px;
     font-family:var(--fm);
-    font-size:1.2rem;
+    font-size:1.15rem;
+    color:var(--text);
+    cursor:pointer;
+    transition:all 0.2s ease;
+    text-align:center;
   ">
-    Your Gametize Passcode:<br>
-    <strong style="font-size:1.6rem;color:var(--gold)">563091</strong>
-  </div>
+    <div id="passcodeMain" style="font-size:1.25rem; color:var(--gold); font-weight:700;">
+      ScamOrLegitHuh
+    </div>
+    <div id="passcodeSub" style="margin-top:8px; font-size:0.78rem; color:var(--muted);">
+      Tap to copy passcode
+    </div>
+  </button>
 </div>
 
 <script>
@@ -818,8 +842,40 @@ function goScreen(id){
   document.getElementById(id).classList.add("active");window.scrollTo(0,0);
 }
 
-document.getElementById("btnPasscode").addEventListener("click", function () {
-  document.getElementById("passcodeBox").style.display = "block";
+const btnPasscode = document.getElementById("btnPasscode");
+const passcodeBox = document.getElementById("passcodeBox");
+const passcodeCopyBox = document.getElementById("passcodeCopyBox");
+const passcodeMain = document.getElementById("passcodeMain");
+const passcodeSub = document.getElementById("passcodeSub");
+
+let passcodeResetTimer;
+
+btnPasscode.addEventListener("click", function () {
+  passcodeBox.style.display = "block";
+});
+
+passcodeCopyBox.addEventListener("click", async function () {
+  try {
+    await navigator.clipboard.writeText("ScamOrLegitHuh");
+  } catch (e) {
+    const temp = document.createElement("textarea");
+    temp.value = "ScamOrLegitHuh";
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand("copy");
+    document.body.removeChild(temp);
+  }
+
+  passcodeCopyBox.classList.add("copied");
+  passcodeMain.innerHTML = "✓ Copied to clipboard!";
+  passcodeSub.textContent = "";
+
+  clearTimeout(passcodeResetTimer);
+  passcodeResetTimer = setTimeout(() => {
+    passcodeCopyBox.classList.remove("copied");
+    passcodeMain.textContent = "ScamOrLegitHuh";
+    passcodeSub.textContent = "Tap to copy passcode";
+  }, 2500);
 });
 </script>
 </body>
