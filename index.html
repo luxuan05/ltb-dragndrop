@@ -26,7 +26,6 @@
     overflow-x: hidden;
   }
 
-  /* Header */
   header {
     background: linear-gradient(90deg, var(--red) 0%, #C62828 100%);
     color: white;
@@ -63,28 +62,12 @@
     font-size: 1rem;
   }
 
-  /* Main layout */
   .game-area {
     max-width: 1100px;
     margin: 0 auto;
     padding: 24px 16px;
   }
 
-  .instruction-bar {
-    background: white;
-    border-left: 5px solid var(--sky);
-    border-radius: 12px;
-    padding: 12px 20px;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    font-size: 0.95rem;
-    color: #333;
-  }
-
-  /* Map + Drop zones */
   .map-section {
     position: relative;
     background: #D4EDDA;
@@ -106,7 +89,6 @@
     letter-spacing: 1px;
   }
 
-  /* Singapore silhouette (CSS art) */
   .sg-map {
     position: absolute;
     top: 50%; left: 50%;
@@ -178,11 +160,7 @@
     margin-bottom: 8px;
   }
 
-  .zone-label {
-    font-size: 0.65rem;
-    color: #999;
-    font-style: italic;
-  }
+  .zone-label { font-size: 0.65rem; color: #999; font-style: italic; }
 
   .zone-answer {
     font-size: 0.8rem;
@@ -194,7 +172,6 @@
   .drop-zone.correct .zone-answer { display: block; }
   .drop-zone.correct .zone-label { display: none; }
 
-  /* Entity Cards */
   .cards-section {
     background: white;
     border-radius: 20px;
@@ -241,11 +218,9 @@
   .card-name { font-weight: 800; font-size: 0.85rem; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.3); line-height: 1.3; }
   .card-sub { font-size: 0.65rem; color: rgba(255,255,255,0.8); margin-top: 3px; }
 
-  /* Butterfly mascot */
   .butterfly {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 20px; right: 20px;
     background: white;
     border-radius: 20px;
     padding: 14px 18px;
@@ -269,7 +244,7 @@
   .bf-text.correct { color: #2E7D32; }
   .bf-text.wrong { color: #C62828; }
 
-  /* Win screen */
+  /* Win overlay */
   .win-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.6);
@@ -284,9 +259,10 @@
   .win-box {
     background: white;
     border-radius: 28px;
-    padding: 40px;
+    padding: 36px 40px;
     text-align: center;
-    max-width: 400px;
+    max-width: 440px;
+    width: 92%;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
@@ -294,22 +270,89 @@
 
   .win-emoji { font-size: 4rem; margin-bottom: 10px; }
   .win-title { font-family: 'Baloo 2', cursive; font-size: 2rem; font-weight: 800; color: var(--red); margin-bottom: 8px; }
-  .win-msg { font-size: 1rem; color: #555; margin-bottom: 24px; line-height: 1.6; }
+  .win-msg { font-size: 1rem; color: #555; margin-bottom: 22px; line-height: 1.6; }
+
+  /* Passcode section */
+  .passcode-section {
+    display: none;
+    margin-bottom: 20px;
+    animation: slideDown 0.4s ease;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes passcodeReveal {
+    0%   { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+    70%  { transform: scale(1.08) rotate(1deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .passcode-label {
+    font-size: 0.88rem;
+    color: #555;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .passcode-box {
+    background: linear-gradient(135deg, #1A237E, #283593);
+    color: #FFD600;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.35rem;
+    font-weight: 800;
+    padding: 16px 24px;
+    border-radius: 14px;
+    letter-spacing: 2px;
+    border: 3px solid #FFD600;
+    box-shadow: 0 4px 24px rgba(26,35,126,0.35), 0 0 30px rgba(255,214,0,0.15);
+    animation: passcodeReveal 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    user-select: all;
+    cursor: pointer;
+    word-break: break-all;
+  }
+  .passcode-box:hover {
+    box-shadow: 0 4px 24px rgba(26,35,126,0.5), 0 0 40px rgba(255,214,0,0.3);
+  }
+  .passcode-hint { font-size: 0.72rem; color: #aaa; margin-top: 7px; }
+
+  .copied-toast {
+    display: none;
+    background: #4CAF50;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-top: 8px;
+    animation: fadeInOut 1.6s ease forwards;
+  }
+  @keyframes fadeInOut {
+    0%   { opacity: 0; transform: scale(0.8); }
+    15%  { opacity: 1; transform: scale(1); }
+    75%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
 
   .btn-restart {
     background: linear-gradient(135deg, var(--red), #C62828);
     color: white;
     border: none;
-    padding: 14px 32px;
+    padding: 13px 28px;
     border-radius: 50px;
     font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 800;
     cursor: pointer;
     box-shadow: 0 4px 16px rgba(232,41,59,0.4);
-    transition: transform 0.15s;
+    transition: transform 0.15s, box-shadow 0.15s;
+    margin: 5px;
   }
-  .btn-restart:hover { transform: scale(1.05); }
+  .btn-restart:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(232,41,59,0.5); }
+  .btn-green {
+    background: linear-gradient(135deg, #388E3C, #1B5E20);
+    box-shadow: 0 4px 16px rgba(56,142,60,0.4);
+  }
+  .btn-green:hover { box-shadow: 0 6px 20px rgba(56,142,60,0.5); }
 
   /* Confetti */
   .confetti-piece {
@@ -321,11 +364,10 @@
     pointer-events: none;
   }
   @keyframes confettiFall {
-    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
     100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
   }
 
-  /* Sound indicator */
   .sound-bing {
     position: fixed;
     top: 80px; left: 50%;
@@ -341,7 +383,6 @@
     pointer-events: none;
   }
   .sound-bing.pop { transform: translateX(-50%) scale(1); }
-
 </style>
 </head>
 <body>
@@ -349,75 +390,73 @@
 <header>
   <div class="sg-flag">
     <div class="flag-red">
-      <span class="flag-moon">☽</span>
-      <span class="flag-star">★</span><span class="flag-star">★</span><span class="flag-star">★</span><span class="flag-star">★</span><span class="flag-star">★</span>
+      <span class="flag-moon">&#9789;</span>
+      <span class="flag-star">&#9733;</span><span class="flag-star">&#9733;</span><span class="flag-star">&#9733;</span><span class="flag-star">&#9733;</span><span class="flag-star">&#9733;</span>
     </div>
     <div class="flag-white"></div>
   </div>
   <div>
-    <h1>🇸🇬 Who Helps You in Singapore?</h1>
+    <h1>&#127480;&#127468; Who Helps You in Singapore?</h1>
     <p>Drag each card to the correct role!</p>
   </div>
-  <div class="score-badge">⭐ <span id="scoreNum">0</span> / 5</div>
+  <div class="score-badge">&#11088; <span id="scoreNum">0</span> / 5</div>
 </header>
 
 <div class="game-area">
 
-  <!-- Drop zones (map) -->
   <div class="map-section">
     <div class="sg-map"></div>
-    <div class="map-title">📍 SINGAPORE MAP — Drop the Cards Below!</div>
+    <div class="map-title">&#128205; SINGAPORE MAP &mdash; Drop the Cards Below!</div>
 
     <div class="drop-zones-grid">
 
       <div class="drop-zone" data-answer="employer"
            ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-        <div class="zone-question">💼 Pays your salary and sets your work schedule.</div>
+        <div class="zone-question">&#128188; Pays your salary and sets your work schedule.</div>
         <div class="zone-label">Drop card here</div>
-        <div class="zone-answer">✅ Your Employer<br>(Moral Home)</div>
+        <div class="zone-answer">&#9989; Your Employer<br>(Moral Home)</div>
       </div>
 
       <div class="drop-zone" data-answer="mom"
            ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-        <div class="zone-question">🛡️ Issues your Work Permit and protects your rights in Singapore.</div>
+        <div class="zone-question">&#128737;&#65039; Issues your Work Permit and protects your rights in Singapore.</div>
         <div class="zone-label">Drop card here</div>
-        <div class="zone-answer">✅ MOM<br>(Ministry of Manpower)</div>
+        <div class="zone-answer">&#9989; MOM<br>(Ministry of Manpower)</div>
       </div>
 
       <div class="drop-zone" data-answer="bank"
            ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-        <div class="zone-question">🏦 A safe place to keep your money so it doesn't get stolen or lost.</div>
+        <div class="zone-question">&#127970; A safe place to keep your money so it doesn't get stolen or lost.</div>
         <div class="zone-label">Drop card here</div>
-        <div class="zone-answer">✅ The Bank<br>(POSB/DBS/OCBC)</div>
+        <div class="zone-answer">&#9989; The Bank<br>(POSB/DBS/OCBC)</div>
       </div>
 
       <div class="drop-zone" data-answer="insurance"
            ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-        <div class="zone-question">🏥 Pays for your hospital bills if you fall sick or get injured.</div>
+        <div class="zone-question">&#127973; Pays for your hospital bills if you fall sick or get injured.</div>
         <div class="zone-label">Drop card here</div>
-        <div class="zone-answer">✅ Employer Medical Insurance</div>
+        <div class="zone-answer">&#9989; Employer Medical Insurance</div>
       </div>
 
       <div class="drop-zone" data-answer="remittance"
            ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-        <div class="zone-question">💸 The service you use to send money back to your family.</div>
+        <div class="zone-question">&#128184; The service you use to send money back to your family.</div>
         <div class="zone-label">Drop card here</div>
-        <div class="zone-answer">✅ Remittance Service</div>
+        <div class="zone-answer">&#9989; Remittance Service</div>
       </div>
 
     </div>
   </div>
 
-  <!-- Entity cards -->
   <div class="cards-section">
-    <div class="cards-title">🃏 ENTITY CARDS — Drag these up to match!</div>
+    <div class="cards-title">&#127183; ENTITY CARDS &mdash; Drag these up to match!</div>
     <div class="cards-grid" id="cardsGrid">
 
       <div class="entity-card" id="card-mom" draggable="true"
            data-id="mom"
            style="--card-color-1:#1565C0;--card-color-2:#283593"
            ondragstart="onDragStart(event)">
-        <span class="card-emoji">🏛️</span>
+        <span class="card-emoji">&#127963;&#65039;</span>
         <div class="card-name">MOM</div>
         <div class="card-sub">Ministry of Manpower</div>
       </div>
@@ -426,7 +465,7 @@
            data-id="bank"
            style="--card-color-1:#00695C;--card-color-2:#004D40"
            ondragstart="onDragStart(event)">
-        <span class="card-emoji">🏦</span>
+        <span class="card-emoji">&#127970;</span>
         <div class="card-name">The Bank</div>
         <div class="card-sub">POSB / DBS / OCBC</div>
       </div>
@@ -435,7 +474,7 @@
            data-id="employer"
            style="--card-color-1:#E65100;--card-color-2:#BF360C"
            ondragstart="onDragStart(event)">
-        <span class="card-emoji">🏠</span>
+        <span class="card-emoji">&#127968;</span>
         <div class="card-name">Your Employer</div>
         <div class="card-sub">Moral Home</div>
       </div>
@@ -444,7 +483,7 @@
            data-id="remittance"
            style="--card-color-1:#6A1B9A;--card-color-2:#4A148C"
            ondragstart="onDragStart(event)">
-        <span class="card-emoji">✈️</span>
+        <span class="card-emoji">&#9992;&#65039;</span>
         <div class="card-name">Remittance Service</div>
         <div class="card-sub">Send money home</div>
       </div>
@@ -453,7 +492,7 @@
            data-id="insurance"
            style="--card-color-1:#C62828;--card-color-2:#880E4F"
            ondragstart="onDragStart(event)">
-        <span class="card-emoji">❤️‍🩹</span>
+        <span class="card-emoji">&#10084;&#65039;&#8205;&#129657;</span>
         <div class="card-name">Employer Medical Insurance</div>
         <div class="card-sub">Your health cover</div>
       </div>
@@ -463,24 +502,32 @@
 
 </div>
 
-<!-- Butterfly -->
+<!-- Butterfly mascot -->
 <div class="butterfly hidden" id="butterfly">
-  <span class="bf-icon">🦋</span>
+  <span class="bf-icon">&#129419;</span>
   <div class="bf-text" id="bfText"></div>
 </div>
 
 <!-- Bing indicator -->
-<div class="sound-bing" id="soundBing">🎉 BING!</div>
+<div class="sound-bing" id="soundBing">&#127881; BING!</div>
 
 <!-- Win overlay -->
 <div class="win-overlay" id="winOverlay">
   <div class="win-box">
-    <div class="win-emoji">🎊🦋🎊</div>
+    <div class="win-emoji">&#127882;&#129419;&#127882;</div>
     <div class="win-title">Excellent!</div>
-    <div class="win-msg">You matched all 5 cards correctly!<br>You now know who helps you in Singapore. Stay safe, stay informed! 🇸🇬</div>
-    <div style="margin-bottom:16px;font-size:0.9rem;color:#888;">Returning to Gametize in <span id="countdown" style="font-weight:800;color:var(--red);">5</span>s...</div>
-    <button class="btn-restart" onclick="restartGame()">🔄 Play Again</button>
-    <a href="https://app.gametize.com/topic/154466" style="display:block;margin-top:12px;font-size:0.85rem;color:#1565C0;text-decoration:underline;">↩ Go back now</a>
+    <div class="win-msg">You matched all 5 cards correctly!<br>You now know who helps you in Singapore. Stay safe, stay informed! &#127480;&#127468;</div>
+
+    <!-- Passcode section — hidden until button pressed -->
+    <div class="passcode-section" id="passcodeSection">
+      <div class="passcode-label">&#128273; Your Passcode:</div>
+      <div class="passcode-box" id="passcodeBox" onclick="copyPasscode()" title="Tap to copy">KnowMyWayAround!</div>
+      <div class="passcode-hint">Tap the passcode to copy it to your clipboard!</div>
+      <div class="copied-toast" id="copiedToast">&#9989; Copied to clipboard!</div>
+    </div>
+
+    <button class="btn-restart" id="passcodeBtn" onclick="revealPasscode()">&#128273; Get Passcode</button>
+    <button class="btn-restart btn-green" onclick="restartGame()">&#128260; Play Again</button>
   </div>
 </div>
 
@@ -512,27 +559,23 @@ function onDrop(e) {
   e.preventDefault();
   const zone = e.currentTarget;
   zone.classList.remove('drag-over');
-
   if (!dragging) return;
+
   const cardId = dragging.dataset.id;
   const answer = zone.dataset.answer;
 
   if (cardId === answer) {
-    // Correct!
     zone.classList.add('correct');
     dragging.classList.add('used');
     score++;
     document.getElementById('scoreNum').textContent = score;
-    showButterfly('correct', '🌟 Correct! Knowing this keeps you safe. Great job!');
+    showButterfly('correct', 'Correct! Knowing this keeps you safe. Great job!');
     showBing();
     confetti();
     if (score === 5) setTimeout(showWin, 800);
   } else {
-    // Wrong
     zone.classList.add('wrong');
-    dragging.classList.remove('dragging');
-    dragging = null;
-    showButterfly('wrong', '❌ Not quite. Try again! MOM protects rights, Banks protect money.');
+    showButterfly('wrong', 'Not quite. Try again! MOM protects rights, Banks protect money.');
     setTimeout(() => zone.classList.remove('wrong'), 500);
   }
   dragging = null;
@@ -541,7 +584,7 @@ function onDrop(e) {
 function showButterfly(type, msg) {
   const bf = document.getElementById('butterfly');
   const txt = document.getElementById('bfText');
-  txt.textContent = msg;
+  txt.textContent = (type === 'correct' ? '🌟 ' : '❌ ') + msg;
   txt.className = 'bf-text ' + type;
   bf.classList.remove('hidden');
   bf.classList.add('show');
@@ -560,39 +603,72 @@ function showBing() {
 
 function confetti() {
   const colors = ['#E8293B','#FFD600','#4FC3F7','#4CAF50','#FF6B6B','#7C4DFF'];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 22; i++) {
     const c = document.createElement('div');
     c.className = 'confetti-piece';
     c.style.left = Math.random() * 100 + 'vw';
     c.style.top = '-20px';
-    c.style.background = colors[Math.floor(Math.random()*colors.length)];
-    c.style.animationDelay = Math.random() * 0.5 + 's';
-    c.style.width = c.style.height = (8 + Math.random()*8) + 'px';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDelay = Math.random() * 0.6 + 's';
+    c.style.width = c.style.height = (8 + Math.random() * 8) + 'px';
     document.body.appendChild(c);
-    setTimeout(() => c.remove(), 3500);
+    setTimeout(() => c.remove(), 3600);
   }
 }
 
-let countdownTimer = null;
 function showWin() {
   confetti(); confetti(); confetti();
+  // Reset passcode UI each time
+  document.getElementById('passcodeSection').style.display = 'none';
+  document.getElementById('passcodeBtn').style.display = 'inline-block';
   document.getElementById('winOverlay').classList.add('show');
-  let secs = 5;
-  document.getElementById('countdown').textContent = secs;
-  clearInterval(countdownTimer);
-  countdownTimer = setInterval(() => {
-    secs--;
-    const el = document.getElementById('countdown');
-    if (el) el.textContent = secs;
-    if (secs <= 0) {
-      clearInterval(countdownTimer);
-      window.location.href = 'https://app.gametize.com/topic/154466';
-    }
-  }, 1000);
+}
+
+function revealPasscode() {
+  const section = document.getElementById('passcodeSection');
+  const btn = document.getElementById('passcodeBtn');
+
+  section.style.display = 'block';
+  btn.style.display = 'none';
+
+  // Re-trigger animation
+  const box = document.getElementById('passcodeBox');
+  box.style.animation = 'none';
+  box.offsetHeight; // force reflow
+  box.style.animation = 'passcodeReveal 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+
+  confetti();
+}
+
+function copyPasscode() {
+  const text = 'KnowMyWayAround!';
+  const toast = document.getElementById('copiedToast');
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+
+  toast.style.display = 'block';
+  toast.style.animation = 'none';
+  toast.offsetHeight;
+  toast.style.animation = 'fadeInOut 1.6s ease forwards';
+  setTimeout(() => { toast.style.display = 'none'; }, 1700);
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
 }
 
 function restartGame() {
-  clearInterval(countdownTimer);
   document.getElementById('winOverlay').classList.remove('show');
   score = 0;
   document.getElementById('scoreNum').textContent = 0;
@@ -601,54 +677,64 @@ function restartGame() {
   document.getElementById('butterfly').classList.add('hidden');
 }
 
-// Touch support
+// ——— Touch support ———
 let touchCard = null;
-let clone = null;
+let touchClone = null;
 
 document.querySelectorAll('.entity-card').forEach(card => {
+
   card.addEventListener('touchstart', e => {
     if (card.classList.contains('used')) return;
     touchCard = card;
     const rect = card.getBoundingClientRect();
-    clone = card.cloneNode(true);
-    clone.style.cssText = `position:fixed;width:${rect.width}px;opacity:0.85;pointer-events:none;z-index:999;top:${rect.top}px;left:${rect.left}px;transition:none;`;
-    document.body.appendChild(clone);
+    touchClone = card.cloneNode(true);
+    touchClone.style.cssText = `
+      position:fixed;width:${rect.width}px;opacity:0.88;
+      pointer-events:none;z-index:999;
+      top:${rect.top}px;left:${rect.left}px;transition:none;
+    `;
+    document.body.appendChild(touchClone);
     card.style.opacity = '0.3';
-  }, {passive: true});
+  }, { passive: true });
 
   card.addEventListener('touchmove', e => {
-    if (!clone) return;
+    if (!touchClone) return;
     e.preventDefault();
     const t = e.touches[0];
-    clone.style.top = (t.clientY - 60) + 'px';
-    clone.style.left = (t.clientX - 85) + 'px';
-  }, {passive: false});
+    touchClone.style.top  = (t.clientY - 60) + 'px';
+    touchClone.style.left = (t.clientX - 85) + 'px';
+  }, { passive: false });
 
   card.addEventListener('touchend', e => {
-    if (!clone || !touchCard) return;
+    if (!touchClone || !touchCard) return;
     const t = e.changedTouches[0];
-    clone.remove(); clone = null;
+    touchClone.remove(); touchClone = null;
     touchCard.style.opacity = '';
 
     const el = document.elementFromPoint(t.clientX, t.clientY);
     const zone = el ? el.closest('.drop-zone') : null;
+
     if (zone && !zone.classList.contains('correct')) {
-      dragging = touchCard;
-      const evt = { currentTarget: zone, preventDefault: () => {} };
-      onDrop({ ...evt, currentTarget: zone, preventDefault: () => {} });
-      dragging = touchCard;
-      if (touchCard.dataset.id === zone.dataset.answer) {
+      const cardId = touchCard.dataset.id;
+      const answer = zone.dataset.answer;
+
+      if (cardId === answer) {
+        zone.classList.add('correct');
         touchCard.classList.add('used');
+        score++;
+        document.getElementById('scoreNum').textContent = score;
+        showButterfly('correct', 'Correct! Knowing this keeps you safe. Great job!');
+        showBing();
+        confetti();
+        if (score === 5) setTimeout(showWin, 800);
+      } else {
+        zone.classList.add('wrong');
+        showButterfly('wrong', 'Not quite. Try again! MOM protects rights, Banks protect money.');
+        setTimeout(() => zone.classList.remove('wrong'), 500);
       }
-      dragging = null;
     }
     touchCard = null;
   });
-});
-
-// Manually handle touch drop since we mimic drag
-document.querySelectorAll('.entity-card').forEach(card => {
-  card.addEventListener('touchend', e => {}, { passive: true });
 });
 </script>
 </body>

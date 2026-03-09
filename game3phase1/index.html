@@ -263,9 +263,23 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     <div class="sg-card full"><div class="sg-lbl">Score</div><div class="sg-val y" id="rsc"></div></div>
   </div>
   <div class="verdict-box" id="rv"></div>
-  <div class="r-btns">
+<div class="r-btns">
+    <button class="r-btn-h" id="btnPasscode">Get Passcode</button>
     <button class="r-btn-p" id="btnRestart">&#8617; Play Again</button>
-    <a class="r-btn-h" href="https://app.gametize.com/topic/154466">Game Hub &#8594;</a>
+  </div>
+
+  <div id="passcodeBox" style="
+    display:none;
+    margin-top:20px;
+    background:rgba(245,200,66,0.08);
+    border:1.5px solid rgba(245,200,66,0.3);
+    padding:18px;
+    border-radius:12px;
+    font-family:var(--fm);
+    font-size:1.2rem;
+  ">
+    Your Gametize Passcode:<br>
+    <strong style="font-size:1.6rem;color:var(--gold)">563091</strong>
   </div>
 </div>
 
@@ -803,6 +817,10 @@ function goScreen(id){
   document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
   document.getElementById(id).classList.add("active");window.scrollTo(0,0);
 }
+
+document.getElementById("btnPasscode").addEventListener("click", function () {
+  document.getElementById("passcodeBox").style.display = "block";
+});
 </script>
 </body>
 </html>
