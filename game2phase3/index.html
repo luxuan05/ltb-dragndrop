@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Need It or Want It?</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Syne+Mono&family=Bricolage+Grotesque:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 :root {
   --bg: #f5f0e8;
@@ -25,113 +25,120 @@
   --penalty: #8b1a1a;
 }
 
+html { height: 100%; }
+
 body {
   background: var(--bg);
   font-family: 'Bricolage Grotesque', sans-serif;
   color: var(--ink);
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
-  cursor: default;
+  touch-action: manipulation;
 }
 
 body::before {
   content: '';
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background-image:
     linear-gradient(rgba(26,18,8,0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(26,18,8,0.04) 1px, transparent 1px);
   background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
 
-.screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
+.screen { display: none; min-height: 100vh; min-height: 100dvh; position: relative; z-index: 1; }
 .screen.active { display: flex; flex-direction: column; }
 
-/* ===== INTRO ===== */
+/* ════════════════════════════════
+   INTRO SCREEN
+════════════════════════════════ */
 #screen-intro {
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: clamp(1rem,4vw,2rem);
   text-align: center;
+  overflow-y: auto;
+}
+
+.intro-inner {
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: clamp(0.5rem,2vw,1rem) 0;
 }
 
 .wallet-visual {
   position: relative;
-  width: 160px;
-  height: 120px;
-  margin: 0 auto 2rem;
+  width: clamp(110px,35vw,160px);
+  height: clamp(85px,26vw,120px);
+  margin: 0 auto clamp(1rem,3vw,2rem);
   animation: walletBob 3s ease-in-out infinite;
+  flex-shrink: 0;
 }
 @keyframes walletBob {
   0%,100% { transform: translateY(0) rotate(-2deg); }
   50% { transform: translateY(-10px) rotate(2deg); }
 }
-
 .wallet-body {
-  width: 140px;
-  height: 90px;
+  width: 88%; height: 75%;
   background: linear-gradient(135deg, #8B4513, #6b3410);
   border-radius: 12px;
   position: absolute;
-  top: 15px; left: 10px;
+  top: 15%; left: 6%;
   box-shadow: 0 8px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 .wallet-body::after {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 30px; height: 30px;
+  content: ''; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: clamp(20px,7vw,30px); height: clamp(20px,7vw,30px);
   border-radius: 50%;
-  background: linear-gradient(135deg, #d4a017, #b8860b);
+  background: linear-gradient(135deg,#d4a017,#b8860b);
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
-.wallet-bills { position: absolute; bottom: 0; left: 20px; display: flex; gap: 4px; }
-.bill { width: 50px; height: 25px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
-.bill:nth-child(1) { background: #85bb65; transform: rotate(-8deg) translateY(4px); }
-.bill:nth-child(2) { background: #85bb65; transform: rotate(-3deg) translateY(2px); }
-.bill:nth-child(3) { background: #85bb65; transform: rotate(4deg); }
+.wallet-bills { position: absolute; bottom: 0; left: 12%; display: flex; gap: 4px; }
+.bill { width: clamp(34px,10vw,50px); height: clamp(18px,5vw,25px); border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
+.bill:nth-child(1) { background:#85bb65; transform:rotate(-8deg) translateY(4px); }
+.bill:nth-child(2) { background:#85bb65; transform:rotate(-3deg) translateY(2px); }
+.bill:nth-child(3) { background:#85bb65; transform:rotate(4deg); }
 
 .intro-eyebrow {
   font-family: 'Syne Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--gold);
-  background: var(--gold-light);
-  padding: 0.3rem 0.8rem;
-  border-radius: 50px;
+  font-size: clamp(0.6rem,1.8vw,0.7rem);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); background: var(--gold-light);
+  padding: 0.25rem 0.75rem; border-radius: 50px;
   border: 1px solid var(--gold);
-  display: inline-block;
-  margin-bottom: 1.25rem;
+  display: inline-block; margin-bottom: clamp(0.75rem,2.5vw,1.25rem);
 }
 
 .intro-title {
   font-family: 'Syne', sans-serif;
-  font-size: clamp(2.2rem, 7vw, 4rem);
-  font-weight: 800;
-  line-height: 1.05;
-  margin-bottom: 0.75rem;
-  color: var(--ink);
+  font-size: clamp(1.8rem,8vw,4rem);
+  font-weight: 800; line-height: 1.05;
+  margin-bottom: clamp(0.5rem,2vw,0.75rem);
 }
-.intro-title .accent { color: var(--need); position: relative; display: inline-block; }
+.intro-title .accent { color: var(--need); }
 .intro-title .accent2 { color: var(--want); }
 
-.intro-desc { color: var(--muted); font-size: 0.95rem; max-width: 400px; margin: 0 auto 1rem; line-height: 1.65; }
+.intro-desc {
+  color: var(--muted);
+  font-size: clamp(0.82rem,2.5vw,0.95rem);
+  max-width: 400px; margin: 0 auto clamp(0.75rem,2.5vw,1rem);
+  line-height: 1.65;
+}
 
 .wallet-balance-intro {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--ink);
-  color: #fff;
-  padding: 0.6rem 1.4rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--ink); color: #fff;
+  padding: clamp(0.45rem,1.5vw,0.6rem) clamp(1rem,3.5vw,1.4rem);
   border-radius: 8px;
   font-family: 'Syne Mono', monospace;
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
+  font-size: clamp(0.9rem,3vw,1.1rem);
+  margin-bottom: clamp(1rem,3vw,2rem);
   letter-spacing: 0.05em;
 }
 .wallet-balance-intro .green { color: #85bb65; }
@@ -140,98 +147,87 @@ body::before {
   background: var(--card-bg);
   border: 1.5px solid rgba(26,18,8,0.12);
   border-radius: 14px;
-  padding: 1.25rem 1.5rem;
-  max-width: 420px;
-  margin: 0 auto 2rem;
-  text-align: left;
+  padding: clamp(0.9rem,3vw,1.25rem) clamp(1rem,3.5vw,1.5rem);
+  max-width: 420px; margin: 0 auto clamp(1rem,3vw,2rem);
+  text-align: left; width: 100%;
 }
-.rules-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; color: var(--muted); }
-.rule { display: flex; gap: 0.6rem; font-size: 0.85rem; color: var(--ink); margin-bottom: 0.5rem; line-height: 1.4; }
+.rules-title {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: clamp(0.72rem,2vw,0.85rem);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 0.65rem; color: var(--muted);
+}
+.rule {
+  display: flex; gap: 0.5rem;
+  font-size: clamp(0.78rem,2.3vw,0.85rem);
+  color: var(--ink); margin-bottom: 0.4rem; line-height: 1.4;
+}
 .rule-icon { flex-shrink: 0; }
 
 .btn-start {
-  background: var(--ink);
-  color: var(--bg);
+  background: var(--ink); color: var(--bg);
   border: none;
-  padding: 1rem 2.5rem;
+  padding: clamp(0.8rem,2.5vw,1rem) clamp(1.8rem,5vw,2.5rem);
   font-family: 'Syne', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 0.04em;
+  font-size: clamp(0.88rem,3vw,1rem); font-weight: 700;
+  border-radius: 10px; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 0.04em;
   box-shadow: 4px 4px 0 var(--gold);
+  touch-action: manipulation;
 }
-.btn-start:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--gold); }
-.btn-start:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--gold); }
+.btn-start:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--gold); }
+.btn-start:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--gold); }
 
-/* ===== GAME SCREEN ===== */
-#screen-game { padding: 0; flex-direction: column; }
+/* ════════════════════════════════
+   GAME SCREEN
+════════════════════════════════ */
+#screen-game { padding: 0; }
 
 .game-header {
-  background: var(--ink);
-  color: var(--bg);
-  padding: 0.85rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  background: var(--ink); color: var(--bg);
+  padding: clamp(0.6rem,2vw,0.85rem) clamp(1rem,3vw,1.5rem);
+  display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+  position: sticky; top: 0; z-index: 50; flex-shrink: 0;
 }
-.header-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: 0.05em; }
-.balance-display { display: flex; align-items: center; gap: 0.5rem; font-family: 'Syne Mono', monospace; font-size: 1.1rem; }
-.balance-label { color: var(--muted); font-size: 0.7rem; font-family: 'Bricolage Grotesque', sans-serif; }
+.header-title {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: clamp(0.8rem,2.5vw,1rem); letter-spacing: 0.05em;
+}
+.balance-display { display: flex; align-items: center; gap: 0.5rem; font-family: 'Syne Mono', monospace; font-size: clamp(0.9rem,3vw,1.1rem); }
+.balance-label { color: var(--muted); font-size: clamp(0.6rem,1.8vw,0.7rem); font-family: 'Bricolage Grotesque', sans-serif; }
 .balance-amount { color: #85bb65; font-weight: 700; }
 .balance-amount.dropping { color: #e05242; animation: shake 0.4s ease; }
-@keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
-.progress-info { font-family: 'Syne Mono', monospace; font-size: 0.75rem; color: rgba(245,240,232,0.5); }
+@keyframes shake { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-6px);} 40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
+.progress-info { font-family: 'Syne Mono', monospace; font-size: clamp(0.65rem,2vw,0.75rem); color: rgba(245,240,232,0.5); }
 
-.items-zone { flex: 1; padding: 1.5rem; position: relative; min-height: 340px; overflow: hidden; }
-.floating-items { position: relative; width: 100%; height: 100%; min-height: 300px; }
-
-.item-card {
-  position: absolute;
-  background: var(--card-bg);
-  border: 2px solid rgba(26,18,8,0.14);
-  border-radius: 14px;
-  padding: 0.9rem 1.1rem;
-  cursor: grab;
-  user-select: none;
-  touch-action: none;
-  max-width: 200px;
-  min-width: 140px;
-  box-shadow: 3px 3px 0 rgba(26,18,8,0.1);
-  transition: box-shadow 0.15s, border-color 0.15s, opacity 0.3s;
-  z-index: 10;
+/* ── TOUCH HINT ── */
+.touch-hint {
+  text-align: center;
+  font-size: clamp(0.65rem,2vw,0.72rem);
+  color: var(--muted); padding: 0.4rem 1rem 0;
+  font-family: 'Syne Mono', monospace; flex-shrink: 0;
 }
-.item-card:hover { border-color: rgba(26,18,8,0.3); box-shadow: 5px 5px 0 rgba(26,18,8,0.12); }
-.item-card.dragging { cursor: grabbing; z-index: 100; box-shadow: 12px 12px 30px rgba(0,0,0,0.2); border-color: var(--gold); transform: rotate(3deg) scale(1.05); transition: none; }
-.item-card.sorted { opacity: 0; pointer-events: none; transform: scale(0.5); transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-.item-card.sorted.to-need { border-color: var(--need-border); background: var(--need-light); }
-.item-card.sorted.to-want { border-color: var(--want-border); background: var(--want-light); }
 
-.item-emoji { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; }
-.item-name { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.25rem; }
-.item-cost { font-family: 'Syne Mono', monospace; font-size: 0.75rem; color: var(--want); font-weight: 600; }
+/* ── DROP ZONES — always visible, fixed at bottom on mobile ── */
+.drop-zones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.5rem,2vw,1rem);
+  padding: clamp(0.5rem,2vw,1rem) clamp(0.75rem,3vw,1.5rem);
+  flex-shrink: 0;
+}
 
-.drop-zones { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 0 1.5rem 1.5rem; }
 .drop-zone {
   border: 2.5px dashed;
-  border-radius: 16px;
-  padding: 1.25rem 1rem;
-  min-height: 120px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
+  border-radius: 14px;
+  padding: clamp(0.7rem,2.5vw,1.25rem) clamp(0.5rem,2vw,1rem);
+  min-height: clamp(90px,20vw,120px);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; transition: all 0.2s;
+  position: relative; overflow: hidden;
+  touch-action: none;
 }
 .drop-zone::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.2s; }
 .drop-zone.need-zone { border-color: var(--need-border); background: rgba(29,107,62,0.04); }
@@ -240,288 +236,370 @@ body::before {
 .drop-zone.want-zone::before { background: var(--want-light); }
 .drop-zone.drag-over::before { opacity: 1; }
 .drop-zone.drag-over { transform: scale(1.02); }
-.zone-icon { font-size: 2rem; margin-bottom: 0.4rem; position: relative; z-index: 1; }
-.zone-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; position: relative; z-index: 1; }
+.zone-icon { font-size: clamp(1.3rem,4vw,2rem); margin-bottom: 0.25rem; position: relative; z-index: 1; }
+.zone-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(0.9rem,3.5vw,1.1rem); position: relative; z-index: 1; }
 .zone-label.need { color: var(--need); }
 .zone-label.want { color: var(--want); }
-.zone-sub { font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; position: relative; z-index: 1; }
-.zone-count { position: absolute; top: 0.75rem; right: 0.75rem; background: var(--ink); color: var(--bg); width: 22px; height: 22px; border-radius: 50%; font-family: 'Syne Mono', monospace; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.zone-sub { font-size: clamp(0.6rem,1.8vw,0.7rem); color: var(--muted); margin-top: 0.15rem; position: relative; z-index: 1; }
+.zone-count {
+  position: absolute; top: 0.5rem; right: 0.5rem;
+  background: var(--ink); color: var(--bg);
+  width: 20px; height: 20px; border-radius: 50%;
+  font-family: 'Syne Mono', monospace; font-size: 0.65rem;
+  display: flex; align-items: center; justify-content: center; font-weight: 700;
+}
 
+/* ── ITEMS AREA ── */
+/* On mobile: scrollable 2-col grid. On desktop: floating absolute. */
+.items-zone {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  padding: clamp(0.5rem,2vw,1rem) clamp(0.75rem,3vw,1.5rem);
+}
+
+/* MOBILE: 2-column card grid */
+.items-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.5rem,2vw,0.75rem);
+}
+
+/* DESKTOP: floating absolute positioning */
+.floating-items {
+  display: none;
+  position: relative;
+  width: 100%; height: 100%; min-height: 280px;
+}
+
+/* item card — shared styles */
+.item-card {
+  background: var(--card-bg);
+  border: 2px solid rgba(26,18,8,0.14);
+  border-radius: 14px;
+  padding: clamp(0.7rem,2.5vw,0.9rem) clamp(0.75rem,2.5vw,1.1rem);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  box-shadow: 3px 3px 0 rgba(26,18,8,0.1);
+  transition: box-shadow 0.15s, border-color 0.15s, opacity 0.3s, transform 0.3s;
+  /* default: grid flow */
+}
+
+/* Floating mode overrides (desktop only) */
+.floating-items .item-card {
+  position: absolute;
+  max-width: 200px;
+  min-width: 140px;
+}
+
+.item-card:hover { border-color: rgba(26,18,8,0.3); box-shadow: 5px 5px 0 rgba(26,18,8,0.12); }
+.item-card.dragging { cursor: grabbing; z-index: 100; box-shadow: 12px 12px 30px rgba(0,0,0,0.2); border-color: var(--gold); transition: none; }
+.item-card.sorted { opacity: 0; pointer-events: none; transition: opacity 0.35s, transform 0.35s; }
+.item-card.sorted.to-need { border-color: var(--need-border); background: var(--need-light); transform: scale(0.85); }
+.item-card.sorted.to-want { border-color: var(--want-border); background: var(--want-light); transform: scale(0.85); }
+
+/* Grid item: sorted disappears and collapses so grid reflows */
+.items-grid .item-card.sorted {
+  opacity: 0;
+  height: 0; padding: 0; margin: 0; border: none; overflow: hidden;
+  min-height: 0;
+}
+
+.item-emoji { font-size: clamp(1.3rem,4vw,1.6rem); display: block; margin-bottom: 0.3rem; }
+.item-name { font-family: 'Syne', sans-serif; font-size: clamp(0.7rem,2.2vw,0.8rem); font-weight: 700; line-height: 1.3; margin-bottom: 0.2rem; }
+.item-cost { font-family: 'Syne Mono', monospace; font-size: clamp(0.68rem,2vw,0.75rem); color: var(--want); font-weight: 600; }
+
+/* ── TOAST ── */
 .toast {
   position: fixed;
-  top: 80px;
-  left: 50%;
+  top: clamp(60px,12vw,80px); left: 50%;
   transform: translateX(-50%) translateY(-20px);
-  padding: 0.75rem 1.5rem;
+  padding: clamp(0.55rem,2vw,0.75rem) clamp(1rem,3vw,1.5rem);
   border-radius: 10px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.9rem;
-  z-index: 200;
-  opacity: 0;
-  pointer-events: none;
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: clamp(0.78rem,2.5vw,0.9rem);
+  z-index: 200; opacity: 0; pointer-events: none;
   transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  max-width: 300px;
-  text-align: center;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  max-width: min(320px,90vw);
+  text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .toast.correct { background: var(--need); color: white; }
 .toast.wrong { background: var(--want); color: white; }
 
-/* ===== RESULTS SCREEN ===== */
-#screen-results { align-items: center; justify-content: center; padding: 2rem; text-align: center; }
+/* ── TOUCH DRAG CLONE ── */
+.touch-drag-clone {
+  position: fixed; z-index: 999;
+  pointer-events: none;
+  opacity: 0.88;
+  border-radius: 14px;
+  transform: rotate(4deg) scale(1.05);
+  box-shadow: 12px 12px 30px rgba(0,0,0,0.2);
+  border: 2px solid var(--gold) !important;
+  background: var(--card-bg);
+  transition: none !important;
+}
 
-.result-trophy { font-size: 4rem; margin-bottom: 1rem; animation: walletBob 2s ease-in-out infinite; }
-.result-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800; margin-bottom: 0.5rem; }
-.result-subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.5; }
+/* ════════════════════════════════
+   RESULTS SCREEN
+════════════════════════════════ */
+#screen-results {
+  align-items: center; justify-content: flex-start;
+  padding: clamp(1rem,4vw,2rem); overflow-y: auto;
+}
+.results-inner {
+  max-width: 480px; width: 100%; margin: auto;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+.result-trophy { font-size: clamp(2.5rem,8vw,4rem); margin-bottom: 0.75rem; animation: walletBob 2s ease-in-out infinite; }
+.result-title { font-family: 'Syne', sans-serif; font-size: clamp(1.5rem,5vw,2.8rem); font-weight: 800; margin-bottom: 0.4rem; }
+.result-subtitle { color: var(--muted); font-size: clamp(0.82rem,2.5vw,0.9rem); margin-bottom: clamp(1rem,3vw,2rem); line-height: 1.5; }
 
-.score-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 400px; margin: 0 auto 1.5rem; width: 100%; }
-.score-card { background: var(--card-bg); border: 2px solid rgba(26,18,8,0.12); border-radius: 14px; padding: 1.25rem; }
-.score-card.full { grid-column: 1/-1; }
-.score-card-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Syne Mono', monospace; margin-bottom: 0.4rem; }
-.score-card-value { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; }
+.score-cards {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(0.5rem,2vw,1rem);
+  max-width: 400px; margin: 0 auto clamp(1rem,3vw,1.5rem); width: 100%;
+}
+.score-card {
+  background: var(--card-bg);
+  border: 2px solid rgba(26,18,8,0.12);
+  border-radius: 14px;
+  padding: clamp(0.8rem,2.5vw,1.25rem);
+}
+.score-card.full { grid-column: 1 / -1; }
+.score-card-label { font-size: clamp(0.62rem,1.8vw,0.72rem); color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Syne Mono', monospace; margin-bottom: 0.35rem; }
+.score-card-value { font-family: 'Syne', sans-serif; font-size: clamp(1.2rem,4vw,1.6rem); font-weight: 800; }
 .score-card-value.green { color: var(--need); }
 .score-card-value.red { color: var(--want); }
 .score-card-value.gold { color: var(--gold); }
 
-.result-breakdown { max-width: 440px; margin: 0 auto 2rem; width: 100%; }
-.breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 0.5rem; border-bottom: 1px solid rgba(26,18,8,0.07); font-size: 0.82rem; }
+.result-breakdown { max-width: 440px; margin: 0 auto clamp(1rem,3vw,2rem); width: 100%; }
+.breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0.4rem; border-bottom: 1px solid rgba(26,18,8,0.07); font-size: clamp(0.72rem,2.2vw,0.82rem); gap: 0.5rem; }
 .breakdown-row:last-child { border-bottom: none; }
-.breakdown-name { display: flex; gap: 0.5rem; align-items: center; }
-.breakdown-tag { font-family: 'Syne Mono', monospace; font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 50px; font-weight: 700; }
+.breakdown-name { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; flex: 1; min-width: 0; }
+.breakdown-tag { font-family: 'Syne Mono', monospace; font-size: clamp(0.58rem,1.7vw,0.65rem); padding: 0.12rem 0.4rem; border-radius: 50px; font-weight: 700; white-space: nowrap; }
 .tag-need { background: var(--need-light); color: var(--need); border: 1px solid var(--need-border); }
 .tag-want { background: var(--want-light); color: var(--want); border: 1px solid var(--want-border); }
 .tag-penalty { background: #fde8e6; color: var(--penalty); border: 1px solid #e05242; }
-.breakdown-amount { font-family: 'Syne Mono', monospace; font-size: 0.8rem; font-weight: 600; }
+.breakdown-amount { font-family: 'Syne Mono', monospace; font-size: clamp(0.72rem,2vw,0.8rem); font-weight: 600; white-space: nowrap; }
 
 .motivational-msg {
-  background: var(--gold-light);
-  border: 1.5px solid var(--gold);
+  background: var(--gold-light); border: 1.5px solid var(--gold);
   border-radius: 14px;
-  padding: 1.25rem 1.5rem;
-  max-width: 440px;
-  margin: 0 auto 2rem;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--ink);
-  font-style: italic;
-  position: relative;
-}
-.motivational-msg::before { content: '💡'; font-style: normal; display: block; font-size: 1.5rem; margin-bottom: 0.5rem; }
-
-/* ===== PASSCODE BLOCK ===== */
-.passcode-block {
-  max-width: 440px;
-  margin: 0 auto 2rem;
-  background: linear-gradient(135deg, rgba(26,18,8,0.05), rgba(212,160,23,0.06));
-  border: 1.5px solid rgba(212,160,23,0.45);
-  border-radius: 16px;
-  padding: 22px 20px;
-  position: relative;
-  overflow: hidden;
-}
-.passcode-block::before {
-  content: '';
-  position: absolute;
-  top: -50px; right: -50px;
-  width: 140px; height: 140px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(212,160,23,0.1), transparent 70%);
-  pointer-events: none;
-}
-.passcode-label {
-  font-family: 'Syne Mono', monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 700;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.passcode-instruction {
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 18px;
-  line-height: 1.5;
-  text-align: center;
-}
-.passcode-instruction strong { color: var(--ink); }
-.passcode-digits {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-.pc-digit {
-  width: 48px; height: 60px;
-  background: var(--card-bg);
-  border: 2px solid rgba(212,160,23,0.4);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Syne', sans-serif;
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--ink);
-  position: relative;
-  box-shadow: 3px 3px 0 rgba(212,160,23,0.2);
-  animation: digitPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
-}
-@keyframes digitPop { from { opacity: 0; transform: translateY(12px) scale(0.7); } to { opacity: 1; transform: translateY(0) scale(1); } }
-.pc-digit:nth-child(1){animation-delay:0.05s;} .pc-digit:nth-child(2){animation-delay:0.11s;}
-.pc-digit:nth-child(3){animation-delay:0.17s;} .pc-digit:nth-child(4){animation-delay:0.23s;}
-.pc-digit:nth-child(5){animation-delay:0.29s;} .pc-digit:nth-child(6){animation-delay:0.35s;}
-.passcode-note {
-  font-family: 'Syne Mono', monospace;
-  font-size: 0.68rem;
-  color: var(--muted);
-  text-align: center;
-  letter-spacing: 0.08em;
-}
-
-.result-buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
-.btn-secondary {
-  background: transparent;
-  color: var(--ink);
-  border: 2px solid var(--ink);
-  padding: 0.85rem 2rem;
-  font-family: 'Syne', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 3px 3px 0 rgba(26,18,8,0.15);
-}
-.btn-secondary:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 rgba(26,18,8,0.15); }
-
-.touch-hint { text-align: center; font-size: 0.72rem; color: var(--muted); padding: 0.5rem 1.5rem 0; font-family: 'Syne Mono', monospace; }
-
-/* ===== PASSCODE SCREEN ===== */
-#screen-passcode {
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  text-align: center;
-  background: var(--bg);
-}
-
-.passcode-screen-inner {
-  max-width: 420px;
+  padding: clamp(0.9rem,3vw,1.25rem) clamp(1rem,3.5vw,1.5rem);
+  max-width: 440px; margin: 0 auto clamp(1rem,3vw,2rem);
+  font-size: clamp(0.82rem,2.5vw,0.9rem); line-height: 1.6;
+  color: var(--ink); font-style: italic; position: relative;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
+.motivational-msg::before { content: '💡'; font-style: normal; display: block; font-size: 1.3rem; margin-bottom: 0.4rem; }
 
-.passcode-trophy {
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
-  animation: walletBob 2.5s ease-in-out infinite;
+/* ════════════════════════════════
+   PASSCODE SCREEN
+════════════════════════════════ */
+#screen-passcode {
+  align-items: center; justify-content: center;
+  padding: clamp(1rem,4vw,2rem); text-align: center; overflow-y: auto;
 }
-
-.passcode-screen-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(1.6rem, 5vw, 2.2rem);
-  font-weight: 800;
-  margin-bottom: 0.4rem;
-  color: var(--ink);
+.passcode-screen-inner {
+  max-width: 420px; width: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  margin: auto;
 }
-
-.passcode-screen-sub {
-  color: var(--muted);
-  font-size: 0.88rem;
-  margin-bottom: 2rem;
-  line-height: 1.5;
-}
+.passcode-trophy { font-size: clamp(2.5rem,8vw,3.5rem); margin-bottom: 0.75rem; animation: walletBob 2.5s ease-in-out infinite; }
+.passcode-screen-title { font-family: 'Syne', sans-serif; font-size: clamp(1.4rem,5vw,2.2rem); font-weight: 800; margin-bottom: 0.35rem; }
+.passcode-screen-sub { color: var(--muted); font-size: clamp(0.8rem,2.5vw,0.88rem); margin-bottom: clamp(1rem,3vw,2rem); line-height: 1.5; }
 
 .passcode-block-screen {
   width: 100%;
   background: linear-gradient(135deg, rgba(26,18,8,0.05), rgba(212,160,23,0.06));
   border: 2px solid rgba(212,160,23,0.5);
   border-radius: 18px;
-  padding: 28px 24px;
-  margin-bottom: 2rem;
-  position: relative;
-  overflow: hidden;
+  padding: clamp(16px,4vw,28px) clamp(14px,4vw,24px);
+  margin-bottom: clamp(1rem,3vw,2rem);
+  position: relative; overflow: hidden;
   box-shadow: 4px 4px 0 rgba(212,160,23,0.2);
 }
 .passcode-block-screen::before {
-  content: '';
-  position: absolute;
-  top: -50px; right: -50px;
-  width: 160px; height: 160px;
-  border-radius: 50%;
+  content: ''; position: absolute; top: -50px; right: -50px;
+  width: 160px; height: 160px; border-radius: 50%;
   background: radial-gradient(circle, rgba(212,160,23,0.12), transparent 70%);
   pointer-events: none;
 }
-
 .passcode-block-label {
-  font-family: 'Syne Mono', monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 700;
-  margin-bottom: 8px;
+  font-family: 'Syne Mono', monospace; font-size: clamp(0.58rem,1.8vw,0.65rem);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); font-weight: 700; margin-bottom: 8px;
 }
-
-.passcode-block-instruction {
-  font-size: 14px;
-  color: var(--muted);
-  margin-bottom: 22px;
-  line-height: 1.5;
-}
+.passcode-block-instruction { font-size: clamp(12px,2.8vw,14px); color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
 .passcode-block-instruction strong { color: var(--ink); }
 
-.passcode-digits-screen {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 18px;
-  flex-wrap: wrap;
-}
-
-.pcd {
-  width: 52px; height: 64px;
+#passcodeBox {
+  cursor: pointer;
   background: var(--card-bg);
   border: 2px solid rgba(212,160,23,0.45);
   border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: clamp(12px,3vw,18px) clamp(14px,4vw,24px);
+  text-align: center;
   font-family: 'Syne', sans-serif;
-  font-size: 30px;
+  font-size: clamp(18px,5vw,26px);
   font-weight: 800;
   color: var(--ink);
+  letter-spacing: clamp(1px,0.5vw,3px);
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  margin-bottom: 14px;
+  user-select: none; -webkit-user-select: none;
+  word-break: break-all;
   box-shadow: 3px 3px 0 rgba(212,160,23,0.25);
-  animation: digitPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  touch-action: manipulation;
 }
-@keyframes digitPop { from { opacity: 0; transform: translateY(14px) scale(0.7); } to { opacity: 1; transform: translateY(0) scale(1); } }
-.pcd:nth-child(1){animation-delay:0.05s;} .pcd:nth-child(2){animation-delay:0.12s;}
-.pcd:nth-child(3){animation-delay:0.19s;} .pcd:nth-child(4){animation-delay:0.26s;}
-.pcd:nth-child(5){animation-delay:0.33s;} .pcd:nth-child(6){animation-delay:0.40s;}
-
 .passcode-note-screen {
-  font-family: 'Syne Mono', monospace;
-  font-size: 0.68rem;
-  color: var(--muted);
-  letter-spacing: 0.08em;
+  font-family: 'Syne Mono', monospace; font-size: clamp(0.62rem,1.8vw,0.68rem);
+  color: var(--muted); letter-spacing: 0.08em;
+}
+.passcode-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; width: 100%; }
+.btn-secondary {
+  background: transparent; color: var(--ink);
+  border: 2px solid var(--ink);
+  padding: clamp(0.7rem,2.5vw,0.85rem) clamp(1.5rem,4vw,2rem);
+  font-family: 'Syne', sans-serif; font-size: clamp(0.82rem,2.5vw,0.9rem); font-weight: 700;
+  border-radius: 10px; cursor: pointer; transition: all 0.2s;
+  box-shadow: 3px 3px 0 rgba(26,18,8,0.15);
+  touch-action: manipulation;
+}
+.btn-secondary:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 rgba(26,18,8,0.15); }
+
+.result-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.75rem; }
+
+/* ════════════════════════════════
+   DESKTOP: floating layout
+════════════════════════════════ */
+@media (min-width: 768px) and (min-height: 600px) {
+  #screen-game { overflow: hidden; height: 100vh; height: 100dvh; }
+  .items-zone { overflow: hidden; padding: 1rem 1.5rem; }
+  .items-grid { display: none; }
+  .floating-items { display: block; }
+  .drop-zones {
+    gap: 1rem;
+    padding: 0 1.5rem 1.5rem;
+  }
+  .drop-zone { min-height: 120px; }
 }
 
-.passcode-buttons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
+/* ════════════════════════════════
+   LANDSCAPE PHONES
+════════════════════════════════ */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* INTRO: side-by-side */
+  #screen-intro {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: clamp(1rem,3vw,2.5rem);
+    padding: 0.75rem 1.5rem;
+    text-align: left;
+    overflow-y: auto;
+  }
+  .intro-inner {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: clamp(1rem,3vw,2rem);
+    justify-content: center;
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+  .wallet-visual { flex-shrink: 0; width: 100px; height: 75px; margin: 0; }
+  .intro-text-col { display: flex; flex-direction: column; align-items: flex-start; max-width: 340px; }
+  .intro-eyebrow { margin-bottom: 0.4rem; }
+  .intro-title { font-size: clamp(1.3rem,4vw,1.8rem); margin-bottom: 0.3rem; }
+  .intro-desc { font-size: 0.78rem; margin-bottom: 0.4rem; text-align: left; }
+  .wallet-balance-intro { font-size: 0.85rem; padding: 0.4rem 0.9rem; margin-bottom: 0.6rem; }
+  .rules-box { padding: 0.7rem 0.9rem; margin-bottom: 0.6rem; }
+  .rule { font-size: 0.75rem; margin-bottom: 0.3rem; }
+  .btn-start { padding: 0.65rem 1.6rem; font-size: 0.85rem; }
+
+  /* GAME: header tight, 2-col items + side drop zones */
+  .game-header { padding: 0.5rem 1rem; gap: 0.3rem; }
+  .touch-hint { padding: 0.2rem 0.75rem; font-size: 0.6rem; }
+  /* Landscape game: items left, drop zones right */
+  #screen-game {
+    flex-direction: column;
+  }
+  .game-body-landscape {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+  }
+  .items-zone {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0.75rem;
+  }
+  .items-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+  .item-card {
+    padding: 0.55rem 0.6rem;
+    border-radius: 10px;
+  }
+  .item-emoji { font-size: 1.1rem; margin-bottom: 0.2rem; }
+  .item-name { font-size: 0.66rem; }
+  .item-cost { font-size: 0.62rem; }
+
+  .drop-zones {
+    grid-template-columns: 1fr;
+    width: clamp(100px,28vw,140px);
+    gap: 0.4rem;
+    padding: 0.5rem 0.5rem 0.5rem 0;
+    align-content: stretch;
+    flex-shrink: 0;
+  }
+  .drop-zone {
+    min-height: unset;
+    flex: 1;
+    border-radius: 10px;
+    padding: 0.5rem;
+  }
+  .zone-icon { font-size: 1.2rem; margin-bottom: 0.15rem; }
+  .zone-label { font-size: 0.85rem; }
+  .zone-sub { font-size: 0.58rem; }
+
+  /* RESULTS: compact */
+  #screen-results { padding: 0.75rem 1.5rem; justify-content: flex-start; }
+  .results-inner { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0.75rem; text-align: left; }
+  .result-trophy { font-size: 2.5rem; margin-bottom: 0; }
+  .result-title { font-size: 1.4rem; }
+  .result-subtitle { font-size: 0.78rem; margin-bottom: 0.5rem; }
+  .score-cards { margin-bottom: 0.5rem; gap: 0.5rem; }
+  .score-card { padding: 0.65rem; }
+  .score-card-value { font-size: 1.1rem; }
+  .result-breakdown { margin-bottom: 0.5rem; }
+  .breakdown-row { padding: 0.4rem 0.3rem; font-size: 0.68rem; }
+  .motivational-msg { padding: 0.75rem 1rem; font-size: 0.78rem; margin-bottom: 0.5rem; }
+  .motivational-msg::before { font-size: 1rem; margin-bottom: 0.25rem; }
+  .result-buttons { margin-top: 0.5rem; }
+
+  /* PASSCODE: compact */
+  #screen-passcode { padding: 0.75rem 2rem; }
+  .passcode-trophy { font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .passcode-screen-title { font-size: 1.4rem; }
+  .passcode-screen-sub { font-size: 0.78rem; margin-bottom: 0.75rem; }
+  .passcode-block-screen { padding: 12px 16px; margin-bottom: 0.75rem; }
+  #passcodeBox { font-size: 18px; padding: 10px 16px; margin-bottom: 10px; }
+}
+
+/* ════════════════════════════════
+   VERY SMALL PORTRAIT (< 360px)
+════════════════════════════════ */
+@media (max-width: 360px) {
+  .items-grid { grid-template-columns: 1fr 1fr; }
+  .score-cards { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -529,41 +607,36 @@ body::before {
 
 <div id="toast" class="toast"></div>
 
-<!-- ===== INTRO ===== -->
+<!-- ═══ INTRO ═══ -->
 <div id="screen-intro" class="screen active">
-  <div style="max-width:500px;margin:auto;padding:2rem;display:flex;flex-direction:column;align-items:center;">
+  <div class="intro-inner">
+    <!-- On landscape this becomes a side col -->
     <div class="wallet-visual">
       <div class="wallet-body"></div>
       <div class="wallet-bills">
-        <div class="bill"></div>
-        <div class="bill"></div>
-        <div class="bill"></div>
+        <div class="bill"></div><div class="bill"></div><div class="bill"></div>
       </div>
     </div>
-
-    <div class="intro-eyebrow">Mini Game · Budget Edition</div>
-    <h1 class="intro-title">
-      <span class="accent">Need</span> it or<br><span class="accent2">Want</span> it?
-    </h1>
-    <p class="intro-desc">Look at what's left in your wallet. Objects are floating across the screen — drag each one into the right box before your money runs out!</p>
-
-    <div class="wallet-balance-intro">
-      💵 Balance: <span class="green">$600.00</span>
+    <div class="intro-text-col">
+      <div class="intro-eyebrow">Mini Game · Budget Edition</div>
+      <h1 class="intro-title">
+        <span class="accent">Need</span> it or<br><span class="accent2">Want</span> it?
+      </h1>
+      <p class="intro-desc">Look at what's left in your wallet. Items appear on screen — drag each one into the right box before your money runs out!</p>
+      <div class="wallet-balance-intro">💵 Balance: <span class="green">$600.00</span></div>
+      <div class="rules-box">
+        <div class="rules-title">How to Play</div>
+        <div class="rule"><span class="rule-icon">👆</span><span>Drag each item into the <strong>NEED</strong> or <strong>WANT</strong> box</span></div>
+        <div class="rule"><span class="rule-icon">✅</span><span>Correct answers: cost tracked as essential spending</span></div>
+        <div class="rule"><span class="rule-icon">❌</span><span>Wrong answers: <strong>penalty charge</strong> added on top of cost</span></div>
+        <div class="rule"><span class="rule-icon">💰</span><span>Sort wisely — accuracy saves money!</span></div>
+      </div>
+      <button class="btn-start" onclick="startGame()">Start Sorting →</button>
     </div>
-
-    <div class="rules-box">
-      <div class="rules-title">How to Play</div>
-      <div class="rule"><span class="rule-icon">👆</span><span>Drag each item into the <strong>NEED</strong> or <strong>WANT</strong> box</span></div>
-      <div class="rule"><span class="rule-icon">✅</span><span>Correct answers: item cost is tracked as essential spending</span></div>
-      <div class="rule"><span class="rule-icon">❌</span><span>Wrong answers: <strong>penalty charge</strong> added on top of the item cost</span></div>
-      <div class="rule"><span class="rule-icon">💰</span><span>Sort wisely — accuracy saves money!</span></div>
-    </div>
-
-    <button class="btn-start" onclick="startGame()">Start Sorting →</button>
   </div>
 </div>
 
-<!-- ===== GAME ===== -->
+<!-- ═══ GAME ═══ -->
 <div id="screen-game" class="screen">
   <div class="game-header">
     <div class="header-title">💳 Need It or Want It?</div>
@@ -575,96 +648,84 @@ body::before {
     </div>
     <div class="progress-info" id="progressInfo">0 / 11</div>
   </div>
+  <div class="touch-hint" id="touchHint">👆 Drag items into NEED or WANT</div>
 
-  <div class="touch-hint" id="touchHint">👆 Drag items into the boxes below</div>
-
-  <div class="items-zone">
-    <div class="floating-items" id="floatingItems"></div>
-  </div>
-
-  <div class="drop-zones">
-    <div class="drop-zone need-zone" id="needZone"
-         ondragover="onDragOver(event,'need')" ondragleave="onDragLeave(event,'need')" ondrop="onDrop(event,'need')">
-      <div class="zone-count" id="needCount">0</div>
-      <div class="zone-icon">🛒</div>
-      <div class="zone-label need">NEED</div>
-      <div class="zone-sub">Essential spending</div>
+  <!-- This wrapper becomes flex row in landscape via JS -->
+  <div class="game-body-landscape" id="gameBodyLandscape" style="flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;">
+    <div class="items-zone" id="itemsZone">
+      <!-- Mobile portrait: grid -->
+      <div class="items-grid" id="itemsGrid"></div>
+      <!-- Desktop: floating -->
+      <div class="floating-items" id="floatingItems"></div>
     </div>
-    <div class="drop-zone want-zone" id="wantZone"
-         ondragover="onDragOver(event,'want')" ondragleave="onDragLeave(event,'want')" ondrop="onDrop(event,'want')">
-      <div class="zone-count" id="wantCount">0</div>
-      <div class="zone-icon">✨</div>
-      <div class="zone-label want">WANT</div>
-      <div class="zone-sub">Discretionary splurge</div>
+
+    <div class="drop-zones" id="dropZones">
+      <div class="drop-zone need-zone" id="needZone"
+           ondragover="onDragOver(event,'need')" ondragleave="onDragLeave(event,'need')" ondrop="onDrop(event,'need')">
+        <div class="zone-count" id="needCount">0</div>
+        <div class="zone-icon">🛒</div>
+        <div class="zone-label need">NEED</div>
+        <div class="zone-sub">Essential spending</div>
+      </div>
+      <div class="drop-zone want-zone" id="wantZone"
+           ondragover="onDragOver(event,'want')" ondragleave="onDragLeave(event,'want')" ondrop="onDrop(event,'want')">
+        <div class="zone-count" id="wantCount">0</div>
+        <div class="zone-icon">✨</div>
+        <div class="zone-label want">WANT</div>
+        <div class="zone-sub">Discretionary splurge</div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ===== RESULTS ===== -->
+<!-- ═══ RESULTS ═══ -->
 <div id="screen-results" class="screen">
-  <div id="resultTrophy" class="result-trophy"></div>
-  <h2 class="result-title" id="resultTitle"></h2>
-  <p class="result-subtitle" id="resultSubtitle"></p>
+  <div class="results-inner">
+    <div id="resultTrophy" class="result-trophy"></div>
+    <h2 class="result-title" id="resultTitle"></h2>
+    <p class="result-subtitle" id="resultSubtitle"></p>
 
-  <div class="score-cards">
-    <div class="score-card">
-      <div class="score-card-label">Final Balance</div>
-      <div class="score-card-value green" id="resultBalance"></div>
+    <div class="score-cards">
+      <div class="score-card">
+        <div class="score-card-label">Final Balance</div>
+        <div class="score-card-value green" id="resultBalance"></div>
+      </div>
+      <div class="score-card">
+        <div class="score-card-label">Correct Sorts</div>
+        <div class="score-card-value gold" id="resultAccuracy"></div>
+      </div>
+      <div class="score-card">
+        <div class="score-card-label">Penalties Paid</div>
+        <div class="score-card-value red" id="resultPenalties"></div>
+      </div>
+      <div class="score-card">
+        <div class="score-card-label">Needs Spent</div>
+        <div class="score-card-value" id="resultNeeds"></div>
+      </div>
     </div>
-    <div class="score-card">
-      <div class="score-card-label">Correct Sorts</div>
-      <div class="score-card-value gold" id="resultAccuracy"></div>
-    </div>
-    <div class="score-card">
-      <div class="score-card-label">Penalties Paid</div>
-      <div class="score-card-value red" id="resultPenalties"></div>
-    </div>
-    <div class="score-card">
-      <div class="score-card-label">Needs Spent</div>
-      <div class="score-card-value" id="resultNeeds"></div>
-    </div>
-  </div>
 
-  <div class="result-breakdown" id="resultBreakdown"></div>
-
-  <div class="motivational-msg" id="motivationalMsg"></div>
-
-  <div class="result-buttons" style="margin-top:1rem">
-    <button class="btn-start" onclick="goScreen('passcode')">Get Your Passcode →</button>
+    <div class="result-breakdown" id="resultBreakdown"></div>
+    <div class="motivational-msg" id="motivationalMsg"></div>
+    <div class="result-buttons">
+      <button class="btn-start" onclick="goScreen('passcode')">Get Your Passcode →</button>
+    </div>
   </div>
 </div>
 
-<!-- ===== PASSCODE ===== -->
+<!-- ═══ PASSCODE ═══ -->
 <div id="screen-passcode" class="screen">
   <div class="passcode-screen-inner">
     <div class="passcode-trophy">🔑</div>
     <h2 class="passcode-screen-title">Game Complete!</h2>
     <p class="passcode-screen-sub">Use this code to unlock the next game.</p>
-
     <div class="passcode-block-screen">
       <div class="passcode-block-label">Your Passcode for the Next Game</div>
       <div class="passcode-block-instruction">
         <strong>Enter this passcode</strong> to unlock the next game. <strong>Tap it to copy!</strong>
       </div>
-      <div id="passcodeBox" onclick="copyPasscode()" title="Tap to copy" style="
-        cursor: pointer;
-        background: rgba(255,255,255,0.04);
-        border: 1.5px solid rgba(167,139,250,0.35);
-        border-radius: 14px;
-        padding: 18px 24px;
-        text-align: center;
-        font-family: 'Playfair Display', serif;
-        font-size: 28px;
-        font-weight: 900;
-        color: var(--gold, #c9a84c);
-        letter-spacing: 3px;
-        transition: background 0.2s, border-color 0.2s, color 0.2s;
-        margin-bottom: 18px;
-        user-select: none;
-      ">NeedOrWantLeh</div>
+      <div id="passcodeBox" onclick="copyPasscode()" title="Tap to copy">NeedOrWantLeh</div>
       <div class="passcode-note-screen" id="passcodeNote">Tap the code to copy it!</div>
     </div>
-
     <div class="passcode-buttons">
       <button class="btn-secondary" onclick="restartGame()">↩ Try Again</button>
     </div>
@@ -673,79 +734,117 @@ body::before {
 
 <script>
 const ITEMS = [
-  { id:1,  emoji:'📱', name:'New Smartphone',      cost:200, isNeed:false, hint:'Your current one works fine — this is a luxury', penalty:30 },
-  { id:2,  emoji:'💊', name:'Medicine for Cough',  cost:20,  isNeed:true,  hint:'Your health is your wealth', penalty:20 },
-  { id:3,  emoji:'🚌', name:'Public Transport',    cost:20,  isNeed:true,  hint:'How else do you get to work?', penalty:20 },
-  { id:4,  emoji:'👕', name:'Branded Clothes',     cost:50,  isNeed:false, hint:'Looks nice, but is it a must-have?', penalty:15 },
-  { id:5,  emoji:'☕', name:'Sunday Fancy Coffee', cost:7,   isNeed:false, hint:'A treat is nice, but every bit adds up!', penalty:10 },
-  { id:6,  emoji:'🧴', name:'Toiletries',          cost:10,  isNeed:true,  hint:'Definitely a need', penalty:15 },
-  { id:7,  emoji:'🍽️', name:'Expensive Café Meal', cost:30,  isNeed:false, hint:'Yummy treat but it costs you!', penalty:15 },
-  { id:8,  emoji:'🍚', name:'Kopitiam Chicken Rice',cost:5,  isNeed:true,  hint:'Nice plate of chicken rice — affordable & filling!', penalty:10 },
-  { id:9,  emoji:'🧸', name:'PopMart Figurine',    cost:50,  isNeed:false, hint:'Cute, but definitely a want!', penalty:15 },
-  { id:10, emoji:'🎢', name:'USS Sentosa Trip',    cost:80,  isNeed:false, hint:'Treating yourself — a want!', penalty:20 },
-  { id:11, emoji:'🎰', name:'TOTO 50 Quickpicks',  cost:50,  isNeed:false, hint:'Might win $12M… but probably not!', penalty:25 },
+  { id:1,  emoji:'📱', name:'New Smartphone',       cost:200, isNeed:false, penalty:30 },
+  { id:2,  emoji:'💊', name:'Medicine for Cough',   cost:20,  isNeed:true,  penalty:20 },
+  { id:3,  emoji:'🚌', name:'Public Transport',     cost:20,  isNeed:true,  penalty:20 },
+  { id:4,  emoji:'👕', name:'Branded Clothes',      cost:50,  isNeed:false, penalty:15 },
+  { id:5,  emoji:'☕', name:'Sunday Fancy Coffee',  cost:7,   isNeed:false, penalty:10 },
+  { id:6,  emoji:'🧴', name:'Toiletries',           cost:10,  isNeed:true,  penalty:15 },
+  { id:7,  emoji:'🍽️', name:'Expensive Café Meal',  cost:30,  isNeed:false, penalty:15 },
+  { id:8,  emoji:'🍚', name:'Kopitiam Chicken Rice', cost:5,  isNeed:true,  penalty:10 },
+  { id:9,  emoji:'🧸', name:'PopMart Figurine',     cost:50,  isNeed:false, penalty:15 },
+  { id:10, emoji:'🎢', name:'USS Sentosa Trip',     cost:80,  isNeed:false, penalty:20 },
+  { id:11, emoji:'🎰', name:'TOTO 50 Quickpicks',   cost:50,  isNeed:false, penalty:25 },
 ];
 
 const STARTING_BALANCE = 600;
 let balance = STARTING_BALANCE;
 let sorted = [];
 let draggingId = null;
-let needCount = 0;
-let wantCount = 0;
+let needCount = 0, wantCount = 0;
+
+// Touch drag state
 let touchItem = null;
 let touchClone = null;
 let touchOffX = 0, touchOffY = 0;
 
+/* ── Layout detection ── */
+function isDesktop() {
+  return window.innerWidth >= 768 && window.innerHeight >= 600;
+}
+function isLandscapePhone() {
+  return window.innerHeight < 500 && window.innerWidth > window.innerHeight;
+}
+
+function adaptGameLayout() {
+  const gameBody = document.getElementById('gameBodyLandscape');
+  const dropZones = document.getElementById('dropZones');
+  if (isLandscapePhone()) {
+    gameBody.style.flexDirection = 'row';
+    dropZones.style.flexDirection = 'column';
+  } else {
+    gameBody.style.flexDirection = 'column';
+    dropZones.style.flexDirection = '';
+  }
+}
+window.addEventListener('resize', adaptGameLayout);
+window.addEventListener('orientationchange', () => setTimeout(adaptGameLayout, 200));
+
 function startGame() {
   balance = STARTING_BALANCE;
-  sorted = [];
-  needCount = 0;
-  wantCount = 0;
+  sorted = []; needCount = 0; wantCount = 0;
   updateHeader();
   buildItems();
+  adaptGameLayout();
   goScreen('game');
 }
 
 function buildItems() {
-  const container = document.getElementById('floatingItems');
-  container.innerHTML = '';
+  const grid = document.getElementById('itemsGrid');
+  const floating = document.getElementById('floatingItems');
+  grid.innerHTML = ''; floating.innerHTML = '';
+
   const positions = [
-    [5, 5], [35, 2], [62, 8], [5, 42], [38, 38], [65, 45],
-    [15, 68], [50, 65], [72, 70], [25, 30], [55, 20]
+    [5,5],[35,2],[62,8],[5,42],[38,38],[65,45],
+    [15,68],[50,65],[72,70],[25,30],[55,20]
   ];
 
   ITEMS.forEach((item, i) => {
-    const [lp, tp] = positions[i] || [Math.random()*60+5, Math.random()*60+5];
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.id = 'item-' + item.id;
-    card.draggable = true;
-    card.style.left = lp + '%';
-    card.style.top = tp + '%';
-    card.innerHTML = `
-      <span class="item-emoji">${item.emoji}</span>
-      <div class="item-name">${item.name}</div>
-      <div class="item-cost">-$${item.cost}</div>
-    `;
-    const rot = (Math.random() - 0.5) * 8;
-    card.style.transform = `rotate(${rot}deg)`;
-    card.dataset.rot = rot;
-    card.dataset.id = item.id;
+    const card = createCard(item);
 
-    card.addEventListener('dragstart', e => {
-      draggingId = item.id;
-      card.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-    });
-    card.addEventListener('dragend', () => { card.classList.remove('dragging'); });
-    card.addEventListener('touchstart', onTouchStart, { passive: false });
-    card.addEventListener('touchmove', onTouchMove, { passive: false });
-    card.addEventListener('touchend', onTouchEnd, { passive: false });
-
-    container.appendChild(card);
+    if (isDesktop()) {
+      // Floating absolute
+      const [lp, tp] = positions[i] || [Math.random()*60+5, Math.random()*60+5];
+      card.style.left = lp + '%';
+      card.style.top  = tp + '%';
+      card.style.position = 'absolute';
+      card.style.maxWidth = '200px';
+      card.style.minWidth = '140px';
+      floating.appendChild(card);
+    } else {
+      // Grid item
+      grid.appendChild(card);
+    }
   });
 }
 
+function createCard(item) {
+  const rot = (Math.random() - 0.5) * 6;
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  card.id = 'item-' + item.id;
+  card.draggable = true;
+  card.dataset.id = item.id;
+  if (!isLandscapePhone()) card.style.transform = `rotate(${rot}deg)`;
+  card.innerHTML = `
+    <span class="item-emoji">${item.emoji}</span>
+    <div class="item-name">${item.name}</div>
+    <div class="item-cost">-$${item.cost}</div>
+  `;
+  card.addEventListener('dragstart', e => {
+    draggingId = item.id;
+    card.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  card.addEventListener('touchstart', onTouchStart, { passive: false });
+  card.addEventListener('touchmove', onTouchMove, { passive: false });
+  card.addEventListener('touchend', onTouchEnd, { passive: false });
+  card.addEventListener('touchcancel', onTouchCancel, { passive: true });
+  return card;
+}
+
+/* ── Desktop drag ── */
 function onDragOver(e, zone) { e.preventDefault(); document.getElementById(zone + 'Zone').classList.add('drag-over'); }
 function onDragLeave(e, zone) { document.getElementById(zone + 'Zone').classList.remove('drag-over'); }
 function onDrop(e, zone) {
@@ -756,64 +855,107 @@ function onDrop(e, zone) {
   draggingId = null;
 }
 
+/* ── Touch drag with auto-scroll ── */
+let autoScrollRAF = null;
+let lastTX = 0, lastTY = 0;
+const SCROLL_ZONE = 80, SCROLL_SPEED = 8;
+
+function stopAutoScroll() {
+  if (autoScrollRAF) { cancelAnimationFrame(autoScrollRAF); autoScrollRAF = null; }
+}
+function startAutoScroll() {
+  stopAutoScroll();
+  function tick() {
+    const fromBottom = window.innerHeight - lastTY;
+    const fromTop = lastTY;
+    if (fromBottom < SCROLL_ZONE) window.scrollBy(0, SCROLL_SPEED * (1 - fromBottom / SCROLL_ZONE));
+    else if (fromTop < SCROLL_ZONE && fromTop > 0) window.scrollBy(0, -SCROLL_SPEED * (1 - fromTop / SCROLL_ZONE));
+    autoScrollRAF = requestAnimationFrame(tick);
+  }
+  autoScrollRAF = requestAnimationFrame(tick);
+}
+
 function onTouchStart(e) {
   const card = e.currentTarget;
-  const id = parseInt(card.dataset.id);
-  touchItem = id;
-  const touch = e.touches[0];
+  if (card.classList.contains('sorted')) return;
+  e.preventDefault();
+  touchItem = parseInt(card.dataset.id);
+  const t = e.touches[0];
   const rect = card.getBoundingClientRect();
-  touchOffX = touch.clientX - rect.left;
-  touchOffY = touch.clientY - rect.top;
+  touchOffX = t.clientX - rect.left;
+  touchOffY = t.clientY - rect.top;
+  lastTX = t.clientX; lastTY = t.clientY;
+
   touchClone = card.cloneNode(true);
-  touchClone.style.cssText = `position:fixed;z-index:999;width:${rect.width}px;pointer-events:none;opacity:0.85;transform:rotate(4deg) scale(1.05);left:${touch.clientX - touchOffX}px;top:${touch.clientY - touchOffY}px;box-shadow:12px 12px 30px rgba(0,0,0,0.2);border-color:#d4a017;transition:none;`;
+  touchClone.className = 'item-card touch-drag-clone';
+  touchClone.style.width = rect.width + 'px';
+  touchClone.style.left  = (t.clientX - touchOffX) + 'px';
+  touchClone.style.top   = (t.clientY - touchOffY) + 'px';
   document.body.appendChild(touchClone);
   card.style.opacity = '0.3';
-  e.preventDefault();
+  startAutoScroll();
 }
 
 function onTouchMove(e) {
   if (!touchClone) return;
-  const touch = e.touches[0];
-  touchClone.style.left = (touch.clientX - touchOffX) + 'px';
-  touchClone.style.top = (touch.clientY - touchOffY) + 'px';
-  ['needZone','wantZone'].forEach(zid => {
-    const zone = document.getElementById(zid);
-    const r = zone.getBoundingClientRect();
-    const over = touch.clientX >= r.left && touch.clientX <= r.right && touch.clientY >= r.top && touch.clientY <= r.bottom;
-    zone.classList.toggle('drag-over', over);
-  });
   e.preventDefault();
+  const t = e.touches[0];
+  lastTX = t.clientX; lastTY = t.clientY;
+  touchClone.style.left = (t.clientX - touchOffX) + 'px';
+  touchClone.style.top  = (t.clientY - touchOffY) + 'px';
+
+  // Highlight zones
+  ['needZone','wantZone'].forEach(zid => {
+    const r = document.getElementById(zid).getBoundingClientRect();
+    const over = t.clientX >= r.left && t.clientX <= r.right && t.clientY >= r.top && t.clientY <= r.bottom;
+    document.getElementById(zid).classList.toggle('drag-over', over);
+  });
 }
 
 function onTouchEnd(e) {
   if (!touchClone) return;
-  const touch = e.changedTouches[0];
-  document.body.removeChild(touchClone);
-  touchClone = null;
+  e.preventDefault();
+  stopAutoScroll();
+  const t = e.changedTouches[0];
+  touchClone.remove(); touchClone = null;
   ['needZone','wantZone'].forEach(z => document.getElementById(z).classList.remove('drag-over'));
   const card = document.getElementById('item-' + touchItem);
   if (card) card.style.opacity = '1';
+
   for (const [zone, zid] of [['need','needZone'],['want','wantZone']]) {
     const r = document.getElementById(zid).getBoundingClientRect();
-    if (touch.clientX >= r.left && touch.clientX <= r.right && touch.clientY >= r.top && touch.clientY <= r.bottom) {
+    if (t.clientX >= r.left && t.clientX <= r.right && t.clientY >= r.top && t.clientY <= r.bottom) {
       placeItem(touchItem, zone);
-      touchItem = null;
-      return;
+      touchItem = null; return;
     }
   }
   touchItem = null;
 }
 
+function onTouchCancel() {
+  stopAutoScroll();
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  if (touchItem !== null) {
+    const card = document.getElementById('item-' + touchItem);
+    if (card) card.style.opacity = '1';
+    touchItem = null;
+  }
+  ['needZone','wantZone'].forEach(z => document.getElementById(z).classList.remove('drag-over'));
+}
+
+/* ── Place item ── */
 function placeItem(itemId, zone) {
   const item = ITEMS.find(i => i.id === itemId);
   if (!item) return;
+  const card = document.getElementById('item-' + itemId);
+  if (!card || card.classList.contains('sorted')) return;
+
   const correct = (zone === 'need') === item.isNeed;
   const penalty = correct ? 0 : item.penalty;
-  balance -= item.cost;
-  balance -= penalty;
+  balance -= (item.cost + penalty);
   sorted.push({ item, placedAs: zone, correct, penalty });
-  const card = document.getElementById('item-' + itemId);
-  if (card) card.classList.add('sorted', correct ? 'to-need' : 'to-want');
+
+  card.classList.add('sorted', correct ? 'to-need' : 'to-want');
   if (zone === 'need') needCount++; else wantCount++;
   document.getElementById('needCount').textContent = needCount;
   document.getElementById('wantCount').textContent = wantCount;
@@ -834,13 +976,10 @@ function updateHeader(flash) {
 
 function showToast(item, correct, penalty) {
   const toast = document.getElementById('toast');
-  if (correct) {
-    toast.textContent = `✅ Correct! ${item.emoji} "${item.name}" is a ${item.isNeed ? 'NEED' : 'WANT'}. Smart move!`;
-    toast.className = 'toast correct';
-  } else {
-    toast.textContent = `❌ Oops! That's a ${item.isNeed ? 'NEED' : 'WANT'} — penalty: -$${penalty}`;
-    toast.className = 'toast wrong';
-  }
+  toast.textContent = correct
+    ? `✅ Correct! ${item.emoji} "${item.name}" is a ${item.isNeed ? 'NEED' : 'WANT'}!`
+    : `❌ Oops! That's a ${item.isNeed ? 'NEED' : 'WANT'} — penalty: -$${penalty}`;
+  toast.className = 'toast ' + (correct ? 'correct' : 'wrong');
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2200);
 }
@@ -849,27 +988,23 @@ function showResults() {
   const correct = sorted.filter(s => s.correct).length;
   const total = sorted.length;
   const accuracy = Math.round((correct / total) * 100);
-  const totalPenalties = sorted.reduce((acc, s) => acc + s.penalty, 0);
+  const totalPenalties = sorted.reduce((acc,s) => acc + s.penalty, 0);
   const needsSpent = sorted.filter(s => s.item.isNeed).reduce((acc,s) => acc + s.item.cost, 0);
   const finalBalance = Math.max(0, balance);
 
   let trophy, title, subtitle, msg;
   if (accuracy >= 90) {
-    trophy = '🏆'; title = 'Financial Genius!';
-    subtitle = 'You nailed it — almost every item sorted correctly.';
-    msg = '"Smart move! You managed to save more by knowing exactly what you need versus what you want. Keep this mindset and watch your savings grow!"';
+    trophy='🏆'; title='Financial Genius!'; subtitle='You nailed it — almost every item sorted correctly.';
+    msg='"Smart move! You managed to save more by knowing exactly what you need versus what you want. Keep this mindset and watch your savings grow!"';
   } else if (accuracy >= 70) {
-    trophy = '👍'; title = 'Pretty Smart Spender!';
-    subtitle = 'Good effort — a few slip-ups, but you mostly got it right.';
-    msg = '"Not bad! A few wants snuck in as needs, but you\'re on the right track. Review your choices and try to be even more intentional next time!"';
+    trophy='👍'; title='Pretty Smart Spender!'; subtitle='Good effort — a few slip-ups, but you mostly got it right.';
+    msg='"Not bad! A few wants snuck in as needs, but you\'re on the right track. Review your choices and try to be even more intentional next time!"';
   } else if (accuracy >= 50) {
-    trophy = '🤔'; title = 'Room to Improve!';
-    subtitle = 'You mixed up a few needs and wants — those penalties add up!';
-    msg = '"Accuracy saves money! Each wrong sort cost you extra. Take a moment to think: can I survive without this? If yes — it\'s a want."';
+    trophy='🤔'; title='Room to Improve!'; subtitle='You mixed up a few needs and wants — those penalties add up!';
+    msg='"Accuracy saves money! Each wrong sort cost you extra. Take a moment to think: can I survive without this? If yes — it\'s a want."';
   } else {
-    trophy = '😬'; title = 'Wallet Feeling Empty…';
-    subtitle = 'Lots of penalty charges! But every mistake is a lesson.';
-    msg = '"Don\'t worry — this is exactly why we practice! Needs keep you going. Wants are for when you have extra. Try again and see how much you save!"';
+    trophy='😬'; title='Wallet Feeling Empty…'; subtitle='Lots of penalty charges! But every mistake is a lesson.';
+    msg='"Don\'t worry — this is exactly why we practice! Needs keep you going. Wants are for when you have extra. Try again and see how much you save!"';
   }
 
   document.getElementById('resultTrophy').textContent = trophy;
@@ -882,22 +1017,21 @@ function showResults() {
   document.getElementById('motivationalMsg').textContent = msg;
 
   const breakdown = document.getElementById('resultBreakdown');
-  breakdown.innerHTML = '<div style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);padding:0.5rem;margin-bottom:0.25rem;">Item Breakdown</div>';
-  sorted.forEach(({ item, placedAs, correct, penalty }) => {
+  breakdown.innerHTML = '<div style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);padding:0.5rem 0.3rem;margin-bottom:0.25rem;">Item Breakdown</div>';
+  sorted.forEach(({ item, correct, penalty }) => {
     const row = document.createElement('div');
     row.className = 'breakdown-row';
-    const correctLabel = item.isNeed ? 'need' : 'want';
+    const lbl = item.isNeed ? 'need' : 'want';
     row.innerHTML = `
       <div class="breakdown-name">
         ${item.emoji}
         <span>${item.name}</span>
-        <span class="breakdown-tag tag-${correctLabel}">${correctLabel.toUpperCase()}</span>
+        <span class="breakdown-tag tag-${lbl}">${lbl.toUpperCase()}</span>
         ${!correct ? `<span class="breakdown-tag tag-penalty">-$${penalty} penalty</span>` : ''}
       </div>
-      <div class="breakdown-amount" style="color:${correct ? 'var(--need)' : 'var(--want)'}">
+      <div class="breakdown-amount" style="color:${correct?'var(--need)':'var(--want)'}">
         ${correct ? '✓' : '✗'} -$${item.cost + penalty}
-      </div>
-    `;
+      </div>`;
     breakdown.appendChild(row);
   });
 
@@ -910,20 +1044,14 @@ function copyPasscode() {
   navigator.clipboard.writeText('NeedOrWantLeh').then(() => {
     box.style.background = 'rgba(78,203,113,0.12)';
     box.style.borderColor = 'rgba(78,203,113,0.6)';
-    box.style.color = '#4ecb71';
+    box.style.color = '#1d6b3e';
     note.textContent = '✓ Copied to clipboard!';
-    note.style.color = '#4ecb71';
+    note.style.color = '#1d6b3e';
     setTimeout(() => {
-      box.style.background = '';
-      box.style.borderColor = '';
-      box.style.color = '';
-      note.textContent = 'Tap the code to copy it!';
-      note.style.color = '';
+      box.style.background=''; box.style.borderColor=''; box.style.color='';
+      note.textContent='Tap the code to copy it!'; note.style.color='';
     }, 2500);
-  }).catch(() => {
-    note.textContent = 'Passcode: NeedOrWantLeh';
-    note.style.color = '#c9a84c';
-  });
+  }).catch(() => { note.textContent = 'Passcode: NeedOrWantLeh'; note.style.color = 'var(--gold)'; });
 }
 
 function restartGame() { startGame(); }
@@ -931,7 +1059,7 @@ function restartGame() { startGame(); }
 function goScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + name).classList.add('active');
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
 }
 </script>
 </body>

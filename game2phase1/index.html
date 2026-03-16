@@ -165,8 +165,41 @@
     background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.1);
     border-radius:16px;padding:clamp(12px,3vw,20px);
     position:sticky;top:8px;
+    /* prevent overflow on small screens */
+    min-width:0;overflow:hidden;
   }
   .cards-pool-title{font-size:clamp(9px,2vw,12px);letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:600;}
+
+  /* ── HORIZONTAL SCROLL ROW (mobile portrait) ── */
+  .cards-pool.scroll-mode {
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 14px 12px 10px;
+    position: static;
+    overflow: hidden;
+  }
+  .cards-pool.scroll-mode .cards-pool-title {
+    margin-bottom: 10px;
+  }
+  .scroll-row-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    /* hide scrollbar visually but keep functional */
+    scrollbar-width: none;
+  }
+  .scroll-row-wrap::-webkit-scrollbar { display: none; }
+  .scroll-row-inner {
+    display: flex;
+    gap: 10px;
+    min-width: max-content;
+  }
+  .scroll-row-inner .smart-card {
+    margin-bottom: 0 !important;
+    width: 140px;
+    flex-shrink: 0;
+  }
 
   .smart-card{
     background:var(--sc-bg,var(--card-bg));
@@ -212,6 +245,32 @@
   .fc-badge{
     display:inline-block;padding:3px 10px;border-radius:20px;
     font-size:clamp(10px,2.2vw,11px);font-weight:600;margin-top:7px;
+  }
+
+  /* On mobile portrait: collapse filled zones to compact 1-liner so T zone stays visible */
+  @media (max-width: 700px) and (orientation: portrait),
+         (max-width: 600px) {
+    .drop-zone.filled {
+      min-height: 54px;
+    }
+    .drop-zone.filled .fc-detail { display: none; }
+    .drop-zone.filled .fc-badge  { display: none; }
+    .drop-zone.filled .fc-title  { margin-bottom: 0; font-size: 13px; }
+    /* Keep achievable zone a bit taller for the buttons */
+    .drop-zone.filled:has(.achieve-choices) { min-height: auto; }
+    .drop-zone.filled:has(.achieve-choices) .fc-detail { display: block; }
+
+    /* Sticky cards pool */
+    .cards-pool.scroll-mode {
+      position: sticky !important;
+      top: 0;
+      z-index: 20;
+      background: rgba(13,13,26,0.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-radius: 0 0 16px 16px;
+    }
   }
 
   /* ── ACHIEVABLE ── */
@@ -382,73 +441,48 @@
      RESPONSIVE BREAKPOINTS
   ══════════════════════════════ */
 
-  /* ── Small phones: single-col path grid ── */
-  @media (max-width: 480px) {
+  /* ── Any portrait mobile up to 700px wide ── */
+  @media (max-width: 700px) and (orientation: portrait),
+         (max-width: 600px) {
+    /* Path grid: single column */
     .paths-grid { grid-template-columns: 1fr; }
-    .builder-layout { grid-template-columns: 1fr; }
-    .cards-pool { position: static; }
 
-    /* Horizontal scroll cards row on mobile portrait */
-    .cards-pool-wrap {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 8px;
+    /* Builder: single column, cards on top, zones below */
+    .builder-layout {
+      grid-template-columns: 1fr !important;
+      gap: 14px;
     }
-    .cards-pool-row {
-      display: flex;
-      gap: 10px;
-      min-width: max-content;
+    .cards-pool {
+      position: static !important;
     }
-    .cards-pool-row .smart-card {
-      margin-bottom: 0;
-      width: 130px;
-      flex-shrink: 0;
-    }
+
+    /* Drop zones full width */
+    .drop-area { width: 100%; }
+    .drop-zone { min-height: 64px; }
   }
 
-  /* ── Medium phones: 2-col paths, 1-col builder ── */
-  @media (min-width: 481px) and (max-width: 640px) {
-    .builder-layout { grid-template-columns: 1fr; }
-    .cards-pool { position: static; }
-    .cards-pool-wrap {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 8px;
-    }
-    .cards-pool-row {
-      display: flex;
-      gap: 10px;
-      min-width: max-content;
-    }
-    .cards-pool-row .smart-card {
-      margin-bottom: 0;
-      width: 140px;
-      flex-shrink: 0;
-    }
-  }
-
-  /* ── Landscape phones ── */
+  /* ── Landscape phones (height < 500px) ── */
   @media (max-height: 500px) and (orientation: landscape) {
     .container { padding: 8px 12px 40px; }
-    h1 { font-size: clamp(18px, 4vw, 28px); margin-bottom: 4px; }
+    h1 { font-size: clamp(18px,4vw,28px); margin-bottom: 4px; }
     .subtitle { margin-bottom: 10px; font-size: 12px; }
-
     .mascot-wrap { padding: 10px 14px; margin-bottom: 10px; gap: 10px; }
     .bf-svg svg { width: 40px; height: 40px; }
     .mascot-quote { font-size: 11px; line-height: 1.5; }
-
     .steps-row { margin-bottom: 10px; }
 
     /* Landscape: 4-col path grid */
     .paths-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    .path-card { padding: 10px 10px; }
+    .path-card { padding: 10px; }
     .path-icon { font-size: 18px; margin-bottom: 6px; }
     .path-title { font-size: 11px; line-height: 1.2; margin-bottom: 4px; }
     .path-desc { font-size: 10px; }
 
-    /* Landscape: keep 2-col builder */
-    .builder-layout { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .cards-pool { position: sticky; top: 4px; padding: 10px; }
+    /* Landscape: 2-col builder stays side by side */
+    .builder-layout { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+    .cards-pool { position: sticky !important; top: 4px; padding: 10px; }
+    /* In landscape, use vertical stack (no scroll row) */
+    .cards-pool.scroll-mode { position: sticky !important; }
     .smart-card { padding: 8px 10px; margin-bottom: 6px; }
     .sc-letter { font-size: 18px; }
     .sc-hint { font-size: 10px; margin-top: 3px; }
@@ -458,8 +492,8 @@
     .drag-hint { padding: 6px 10px; margin-bottom: 8px; font-size: 11px; }
   }
 
-  /* ── Tall phones / phablets ── */
-  @media (min-width: 641px) and (max-width: 899px) {
+  /* ── Tablets / wide phones ── */
+  @media (min-width: 701px) and (max-width: 899px) {
     .builder-layout { grid-template-columns: 1fr 1fr; }
   }
 </style>
@@ -714,21 +748,45 @@ for(let i=0;i<8;i++){
 }
 
 // ── LAYOUT ADAPTATION ──
-// On small screens, convert cards pool to horizontal scroll row
+// On small portrait screens, convert cards pool to horizontal scroll row
 function adaptLayout() {
-  const isMobile = window.innerWidth <= 640;
-  const isLandscape = window.innerWidth > window.innerHeight;
+  const pool = document.getElementById('cardsPool');
   const inner = document.getElementById('cardsPoolInner');
   const hint = document.getElementById('dragHintText');
   const sub = document.getElementById('smartSubText');
 
-  if (isMobile && !isLandscape) {
-    // Portrait mobile: horizontal scroll row
-    inner.className = 'cards-pool-row';
-    hint.textContent = 'Scroll & drag each SMART card to its matching slot below';
-    sub.textContent = 'Drag each card down to its matching zone';
+  // Use scroll-mode when portrait AND narrow enough
+  const isPortraitMobile = window.innerWidth <= 700 && window.innerHeight > window.innerWidth;
+  const isAlsoNarrow = window.innerWidth <= 600; // catch narrow landscape too
+
+  if (isPortraitMobile || isAlsoNarrow) {
+    // Wrap inner cards in a scroll row
+    if (!document.getElementById('scrollRowWrap')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'scroll-row-wrap';
+      wrap.id = 'scrollRowWrap';
+      const rowInner = document.createElement('div');
+      rowInner.className = 'scroll-row-inner';
+      rowInner.id = 'scrollRowInner';
+      // Move all smart-cards into the row
+      const cards = inner.querySelectorAll('.smart-card');
+      cards.forEach(c => rowInner.appendChild(c));
+      wrap.appendChild(rowInner);
+      inner.appendChild(wrap);
+    }
+    pool.classList.add('scroll-mode');
+    hint.textContent = 'Scroll cards → then drag each one to its matching slot below';
+    sub.textContent = 'Drag each card to its matching zone below';
   } else {
-    inner.className = '';
+    // Restore vertical stack
+    const scrollRowInner = document.getElementById('scrollRowInner');
+    const scrollRowWrap = document.getElementById('scrollRowWrap');
+    if (scrollRowInner && scrollRowWrap) {
+      const cards = scrollRowInner.querySelectorAll('.smart-card');
+      cards.forEach(c => inner.insertBefore(c, scrollRowWrap));
+      scrollRowWrap.remove();
+    }
+    pool.classList.remove('scroll-mode');
     hint.textContent = 'Drag each SMART card from the left to its matching slot on the right';
     sub.textContent = 'Drag each card to its matching zone to define your mission.';
   }
@@ -758,6 +816,17 @@ function goToSmartBuilder(){
   document.getElementById('mascotQuote').textContent=`"Excellent choice! Now let's make this goal SMART — so it becomes a real plan, not just a wish. Drag each card to its slot."`;
   droppedCards={};achieveChoice=null;
   updateProgress();
+
+  // Tear down any existing scroll row wrapper first
+  const scrollRowWrap = document.getElementById('scrollRowWrap');
+  const scrollRowInner = document.getElementById('scrollRowInner');
+  const poolInner = document.getElementById('cardsPoolInner');
+  if (scrollRowInner && scrollRowWrap) {
+    const cards = scrollRowInner.querySelectorAll('.smart-card');
+    cards.forEach(c => poolInner.insertBefore(c, scrollRowWrap));
+    scrollRowWrap.remove();
+  }
+  document.getElementById('cardsPool').classList.remove('scroll-mode');
   'SMART'.split('').forEach(l=>{
     const dz=document.getElementById('dz-'+l);
     dz.classList.remove('filled');
@@ -959,16 +1028,64 @@ function restartGame(){
 }
 
 /* ──────────────────────────────────────────────
-   TOUCH DRAG — fully rewritten, offset-aware
+   TOUCH DRAG — offset-aware + auto-scroll
 ──────────────────────────────────────────────── */
 let touchCard = null;
 let touchClone = null;
 let touchOffX = 0;
 let touchOffY = 0;
+let autoScrollRAF = null;
+let lastTouchX = 0;
+let lastTouchY = 0;
+
+const SCROLL_ZONE = 100;   // px from top/bottom edge that triggers scroll
+const SCROLL_SPEED = 10;   // px per frame
+
+function stopAutoScroll() {
+  if (autoScrollRAF) { cancelAnimationFrame(autoScrollRAF); autoScrollRAF = null; }
+}
+
+function startAutoScroll() {
+  stopAutoScroll();
+  function tick() {
+    const vh = window.innerHeight;
+    const fromTop = lastTouchY;
+    const fromBottom = vh - lastTouchY;
+
+    if (fromBottom < SCROLL_ZONE) {
+      // Drag near bottom → scroll page down
+      window.scrollBy(0, SCROLL_SPEED * (1 - fromBottom / SCROLL_ZONE));
+      // Keep clone in sync
+      if (touchClone) touchClone.style.top = (parseFloat(touchClone.style.top) + SCROLL_SPEED * (1 - fromBottom / SCROLL_ZONE)) + 'px';
+      // Highlight zone under clone centre
+      highlightZoneAt(lastTouchX, lastTouchY);
+    } else if (fromTop < SCROLL_ZONE && fromTop > 0) {
+      // Drag near top → scroll page up
+      window.scrollBy(0, -SCROLL_SPEED * (1 - fromTop / SCROLL_ZONE));
+      if (touchClone) touchClone.style.top = (parseFloat(touchClone.style.top) - SCROLL_SPEED * (1 - fromTop / SCROLL_ZONE)) + 'px';
+      highlightZoneAt(lastTouchX, lastTouchY);
+    }
+    autoScrollRAF = requestAnimationFrame(tick);
+  }
+  autoScrollRAF = requestAnimationFrame(tick);
+}
+
+function highlightZoneAt(cx, cy) {
+  document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+  if (!touchClone) return;
+  touchClone.style.display = 'none';
+  const el = document.elementFromPoint(cx, cy);
+  touchClone.style.display = '';
+  const zone = el ? el.closest('.drop-zone') : null;
+  if (zone && !zone.classList.contains('filled')) zone.classList.add('drag-over');
+}
 
 function initTouchDrag(){
-  // Remove old listeners by cloning cards (cleanest way)
   document.querySelectorAll('.smart-card').forEach(card => {
+    card.removeEventListener('touchstart', onTouchStart);
+    card.removeEventListener('touchmove', onTouchMove);
+    card.removeEventListener('touchend', onTouchEnd);
+    card.removeEventListener('touchcancel', onTouchCancel);
     card.addEventListener('touchstart', onTouchStart, { passive: false });
     card.addEventListener('touchmove', onTouchMove, { passive: false });
     card.addEventListener('touchend', onTouchEnd, { passive: false });
@@ -985,8 +1102,9 @@ function onTouchStart(e) {
   const rect = card.getBoundingClientRect();
   touchOffX = t.clientX - rect.left;
   touchOffY = t.clientY - rect.top;
+  lastTouchX = t.clientX;
+  lastTouchY = t.clientY;
 
-  // Create drag clone
   touchClone = card.cloneNode(true);
   touchClone.className = card.className + ' touch-drag-clone';
   touchClone.style.cssText = `
@@ -996,34 +1114,33 @@ function onTouchStart(e) {
     transform:scale(1.05);
     box-shadow:0 16px 48px rgba(0,0,0,0.5);
   `;
-  // Preserve gradient CSS vars
   ['--sc-bg','--sc-border','--sc-color'].forEach(v => {
     const val = card.style.getPropertyValue(v) || getComputedStyle(card).getPropertyValue(v);
     if(val) touchClone.style.setProperty(v, val);
   });
   document.body.appendChild(touchClone);
   card.style.opacity = '0.3';
+  startAutoScroll();
 }
 
 function onTouchMove(e) {
   if (!touchClone) return;
   e.preventDefault();
   const t = e.touches[0];
+  lastTouchX = t.clientX;
+  lastTouchY = t.clientY;
+
   touchClone.style.left = (t.clientX - touchOffX) + 'px';
   touchClone.style.top  = (t.clientY - touchOffY) + 'px';
 
-  // Highlight zones under finger
-  document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
-  touchClone.style.display = 'none';
-  const el = document.elementFromPoint(t.clientX, t.clientY);
-  touchClone.style.display = '';
-  const zone = el ? el.closest('.drop-zone') : null;
-  if (zone && !zone.classList.contains('filled')) zone.classList.add('drag-over');
+  highlightZoneAt(t.clientX, t.clientY);
 }
 
 function onTouchEnd(e) {
   if (!touchClone || !touchCard) return;
   e.preventDefault();
+  stopAutoScroll();
+
   const t = e.changedTouches[0];
 
   touchClone.style.display = 'none';
@@ -1033,7 +1150,6 @@ function onTouchEnd(e) {
 
   document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
 
-  // Find card letter
   const letter = touchCard.id.replace('card-', '');
   const zone = el ? el.closest('.drop-zone') : null;
 
@@ -1053,6 +1169,7 @@ function onTouchEnd(e) {
 }
 
 function onTouchCancel() {
+  stopAutoScroll();
   if (touchClone) { touchClone.remove(); touchClone = null; }
   if (touchCard) { touchCard.style.opacity = '1'; touchCard = null; }
   document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));

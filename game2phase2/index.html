@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>How Much Goes Home?</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   :root {
     --gold: #c9a84c;
@@ -20,35 +20,47 @@
     --muted: #8a8699;
   }
 
+  html { height: 100%; }
+
   body {
     background: var(--deep);
     font-family: 'DM Sans', sans-serif;
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
+    touch-action: manipulation;
   }
 
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.4;
+    pointer-events: none; z-index: 1000; opacity: 0.4;
   }
 
-  .screen { display: none; min-height: 100vh; position: relative; }
+  /* ── SCREEN SYSTEM ── */
+  .screen { display: none; min-height: 100vh; min-height: 100dvh; position: relative; }
   .screen.active { display: flex; flex-direction: column; }
+  .screen { animation: fadeSlide 0.5s ease both; }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ============ INTRO SCREEN ============ */
+  /* ── PROGRESS DOTS ── */
+  .progress-dots {
+    position: fixed; top: clamp(8px, 2vw, 20px); left: 50%; transform: translateX(-50%);
+    display: flex; gap: 0.4rem; z-index: 100;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: background 0.3s; }
+  .dot.active { background: var(--gold); }
+  .dot.done { background: var(--accent-green); }
+
+  /* ══════════════════════════════
+     SCREEN 1: INTRO
+  ══════════════════════════════ */
   #screen-intro {
-    align-items: center;
-    justify-content: center;
+    align-items: center; justify-content: center;
     background: radial-gradient(ellipse at 30% 20%, #1e1530 0%, var(--deep) 60%);
-    padding: 2rem;
-    text-align: center;
-    overflow: hidden;
+    padding: clamp(1rem, 4vw, 2rem);
+    text-align: center; overflow: hidden;
   }
 
   .intro-bg-lines { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
@@ -59,7 +71,14 @@
   }
   @keyframes lineFall { 0% { transform: translateY(-100%); } 100% { transform: translateY(200vh); } }
 
-  .atm-container { width: min(380px, 90vw); height: 320px; margin-bottom: 2rem; position: relative; filter: drop-shadow(0 0 60px rgba(201,168,76,0.3)); }
+  .atm-container {
+    width: min(280px, 75vw);
+    height: min(240px, 35vh);
+    margin-bottom: clamp(1rem, 3vw, 2rem);
+    position: relative;
+    filter: drop-shadow(0 0 60px rgba(201,168,76,0.3));
+    flex-shrink: 0;
+  }
   .atm-fallback {
     width: 100%; height: 100%;
     background: linear-gradient(135deg, #1e2a3a, #0d1520);
@@ -74,9 +93,9 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
   .atm-body { position: relative; z-index: 1; text-align: center; }
-  .atm-emoji { font-size: 5rem; animation: float 3s ease-in-out infinite; display: block; }
-  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
-  .atm-label { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-top: 0.5rem; }
+  .atm-emoji { font-size: clamp(3rem, 10vw, 5rem); animation: float 3s ease-in-out infinite; display: block; }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+  .atm-label { font-family: 'Playfair Display', serif; color: var(--gold); font-size: clamp(0.8rem, 2.5vw, 1.1rem); letter-spacing: 0.3em; text-transform: uppercase; margin-top: 0.4rem; }
   .atm-screen-glow {
     position: absolute; top: 30%; left: 50%; transform: translateX(-50%);
     width: 55%; height: 25%; background: rgba(78,203,113,0.15); border-radius: 4px;
@@ -84,133 +103,177 @@
   }
   @keyframes screenBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-  .intro-kicker { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; opacity: 0.9; }
-  .intro-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.15; color: var(--text); margin-bottom: 0.75rem; }
+  .intro-kicker { font-size: clamp(0.65rem, 2vw, 0.75rem); letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; opacity: 0.9; }
+  .intro-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 7vw, 3.5rem); line-height: 1.15; color: var(--text); margin-bottom: 0.6rem; }
   .intro-title em { color: var(--gold-light); font-style: italic; }
-  .intro-sub { color: var(--muted); font-size: 0.95rem; max-width: 400px; line-height: 1.6; margin: 0 auto 2rem; }
+  .intro-sub { color: var(--muted); font-size: clamp(0.82rem, 2.5vw, 0.95rem); max-width: 400px; line-height: 1.6; margin: 0 auto clamp(1.2rem, 4vw, 2rem); }
 
   .btn-primary {
     background: linear-gradient(135deg, var(--gold), #a8732a);
-    color: #0d0d00; border: none; padding: 1rem 2.5rem;
-    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+    color: #0d0d00; border: none; padding: clamp(0.8rem, 2.5vw, 1rem) clamp(1.8rem, 5vw, 2.5rem);
+    font-family: 'DM Sans', sans-serif; font-size: clamp(0.9rem, 3vw, 1rem); font-weight: 600;
     letter-spacing: 0.05em; border-radius: 50px; cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 8px 30px rgba(201,168,76,0.3); position: relative; overflow: hidden;
+    touch-action: manipulation;
   }
   .btn-primary::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent); border-radius: 50px; }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.45); }
-  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:active { transform: scale(0.97); }
 
-  /* ============ REMITTANCE SCREEN ============ */
+  /* ══════════════════════════════
+     SCREEN 2: REMITTANCE
+  ══════════════════════════════ */
   #screen-remittance { background: var(--surface); padding: 0; align-items: stretch; }
+
   .remit-header {
     background: linear-gradient(to right, #0d0d18, #16162b, #0d0d18);
-    padding: 1.5rem 2rem; border-bottom: 1px solid rgba(201,168,76,0.15);
-    text-align: center; position: relative;
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(1rem, 4vw, 2rem);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    text-align: center; position: relative; flex-shrink: 0;
   }
   .remit-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
-  .remit-logo { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.25rem; }
-  .remit-bank-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--text); }
+  .remit-logo { font-size: clamp(0.55rem, 1.8vw, 0.65rem); letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.2rem; }
+  .remit-bank-name { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 4vw, 1.4rem); color: var(--text); }
 
-  .remit-body { flex: 1; padding: 2rem; max-width: 600px; margin: 0 auto; width: 100%; }
+  .remit-body {
+    flex: 1; padding: clamp(1rem, 4vw, 2rem);
+    max-width: 600px; margin: 0 auto; width: 100%;
+    overflow-y: auto;
+    /* let body scroll naturally */
+  }
 
   .wage-card {
     background: var(--card); border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem;
-    position: relative; overflow: hidden;
+    border-radius: 14px; padding: clamp(1rem, 3vw, 1.5rem); margin-bottom: clamp(1rem, 3vw, 2rem);
+    position: relative; overflow: hidden; flex-shrink: 0;
   }
   .wage-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, var(--gold), var(--accent-green)); }
-  .wage-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
-  .wage-row:last-child { margin-bottom: 0; }
-  .wage-label { color: var(--muted); font-size: 0.85rem; }
-  .wage-value { font-size: 1.1rem; font-weight: 600; }
+  .wage-row { display: flex; justify-content: space-between; align-items: center; }
+  .wage-label { color: var(--muted); font-size: clamp(0.78rem, 2.5vw, 0.85rem); }
+  .wage-value { font-size: clamp(1rem, 3.5vw, 1.1rem); font-weight: 600; }
   .wage-value.green { color: var(--accent-green); }
 
-  .section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.4rem; color: var(--text); }
-  .section-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; line-height: 1.5; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.15rem, 4vw, 1.4rem); margin-bottom: 0.35rem; color: var(--text); }
+  .section-sub { color: var(--muted); font-size: clamp(0.78rem, 2.5vw, 0.85rem); margin-bottom: clamp(1rem, 3vw, 1.5rem); line-height: 1.5; }
 
-  .choices-grid { display: grid; gap: 1rem; margin-bottom: 2rem; }
+  .choices-grid { display: grid; gap: clamp(0.6rem, 2vw, 1rem); margin-bottom: clamp(1rem, 3vw, 2rem); }
 
   .choice-card {
     background: var(--card); border: 2px solid rgba(255,255,255,0.07);
-    border-radius: 16px; padding: 1.25rem 1.5rem; cursor: pointer;
-    transition: all 0.25s ease; position: relative; overflow: hidden;
-    display: flex; align-items: center; gap: 1.25rem;
+    border-radius: 14px; padding: clamp(0.9rem, 2.5vw, 1.25rem) clamp(1rem, 3vw, 1.5rem);
+    cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden;
+    display: flex; align-items: center; gap: clamp(0.75rem, 2.5vw, 1.25rem);
+    touch-action: manipulation;
   }
   .choice-card::before { content: ''; position: absolute; inset: 0; background: var(--choice-color, var(--gold)); opacity: 0; transition: opacity 0.25s; }
   .choice-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
   .choice-card:hover::before { opacity: 0.05; }
   .choice-card.selected { border-color: var(--choice-color, var(--gold)); transform: translateY(-2px); }
   .choice-card.selected::before { opacity: 0.1; }
-  .choice-pct { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--choice-color, var(--gold)); line-height: 1; min-width: 3rem; position: relative; z-index: 1; }
-  .choice-info { position: relative; z-index: 1; flex: 1; }
-  .choice-amount { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.2rem; }
-  .choice-desc { font-size: 0.8rem; color: var(--muted); }
-  .choice-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); position: relative; z-index: 1; transition: border-color 0.2s; flex-shrink: 0; }
+  .choice-pct { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 700; color: var(--choice-color, var(--gold)); line-height: 1; min-width: 2.6rem; position: relative; z-index: 1; }
+  .choice-info { position: relative; z-index: 1; flex: 1; min-width: 0; }
+  .choice-amount { font-size: clamp(0.9rem, 3vw, 1.1rem); font-weight: 600; margin-bottom: 0.15rem; }
+  .choice-desc { font-size: clamp(0.72rem, 2.2vw, 0.8rem); color: var(--muted); }
+  .choice-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); position: relative; z-index: 1; transition: border-color 0.2s; flex-shrink: 0; }
   .choice-card.selected .choice-radio { border-color: var(--choice-color, var(--gold)); background: var(--choice-color, var(--gold)); }
-  .choice-card.selected .choice-radio::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; border-radius: 50%; background: white; }
+  .choice-card.selected .choice-radio::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 5px; height: 5px; border-radius: 50%; background: white; }
 
   .confirm-btn {
     width: 100%; background: linear-gradient(135deg, var(--gold), #9a6820);
-    color: #050500; border: none; padding: 1.1rem;
-    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700;
+    color: #050500; border: none; padding: clamp(0.9rem, 3vw, 1.1rem);
+    font-family: 'DM Sans', sans-serif; font-size: clamp(0.9rem, 3vw, 1rem); font-weight: 700;
     letter-spacing: 0.05em; border-radius: 14px; cursor: pointer;
     transition: all 0.2s; opacity: 0.4; pointer-events: none;
+    touch-action: manipulation;
   }
   .confirm-btn.ready { opacity: 1; pointer-events: all; box-shadow: 0 8px 30px rgba(201,168,76,0.3); }
   .confirm-btn.ready:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.45); }
+  .confirm-btn.ready:active { transform: scale(0.98); }
 
-  /* ============ FAMILY SCREEN ============ */
+  /* ══════════════════════════════
+     SCREEN 3: FAMILY
+  ══════════════════════════════ */
   #screen-family {
     background: linear-gradient(160deg, #0a1a0f 0%, #0d0d18 50%, #1a0d0d 100%);
-    align-items: center; justify-content: center; padding: 2rem;
+    align-items: center; justify-content: center;
+    padding: clamp(1rem, 4vw, 2rem);
     text-align: center; position: relative; overflow: hidden;
   }
+  .family-inner { display: flex; flex-direction: column; align-items: center; max-width: 600px; width: 100%; }
   .particle { position: absolute; border-radius: 50%; pointer-events: none; animation: particleDrift linear infinite; }
   @keyframes particleDrift { 0% { transform: translateY(110vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; } }
-  .family-scene { position: relative; margin-bottom: 2rem; }
-  .family-members { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-  .family-member { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+  .family-scene { position: relative; margin-bottom: clamp(0.75rem, 3vw, 2rem); }
+  .family-members { display: flex; justify-content: center; gap: clamp(0.5rem, 2vw, 1rem); flex-wrap: wrap; margin-bottom: clamp(0.75rem, 2vw, 1.5rem); }
+  .family-member { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
   @keyframes popIn { from { transform: scale(0) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0deg); opacity: 1; } }
-  .member-avatar { width: 70px; height: 70px; border-radius: 50%; background: var(--card); border: 3px solid var(--accent-green); display: flex; align-items: center; justify-content: center; font-size: 2rem; position: relative; box-shadow: 0 0 20px rgba(78,203,113,0.3); animation: memberGlow 2s ease-in-out infinite alternate; }
+  .member-avatar {
+    width: clamp(50px, 12vw, 70px); height: clamp(50px, 12vw, 70px);
+    border-radius: 50%; background: var(--card); border: 3px solid var(--accent-green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(1.3rem, 4vw, 2rem); position: relative;
+    box-shadow: 0 0 20px rgba(78,203,113,0.3); animation: memberGlow 2s ease-in-out infinite alternate;
+  }
   @keyframes memberGlow { from { box-shadow: 0 0 15px rgba(78,203,113,0.2); } to { box-shadow: 0 0 30px rgba(78,203,113,0.5); } }
-  .member-name { font-size: 0.7rem; color: var(--muted); font-weight: 500; }
-  .heart-burst { position: absolute; top: -5px; right: -5px; font-size: 1rem; animation: heartFloat 1.5s ease-in-out infinite; }
+  .member-name { font-size: clamp(0.6rem, 1.8vw, 0.7rem); color: var(--muted); font-weight: 500; }
+  .heart-burst { position: absolute; top: -5px; right: -5px; font-size: clamp(0.7rem, 2vw, 1rem); animation: heartFloat 1.5s ease-in-out infinite; }
   @keyframes heartFloat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.2); } }
-  .house-icon { font-size: 4rem; margin: 1rem 0; filter: drop-shadow(0 0 20px rgba(201,168,76,0.4)); animation: houseShine 3s ease-in-out infinite; }
+  .house-icon { font-size: clamp(2.5rem, 8vw, 4rem); margin: clamp(0.5rem, 2vw, 1rem) 0; filter: drop-shadow(0 0 20px rgba(201,168,76,0.4)); animation: houseShine 3s ease-in-out infinite; }
   @keyframes houseShine { 0%, 100% { filter: drop-shadow(0 0 20px rgba(201,168,76,0.4)); } 50% { filter: drop-shadow(0 0 40px rgba(201,168,76,0.7)); } }
-  .transfer-amount { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4rem); color: var(--accent-green); font-weight: 700; margin-bottom: 0.25rem; animation: countUp 0.8s ease-out both; }
+  .transfer-amount { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 8vw, 4rem); color: var(--accent-green); font-weight: 700; margin-bottom: 0.2rem; animation: countUp 0.8s ease-out both; }
   @keyframes countUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  .transfer-label { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem; }
-  .reaction-text { font-family: 'Instrument Serif', serif; font-size: clamp(1.1rem, 3vw, 1.4rem); line-height: 1.6; color: var(--text); max-width: 480px; margin: 0 auto 1.5rem; font-style: italic; }
-  .happiness-bar { width: min(300px, 90%); height: 8px; background: rgba(255,255,255,0.08); border-radius: 50px; margin: 0 auto 0.5rem; overflow: hidden; }
+  .transfer-label { color: var(--muted); font-size: clamp(0.72rem, 2vw, 0.85rem); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: clamp(1rem, 3vw, 2rem); }
+  .reaction-text { font-family: 'Instrument Serif', serif; font-size: clamp(0.9rem, 3vw, 1.4rem); line-height: 1.6; color: var(--text); max-width: 480px; margin: 0 auto clamp(1rem, 3vw, 1.5rem); font-style: italic; }
+  .happiness-bar { width: min(300px, 90%); height: 8px; background: rgba(255,255,255,0.08); border-radius: 50px; margin: 0 auto 0.4rem; overflow: hidden; }
   .happiness-fill { height: 100%; border-radius: 50px; background: linear-gradient(to right, var(--accent-green), #a8e063); transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1); width: 0%; }
-  .happiness-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 2rem; letter-spacing: 0.1em; }
+  .happiness-label { font-size: clamp(0.7rem, 2vw, 0.75rem); color: var(--muted); margin-bottom: clamp(1rem, 3vw, 2rem); letter-spacing: 0.1em; }
 
-  /* ============ MOTIVATION SCREEN ============ */
+  /* ══════════════════════════════
+     SCREEN 4: MOTIVATION
+  ══════════════════════════════ */
   #screen-motivation {
     background: radial-gradient(ellipse at 60% 40%, #1c1008 0%, #0d0d18 70%);
-    align-items: center; justify-content: center; padding: 2.5rem 2rem;
+    align-items: center; justify-content: center;
+    padding: clamp(1rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2rem);
     text-align: center; position: relative; overflow: hidden;
   }
-  .cup-icon { font-size: 5rem; margin-bottom: 1.5rem; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(201,168,76,0.3)); }
-  .motivation-eyebrow { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
-  .motivation-quote { font-family: 'Instrument Serif', serif; font-size: clamp(1.3rem, 4vw, 2rem); line-height: 1.55; color: var(--text); max-width: 520px; margin: 0 auto 1.5rem; position: relative; }
-  .motivation-quote::before, .motivation-quote::after { content: '"'; font-family: 'Playfair Display', serif; font-size: 4rem; color: var(--gold); opacity: 0.3; position: absolute; line-height: 1; }
-  .motivation-quote::before { top: -0.5rem; left: -0.5rem; }
-  .motivation-quote::after { content: '"'; bottom: -1.5rem; right: -0.5rem; }
-  .motivation-note { color: var(--muted); font-size: 0.85rem; max-width: 380px; margin: 2rem auto; line-height: 1.6; }
-  .choices-recap { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-  .recap-pill { padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600; border: 1px solid; }
+  .motivation-inner { display: flex; flex-direction: column; align-items: center; max-width: 560px; width: 100%; }
+  .cup-icon { font-size: clamp(3rem, 10vw, 5rem); margin-bottom: clamp(1rem, 3vw, 1.5rem); animation: float 3s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(201,168,76,0.3)); }
+  .motivation-eyebrow { font-size: clamp(0.62rem, 2vw, 0.7rem); letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+  .motivation-quote {
+    font-family: 'Instrument Serif', serif; font-size: clamp(1.05rem, 4vw, 2rem);
+    line-height: 1.55; color: var(--text); max-width: 520px; margin: 0 auto clamp(1rem, 3vw, 1.5rem);
+    position: relative; padding: 0 clamp(1.5rem, 5vw, 2.5rem);
+  }
+  .motivation-quote::before, .motivation-quote::after { content: '"'; font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 4rem); color: var(--gold); opacity: 0.3; position: absolute; line-height: 1; }
+  .motivation-quote::before { top: -0.5rem; left: 0; }
+  .motivation-quote::after { content: '"'; bottom: -1.5rem; right: 0; }
+  .motivation-note { color: var(--muted); font-size: clamp(0.8rem, 2.5vw, 0.85rem); max-width: 380px; margin: clamp(1.2rem, 4vw, 2rem) auto; line-height: 1.6; }
+  .choices-recap { display: flex; gap: clamp(0.5rem, 2vw, 1rem); justify-content: center; flex-wrap: wrap; margin-bottom: clamp(1rem, 3vw, 2rem); }
+  .recap-pill { padding: clamp(0.35rem, 1.5vw, 0.5rem) clamp(0.8rem, 3vw, 1.2rem); border-radius: 50px; font-size: clamp(0.78rem, 2.5vw, 0.85rem); font-weight: 600; border: 1px solid; }
   .recap-pill.sent { background: rgba(78,203,113,0.12); border-color: rgba(78,203,113,0.4); color: var(--accent-green); }
   .recap-pill.kept { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.4); color: var(--gold-light); }
 
-  /* ============ PASSCODE BLOCK ============ */
+  /* ══════════════════════════════
+     SCREEN 5: PASSCODE
+  ══════════════════════════════ */
+  #screen-passcode {
+    background: radial-gradient(ellipse at 60% 40%, #1c1008 0%, #0d0d18 70%);
+    align-items: center; justify-content: center;
+    padding: clamp(1rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2rem);
+    text-align: center;
+  }
+  .passcode-inner { display: flex; flex-direction: column; align-items: center; max-width: 480px; width: 100%; }
+  .key-icon { font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom: clamp(1rem, 3vw, 1.5rem); animation: float 3s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(201,168,76,0.3)); }
+  .passcode-eyebrow { font-size: clamp(0.62rem, 2vw, 0.7rem); letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+  .passcode-title { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 5vw, 2.2rem); color: var(--text); margin-bottom: 0.4rem; }
+  .passcode-subtitle { color: var(--muted); font-size: clamp(0.8rem, 2.5vw, 0.88rem); max-width: 360px; margin: 0 auto clamp(1.2rem, 3vw, 2rem); line-height: 1.55; }
+
   .passcode-block {
-    max-width: 420px; margin: 0 auto 1.5rem;
+    width: 100%; max-width: 420px; margin: 0 auto clamp(1rem, 3vw, 1.5rem);
     background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(61,232,200,0.05));
     border: 1px solid rgba(167,139,250,0.3);
-    border-radius: 22px; padding: 24px 20px;
+    border-radius: 20px; padding: clamp(16px, 4vw, 24px) clamp(14px, 4vw, 20px);
     position: relative; overflow: hidden;
   }
   .passcode-block::before {
@@ -220,40 +283,34 @@
     pointer-events: none;
   }
   .passcode-label {
-    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    font-size: clamp(9px, 2vw, 11px); letter-spacing: 3px; text-transform: uppercase;
     color: #a78bfa; font-weight: 700; margin-bottom: 8px;
     display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .passcode-instruction {
-    font-size: 14px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; text-align: center;
-  }
+  .passcode-instruction { font-size: clamp(12px, 2.8vw, 14px); color: var(--muted); margin-bottom: 18px; line-height: 1.5; text-align: center; }
   .passcode-instruction strong { color: var(--text); }
-  .passcode-digits {
-    display: flex; gap: 10px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap;
-  }
-  .pc-digit {
-    width: 52px; height: 64px;
+
+  #passcodeBox {
+    cursor: pointer;
     background: rgba(255,255,255,0.04);
     border: 1.5px solid rgba(167,139,250,0.35);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
+    border-radius: 14px;
+    padding: clamp(12px, 3vw, 18px) clamp(14px, 4vw, 24px);
+    text-align: center;
     font-family: 'Playfair Display', serif;
-    font-size: 30px; font-weight: 900;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 900;
     color: var(--gold);
-    position: relative; overflow: hidden;
-    animation: digitReveal 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    letter-spacing: clamp(1px, 0.5vw, 3px);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    margin-bottom: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    word-break: break-all;
+    touch-action: manipulation;
   }
-  .pc-digit::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(201,168,76,0.06), transparent);
-    pointer-events: none;
-  }
-  @keyframes digitReveal { from { opacity: 0; transform: translateY(20px) scale(0.7); } to { opacity: 1; transform: translateY(0) scale(1); } }
-  .pc-digit:nth-child(1){animation-delay:0.05s;} .pc-digit:nth-child(2){animation-delay:0.12s;}
-  .pc-digit:nth-child(3){animation-delay:0.19s;} .pc-digit:nth-child(4){animation-delay:0.26s;}
-  .pc-digit:nth-child(5){animation-delay:0.33s;} .pc-digit:nth-child(6){animation-delay:0.40s;}
   .passcode-note {
-    font-size: 12px; color: var(--muted); text-align: center;
+    font-size: clamp(11px, 2.5vw, 12px); color: var(--muted); text-align: center;
     display: flex; align-items: center; justify-content: center; gap: 6px;
   }
   .passcode-note::before { content: '✦'; color: var(--gold); font-size: 10px; }
@@ -261,23 +318,89 @@
 
   .btn-restart {
     background: transparent; border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light);
-    padding: 0.85rem 2rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    padding: clamp(0.7rem, 2.5vw, 0.85rem) clamp(1.5rem, 4vw, 2rem);
+    font-family: 'DM Sans', sans-serif; font-size: clamp(0.82rem, 2.5vw, 0.9rem);
     font-weight: 500; letter-spacing: 0.05em; border-radius: 50px; cursor: pointer;
-    transition: all 0.2s; margin-top: 0.5rem;
+    transition: all 0.2s; margin-top: 0.5rem; touch-action: manipulation;
   }
   .btn-restart:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
 
-  .screen { animation: fadeSlide 0.5s ease both; }
-  @keyframes fadeSlide { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  /* ══════════════════════════════
+     LANDSCAPE PHONE OVERRIDES
+  ══════════════════════════════ */
+  @media (max-height: 500px) and (orientation: landscape) {
+    /* INTRO: side-by-side layout */
+    #screen-intro {
+      flex-direction: row;
+      justify-content: center;
+      gap: clamp(1rem, 4vw, 3rem);
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      text-align: left;
+    }
+    .atm-container {
+      width: min(160px, 30vw);
+      height: min(140px, 60vh);
+      flex-shrink: 0;
+      margin-bottom: 0;
+    }
+    .intro-kicker { margin-bottom: 0.4rem; }
+    .intro-title { font-size: clamp(1.3rem, 4vw, 2rem); margin-bottom: 0.4rem; }
+    .intro-sub { font-size: 0.78rem; margin-bottom: 0.8rem; text-align: left; }
+    .btn-primary { padding: 0.65rem 1.6rem; font-size: 0.85rem; }
 
-  .progress-dots { position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.4rem; z-index: 100; }
-  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: background 0.3s; }
-  .dot.active { background: var(--gold); }
-  .dot.done { background: var(--accent-green); }
+    /* REMITTANCE: compact */
+    .remit-header { padding: 0.6rem 1rem; }
+    .remit-body { padding: 0.75rem 1rem; }
+    .wage-card { padding: 0.75rem; margin-bottom: 0.75rem; }
+    .choices-grid { gap: 0.5rem; margin-bottom: 0.75rem; }
+    .choice-card { padding: 0.6rem 0.9rem; border-radius: 10px; }
+    .section-title { font-size: 1rem; margin-bottom: 0.2rem; }
+    .section-sub { font-size: 0.75rem; margin-bottom: 0.75rem; }
+    .confirm-btn { padding: 0.7rem; font-size: 0.88rem; }
 
-  @media (max-width: 400px) {
-    .member-avatar { width: 56px; height: 56px; font-size: 1.5rem; }
-    .family-members { gap: 0.6rem; }
+    /* FAMILY: side-by-side */
+    #screen-family { flex-direction: row; justify-content: center; gap: 1.5rem; padding: 0.75rem 1.5rem; }
+    .family-inner { flex-direction: row; align-items: center; gap: 1.5rem; max-width: 100%; }
+    .family-scene { margin-bottom: 0; flex-shrink: 0; }
+    .house-icon { font-size: 2rem; margin: 0.3rem 0; }
+    .member-avatar { width: 42px; height: 42px; font-size: 1.1rem; }
+    .family-members { gap: 0.4rem; margin-bottom: 0.5rem; }
+    .heart-burst { font-size: 0.6rem; }
+    .transfer-amount { font-size: 2rem; }
+    .transfer-label { font-size: 0.65rem; margin-bottom: 0.5rem; }
+    .reaction-text { font-size: 0.82rem; margin-bottom: 0.75rem; }
+    .happiness-bar { margin-bottom: 0.3rem; }
+    .happiness-label { font-size: 0.65rem; margin-bottom: 0.75rem; }
+    .btn-primary { padding: 0.65rem 1.4rem; font-size: 0.85rem; }
+
+    /* MOTIVATION: compact */
+    #screen-motivation { padding: 0.75rem 2rem; }
+    .motivation-inner { gap: 0; }
+    .cup-icon { font-size: 2.5rem; margin-bottom: 0.6rem; }
+    .motivation-quote { font-size: clamp(0.85rem, 2.5vw, 1.1rem); margin-bottom: 0.5rem; padding: 0 1.5rem; }
+    .motivation-note { font-size: 0.75rem; margin: 0.6rem auto; }
+    .choices-recap { margin-bottom: 0.75rem; }
+    .btn-primary { margin-top: 0 !important; padding: 0.65rem 1.6rem; }
+
+    /* PASSCODE: compact */
+    #screen-passcode { padding: 0.75rem 2rem; }
+    .passcode-inner { gap: 0; }
+    .key-icon { font-size: 2.2rem; margin-bottom: 0.6rem; }
+    .passcode-title { font-size: 1.4rem; }
+    .passcode-subtitle { font-size: 0.78rem; margin-bottom: 0.75rem; }
+    .passcode-block { padding: 12px 16px; margin-bottom: 0.75rem; }
+    #passcodeBox { font-size: 18px; padding: 10px 16px; margin-bottom: 10px; }
+    .btn-restart { padding: 0.55rem 1.4rem; font-size: 0.8rem; }
+  }
+
+  /* ══════════════════════════════
+     VERY SMALL PORTRAIT PHONES
+  ══════════════════════════════ */
+  @media (max-width: 360px) {
+    .member-avatar { width: 44px; height: 44px; font-size: 1.2rem; }
+    .family-members { gap: 0.4rem; }
+    .choice-pct { min-width: 2.2rem; }
   }
 </style>
 </head>
@@ -290,7 +413,7 @@
   <div class="dot" id="dot3"></div>
 </div>
 
-<!-- ========= SCREEN 1: INTRO ========= -->
+<!-- ═══ SCREEN 1: INTRO ═══ -->
 <div id="screen-intro" class="screen active">
   <div class="intro-bg-lines" id="bgLines"></div>
   <div class="atm-container">
@@ -302,13 +425,15 @@
       </div>
     </div>
   </div>
-  <p class="intro-kicker">A Remittance Story</p>
-  <h1 class="intro-title">How much<br><em>goes home?</em></h1>
-  <p class="intro-sub">The screen shifts. The heavy question hangs in the air. Every peso, every dollar — a thread connecting you to those you left behind.</p>
-  <button class="btn-primary" onclick="goToScreen('remittance')">Begin →</button>
+  <div class="intro-text">
+    <p class="intro-kicker">A Remittance Story</p>
+    <h1 class="intro-title">How much<br><em>goes home?</em></h1>
+    <p class="intro-sub">The screen shifts. The heavy question hangs in the air. Every peso, every dollar — a thread connecting you to those you left behind.</p>
+    <button class="btn-primary" onclick="goToScreen('remittance')">Begin →</button>
+  </div>
 </div>
 
-<!-- ========= SCREEN 2: REMITTANCE ========= -->
+<!-- ═══ SCREEN 2: REMITTANCE ═══ -->
 <div id="screen-remittance" class="screen">
   <div class="remit-header">
     <div class="remit-logo">Global Transfer Network</div>
@@ -328,92 +453,84 @@
   </div>
 </div>
 
-<!-- ========= SCREEN 3: FAMILY ========= -->
+<!-- ═══ SCREEN 3: FAMILY ═══ -->
 <div id="screen-family" class="screen">
-  <div class="family-scene">
-    <div class="house-icon">🏡</div>
-    <div class="family-members" id="familyMembers"></div>
-  </div>
-  <div class="transfer-amount" id="transferAmount"></div>
-  <div class="transfer-label">Transferred Home ✓</div>
-  <p class="reaction-text" id="reactionText"></p>
-  <div class="happiness-bar">
-    <div class="happiness-fill" id="happinessFill"></div>
-  </div>
-  <div class="happiness-label" id="happinessLabel"></div>
-  <button class="btn-primary" onclick="goToScreen('motivation')" style="margin-top:1rem">Continue →</button>
-</div>
-
-<!-- ========= SCREEN 4: MOTIVATION ========= -->
-<div id="screen-motivation" class="screen">
-  <div class="cup-icon">☕</div>
-  <p class="motivation-eyebrow">A word of wisdom</p>
-  <p class="motivation-quote">
-    Remember, you cannot pour from an empty cup. If you send too much and get sick, who will help you then?
-  </p>
-  <div class="motivation-note" id="motivationNote"></div>
-  <div class="choices-recap" id="choicesRecap"></div>
-
-  <button class="btn-primary" onclick="goToScreen('passcode')" style="margin-top:0.5rem">Get Your Passcode →</button>
-</div>
-
-<!-- ========= SCREEN 5: PASSCODE ========= -->
-<div id="screen-passcode" class="screen" style="background:radial-gradient(ellipse at 60% 40%, #1c1008 0%, #0d0d18 70%);align-items:center;justify-content:center;padding:2.5rem 2rem;text-align:center;">
-  <div style="font-size:4rem;margin-bottom:1.5rem;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(201,168,76,0.3))">🔑</div>
-  <p style="font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Game Complete</p>
-  <p style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--text);margin-bottom:0.5rem;">Well done!</p>
-  <p style="color:var(--muted);font-size:0.88rem;max-width:360px;margin:0 auto 2rem;line-height:1.55;">Use this code to unlock the next game.</p>
-
-  <div class="passcode-block">
-    <div class="passcode-label">🔑 Your Passcode for the Next Game</div>
-    <div class="passcode-instruction">
-      <strong>Enter this passcode</strong> to unlock the next game. <strong>Tap it to copy!</strong>
+  <div class="family-inner">
+    <div class="family-scene">
+      <div class="house-icon">🏡</div>
+      <div class="family-members" id="familyMembers"></div>
     </div>
-    <div id="passcodeBox" onclick="copyPasscode()" title="Tap to copy" style="
-      cursor: pointer;
-      background: rgba(255,255,255,0.04);
-      border: 1.5px solid rgba(167,139,250,0.35);
-      border-radius: 14px;
-      padding: 18px 24px;
-      text-align: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 900;
-      color: var(--gold);
-      letter-spacing: 3px;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
-      margin-bottom: 18px;
-      user-select: none;
-    ">GiveMoney</div>
-    <div class="passcode-note" id="passcodeNote">Tap the code to copy it!</div>
+    <div class="family-right">
+      <div class="transfer-amount" id="transferAmount"></div>
+      <div class="transfer-label">Transferred Home ✓</div>
+      <p class="reaction-text" id="reactionText"></p>
+      <div class="happiness-bar">
+        <div class="happiness-fill" id="happinessFill"></div>
+      </div>
+      <div class="happiness-label" id="happinessLabel"></div>
+      <button class="btn-primary" onclick="goToScreen('motivation')">Continue →</button>
+    </div>
   </div>
+</div>
 
-  <button class="btn-restart" onclick="restart()">↩ Play Again</button>
+<!-- ═══ SCREEN 4: MOTIVATION ═══ -->
+<div id="screen-motivation" class="screen">
+  <div class="motivation-inner">
+    <div class="cup-icon">☕</div>
+    <p class="motivation-eyebrow">A word of wisdom</p>
+    <p class="motivation-quote">
+      Remember, you cannot pour from an empty cup. If you send too much and get sick, who will help you then?
+    </p>
+    <div class="motivation-note" id="motivationNote"></div>
+    <div class="choices-recap" id="choicesRecap"></div>
+    <button class="btn-primary" onclick="goToScreen('passcode')">Get Your Passcode →</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 5: PASSCODE ═══ -->
+<div id="screen-passcode" class="screen">
+  <div class="passcode-inner">
+    <div class="key-icon">🔑</div>
+    <p class="passcode-eyebrow">Game Complete</p>
+    <p class="passcode-title">Well done!</p>
+    <p class="passcode-subtitle">Use this code to unlock the next game.</p>
+
+    <div class="passcode-block">
+      <div class="passcode-label">🔑 Your Passcode for the Next Game</div>
+      <div class="passcode-instruction">
+        <strong>Enter this passcode</strong> to unlock the next game. <strong>Tap it to copy!</strong>
+      </div>
+      <div id="passcodeBox" onclick="copyPasscode()" title="Tap to copy">GiveMoney</div>
+      <div class="passcode-note" id="passcodeNote">Tap the code to copy it!</div>
+    </div>
+
+    <button class="btn-restart" onclick="restart()">↩ Play Again</button>
+  </div>
 </div>
 
 <script>
   const choices = [
     {
       pct: 30, amount: '$450', desc: 'Healthy balance — you keep enough for yourself', color: '#4ecb71', happiness: 72,
-      reaction: 'Your family lights up. The children cheer as Mama reads the transfer notice. There\'s enough for school fees this month — and even a small celebration dinner.',
+      reaction: "Your family lights up. The children cheer as Mama reads the transfer notice. There's enough for school fees this month — and even a small celebration dinner.",
       members: [{ emoji: '👩', name: 'Mama', delay: 0 }, { emoji: '👨', name: 'Papa', delay: 0.15 }, { emoji: '👧', name: 'Ana', delay: 0.3 }, { emoji: '👦', name: 'Rico', delay: 0.45 }],
       note: 'You sent 30% home. You kept $1,050 — enough to live well, save a little, and stay healthy. A sustainable rhythm.',
     },
     {
       pct: 40, amount: '$600', desc: 'The steady middle ground', color: '#c9a84c', happiness: 85,
-      reaction: 'Laughter fills the small home. Papa calls to say they paid off a debt. Mama buys vegetables — fresh ones, not wilted. The kids sleep easier tonight.',
+      reaction: "Laughter fills the small home. Papa calls to say they paid off a debt. Mama buys vegetables — fresh ones, not wilted. The kids sleep easier tonight.",
       members: [{ emoji: '👩', name: 'Mama', delay: 0 }, { emoji: '👨', name: 'Papa', delay: 0.12 }, { emoji: '👧', name: 'Ana', delay: 0.24 }, { emoji: '👦', name: 'Rico', delay: 0.36 }, { emoji: '👴', name: 'Lolo', delay: 0.48 }],
       note: 'You sent 40% home. You kept $900. A solid balance — family thrives and you can still manage your own needs.',
     },
     {
       pct: 50, amount: '$750', desc: 'Tightening your belt', color: '#f4845f', happiness: 92,
-      reaction: 'Your family is overjoyed — they can finally repair the leaking roof before rainy season. But tonight, you eat instant noodles again, alone.',
+      reaction: "Your family is overjoyed — they can finally repair the leaking roof before rainy season. But tonight, you eat instant noodles again, alone.",
       members: [{ emoji: '👩', name: 'Mama', delay: 0 }, { emoji: '👨', name: 'Papa', delay: 0.1 }, { emoji: '👧', name: 'Ana', delay: 0.2 }, { emoji: '👦', name: 'Rico', delay: 0.3 }, { emoji: '👴', name: 'Lolo', delay: 0.4 }, { emoji: '👵', name: 'Lola', delay: 0.5 }],
-      note: 'You sent 50% home. You kept $750 — workable, but thin. Make sure you\'re not skipping meals or medical care.',
+      note: "You sent 50% home. You kept $750 — workable, but thin. Make sure you're not skipping meals or medical care.",
     },
     {
       pct: 60, amount: '$900', desc: 'Maximum sacrifice', color: '#e05252', happiness: 98,
-      reaction: 'Pure joy back home — they cry happy tears. But you\'re left with $600. One unexpected bill could break you. Your family\'s happiness rests on you staying well.',
+      reaction: "Pure joy back home — they cry happy tears. But you're left with $600. One unexpected bill could break you. Your family's happiness rests on you staying well.",
       members: [{ emoji: '👩', name: 'Mama', delay: 0 }, { emoji: '👨', name: 'Papa', delay: 0.08 }, { emoji: '👧', name: 'Ana', delay: 0.16 }, { emoji: '👦', name: 'Rico', delay: 0.24 }, { emoji: '👴', name: 'Lolo', delay: 0.32 }, { emoji: '👵', name: 'Lola', delay: 0.4 }, { emoji: '🧒', name: 'Bunso', delay: 0.48 }],
       note: 'You sent 60% home. You kept only $600. This is maximum sacrifice — be very careful about your own health and safety.',
     },
@@ -443,7 +560,7 @@
     card.innerHTML = `
       <div class="choice-pct">${c.pct}%</div>
       <div class="choice-info">
-        <div class="choice-amount">${c.amount} <span style="font-weight:300;color:var(--muted);font-size:0.85rem">/ month</span></div>
+        <div class="choice-amount">${c.amount} <span style="font-weight:300;color:var(--muted);font-size:0.8rem">/ month</span></div>
         <div class="choice-desc">${c.desc}</div>
       </div>
       <div class="choice-radio"></div>
@@ -515,9 +632,18 @@
 
   function goToScreen(name) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    const map = { 'intro': 'screen-intro', 'remittance': 'screen-remittance', 'family': 'screen-family', 'motivation': 'screen-motivation', 'passcode': 'screen-passcode' };
+    const map = {
+      'intro': 'screen-intro',
+      'remittance': 'screen-remittance',
+      'family': 'screen-family',
+      'motivation': 'screen-motivation',
+      'passcode': 'screen-passcode'
+    };
     const el = document.getElementById(map[name]);
-    if (el) el.classList.add('active');
+    if (el) {
+      el.classList.add('active');
+      window.scrollTo(0, 0);
+    }
     updateDots(name);
     if (name === 'family') document.getElementById('happinessFill').style.width = '0%';
   }
@@ -543,11 +669,8 @@
       note.textContent = '✓ Copied to clipboard!';
       note.style.color = '#4ecb71';
       setTimeout(() => {
-        box.style.background = '';
-        box.style.borderColor = '';
-        box.style.color = '';
-        note.textContent = 'Tap the code to copy it!';
-        note.style.color = '';
+        box.style.background = ''; box.style.borderColor = ''; box.style.color = '';
+        note.textContent = 'Tap the code to copy it!'; note.style.color = '';
       }, 2500);
     }).catch(() => {
       note.textContent = 'Passcode: GiveMoney';
