@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>SMART Goal Builder — Phase 1</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -20,7 +20,10 @@
     --muted: #8888aa;
     --glow: rgba(245,200,66,0.18);
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+
+  html, body { height:100%; }
+
   body{
     background:var(--bg);
     font-family:'DM Sans',sans-serif;
@@ -28,6 +31,7 @@
     min-height:100vh;
     overflow-x:hidden;
     position:relative;
+    touch-action:manipulation;
   }
 
   /* ── BG BUTTERFLIES ── */
@@ -40,51 +44,53 @@
   }
 
   /* ── LAYOUT ── */
-  .container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:30px 20px 80px;}
+  .container{
+    position:relative;z-index:1;
+    max-width:900px;margin:0 auto;
+    padding:clamp(16px,4vw,30px) clamp(12px,4vw,20px) 80px;
+  }
 
   /* ── HEADER ── */
   .phase-badge{
-    display:inline-block;padding:5px 16px;border-radius:40px;
+    display:inline-block;padding:4px 14px;border-radius:40px;
     background:linear-gradient(135deg,rgba(245,200,66,0.2),rgba(61,232,200,0.1));
     border:1px solid rgba(245,200,66,0.3);
-    font-size:11px;letter-spacing:3px;text-transform:uppercase;
-    color:var(--gold);font-weight:600;margin-bottom:18px;
+    font-size:clamp(9px,2vw,11px);letter-spacing:2px;text-transform:uppercase;
+    color:var(--gold);font-weight:600;margin-bottom:14px;
   }
   h1{
     font-family:'Playfair Display',serif;
-    font-size:clamp(28px,5vw,48px);
+    font-size:clamp(22px,6vw,48px);
     line-height:1.1;
     background:linear-gradient(135deg,var(--cream) 0%,var(--gold) 60%,var(--teal) 100%);
     -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-    margin-bottom:10px;
+    margin-bottom:8px;
   }
-  .subtitle{color:var(--muted);font-size:15px;line-height:1.6;max-width:560px;margin-bottom:40px;}
+  .subtitle{color:var(--muted);font-size:clamp(12px,3vw,15px);line-height:1.6;max-width:560px;margin-bottom:clamp(20px,4vw,40px);}
 
-  /* ── BUTTERFLY MASCOT ── */
+  /* ── MASCOT ── */
   .mascot-wrap{
     background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(61,232,200,0.05));
     border:1px solid rgba(167,139,250,0.2);
-    border-radius:20px;padding:24px 28px;
-    display:flex;align-items:flex-start;gap:20px;
-    margin-bottom:36px;position:relative;overflow:hidden;
+    border-radius:16px;padding:clamp(14px,3vw,24px) clamp(14px,3vw,28px);
+    display:flex;align-items:flex-start;gap:clamp(10px,3vw,20px);
+    margin-bottom:clamp(20px,4vw,36px);position:relative;overflow:hidden;
   }
   .mascot-wrap::before{
     content:'';position:absolute;top:-40px;right:-40px;
     width:150px;height:150px;border-radius:50%;
     background:radial-gradient(circle,rgba(167,139,250,0.1),transparent 70%);
+    pointer-events:none;
   }
   .bf-svg{animation:bfHover 3s ease-in-out infinite;flex-shrink:0;}
   @keyframes bfHover{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-8px) rotate(3deg);}}
-  .mascot-text{flex:1;}
-  .mascot-name{font-family:'Caveat',cursive;font-size:18px;color:var(--lavender);font-weight:700;margin-bottom:6px;}
-  .mascot-quote{font-size:15px;line-height:1.65;color:var(--cream);font-style:italic;}
+  .mascot-text{flex:1;min-width:0;}
+  .mascot-name{font-family:'Caveat',cursive;font-size:clamp(14px,3.5vw,18px);color:var(--lavender);font-weight:700;margin-bottom:5px;}
+  .mascot-quote{font-size:clamp(12px,3vw,15px);line-height:1.65;color:var(--cream);font-style:italic;}
 
   /* ── STEP INDICATOR ── */
-  .steps-row{display:flex;gap:6px;margin-bottom:30px;flex-wrap:wrap;}
-  .step-dot{
-    flex:1;min-width:60px;height:4px;border-radius:4px;
-    background:rgba(255,255,255,0.08);transition:background 0.4s,box-shadow 0.4s;
-  }
+  .steps-row{display:flex;gap:6px;margin-bottom:clamp(20px,4vw,30px);}
+  .step-dot{flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,0.08);transition:background 0.4s,box-shadow 0.4s;}
   .step-dot.active{background:var(--gold);box-shadow:0 0 10px rgba(245,200,66,0.5);}
   .step-dot.done{background:var(--teal);}
 
@@ -94,84 +100,97 @@
   @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
   /* ── PATH CARDS ── */
-  .paths-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  @media(max-width:600px){.paths-grid{grid-template-columns:1fr;}}
+  .paths-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(10px,2.5vw,16px);
+  }
   .path-card{
     background:var(--card-bg);border:1.5px solid var(--border);
-    border-radius:18px;padding:24px 22px;cursor:pointer;
-    transition:all 0.3s;position:relative;overflow:hidden;
+    border-radius:16px;padding:clamp(14px,3vw,24px) clamp(12px,2.5vw,22px);
+    cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;
   }
   .path-card::before{
     content:'';position:absolute;inset:0;
-    background:var(--pc-color);opacity:0;transition:opacity 0.3s;border-radius:18px;
+    background:var(--pc-color);opacity:0;transition:opacity 0.3s;border-radius:16px;
   }
   .path-card:hover::before,.path-card.selected::before{opacity:0.07;}
   .path-card:hover{border-color:var(--pc-border);transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,0.3);}
   .path-card.selected{border-color:var(--pc-border);box-shadow:0 0 0 2px var(--pc-border),0 12px 30px rgba(0,0,0,0.3);}
-  .path-icon{font-size:32px;margin-bottom:12px;display:block;}
-  .path-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:6px;font-weight:600;}
-  .path-title{font-family:'Playfair Display',serif;font-size:18px;line-height:1.3;margin-bottom:8px;}
-  .path-desc{font-size:13px;color:var(--muted);line-height:1.5;}
+  .path-icon{font-size:clamp(22px,5vw,32px);margin-bottom:10px;display:block;}
+  .path-label{font-size:clamp(9px,2vw,10px);letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:5px;font-weight:600;}
+  .path-title{font-family:'Playfair Display',serif;font-size:clamp(13px,2.8vw,18px);line-height:1.3;margin-bottom:6px;}
+  .path-desc{font-size:clamp(11px,2.3vw,13px);color:var(--muted);line-height:1.5;}
   .path-check{
-    position:absolute;top:16px;right:16px;
-    width:26px;height:26px;border-radius:50%;
+    position:absolute;top:12px;right:12px;
+    width:24px;height:24px;border-radius:50%;
     background:var(--teal);display:none;
-    align-items:center;justify-content:center;font-size:13px;
+    align-items:center;justify-content:center;font-size:12px;
   }
   .path-card.selected .path-check{display:flex;}
 
   .choose-btn{
-    margin-top:24px;width:100%;padding:16px;border-radius:14px;
+    margin-top:clamp(16px,4vw,24px);width:100%;
+    padding:clamp(12px,3vw,16px);border-radius:14px;
     background:linear-gradient(135deg,var(--gold),#e8a820);
-    border:none;color:#0d0d1a;font-size:16px;font-weight:700;
+    border:none;color:#0d0d1a;
+    font-size:clamp(14px,3.5vw,16px);font-weight:700;
     cursor:pointer;transition:all 0.3s;display:none;
     font-family:'DM Sans',sans-serif;
+    touch-action:manipulation;
   }
   .choose-btn.visible{display:block;animation:fadeUp 0.4s ease;}
   .choose-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(245,200,66,0.35);}
 
   /* ── SMART BUILDER ── */
-  .smart-header{margin-bottom:28px;}
+  .smart-header{margin-bottom:clamp(16px,4vw,28px);}
   .chosen-goal-tag{
     display:inline-flex;align-items:center;gap:8px;
     background:rgba(61,232,200,0.1);border:1px solid rgba(61,232,200,0.25);
-    border-radius:40px;padding:6px 16px;font-size:13px;color:var(--teal);
-    margin-bottom:16px;
+    border-radius:40px;padding:5px 14px;font-size:clamp(11px,2.5vw,13px);color:var(--teal);
+    margin-bottom:12px;
   }
-  .smart-title{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:6px;}
-  .smart-sub{font-size:14px;color:var(--muted);}
+  .smart-title{font-family:'Playfair Display',serif;font-size:clamp(18px,5vw,26px);margin-bottom:5px;}
+  .smart-sub{font-size:clamp(12px,2.8vw,14px);color:var(--muted);}
 
   /* ── DRAG ZONE ── */
-  .builder-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
-  @media(max-width:640px){.builder-layout{grid-template-columns:1fr;}}
+  .builder-layout{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(12px,3vw,20px);
+    align-items:start;
+  }
 
   .cards-pool{
     background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.1);
-    border-radius:18px;padding:20px;
+    border-radius:16px;padding:clamp(12px,3vw,20px);
+    position:sticky;top:8px;
   }
-  .cards-pool-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;font-weight:600;}
+  .cards-pool-title{font-size:clamp(9px,2vw,12px);letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:600;}
 
   .smart-card{
     background:var(--sc-bg,var(--card-bg));
     border:1.5px solid var(--sc-border,var(--border));
-    border-radius:14px;padding:18px 16px;
-    cursor:grab;margin-bottom:12px;
+    border-radius:12px;padding:clamp(10px,2.5vw,18px) clamp(10px,2.5vw,16px);
+    cursor:grab;margin-bottom:clamp(8px,2vw,12px);
     transition:all 0.25s;position:relative;
-    user-select:none;touch-action:none;
+    user-select:none;-webkit-user-select:none;
+    touch-action:none;
   }
+  .smart-card:last-child{margin-bottom:0;}
   .smart-card:active{cursor:grabbing;transform:scale(1.02);box-shadow:0 16px 40px rgba(0,0,0,0.4);}
   .smart-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3);}
   .smart-card.dragging{opacity:0.4;transform:scale(0.96);}
-  .sc-letter{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--sc-color);line-height:1;margin-bottom:4px;}
-  .sc-word{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sc-color);opacity:0.7;font-weight:600;}
-  .sc-hint{font-size:12px;color:var(--muted);margin-top:6px;font-style:italic;}
+  .sc-letter{font-family:'Playfair Display',serif;font-size:clamp(18px,4vw,28px);font-weight:900;color:var(--sc-color);line-height:1;margin-bottom:3px;}
+  .sc-word{font-size:clamp(9px,2vw,11px);letter-spacing:1.5px;text-transform:uppercase;color:var(--sc-color);opacity:0.7;font-weight:600;}
+  .sc-hint{font-size:clamp(10px,2.2vw,12px);color:var(--muted);margin-top:5px;font-style:italic;}
 
   /* ── DROP ZONES ── */
-  .drop-area{display:flex;flex-direction:column;gap:12px;}
+  .drop-area{display:flex;flex-direction:column;gap:clamp(8px,2vw,12px);}
   .drop-zone{
     background:rgba(255,255,255,0.02);
     border:1.5px dashed rgba(255,255,255,0.12);
-    border-radius:14px;padding:18px;min-height:80px;
+    border-radius:12px;padding:clamp(12px,3vw,18px);min-height:70px;
     transition:all 0.3s;position:relative;
     display:flex;align-items:center;justify-content:center;
   }
@@ -181,73 +200,77 @@
     box-shadow:0 0 20px rgba(245,200,66,0.1);
   }
   .drop-zone.filled{border-style:solid;background:rgba(255,255,255,0.03);}
-  .drop-placeholder{color:var(--muted);font-size:13px;text-align:center;}
-  .drop-letter{font-size:20px;font-weight:900;font-family:'Playfair Display',serif;color:var(--muted);margin-bottom:4px;}
+  .drop-placeholder{color:var(--muted);font-size:clamp(11px,2.5vw,13px);text-align:center;}
+  .drop-letter{font-size:clamp(14px,3.5vw,20px);font-weight:900;font-family:'Playfair Display',serif;color:var(--muted);margin-bottom:3px;}
 
-  /* ── FILLED CARD CONTENT ── */
+  /* ── FILLED CARD ── */
   .filled-content{width:100%;animation:fillReveal 0.5s cubic-bezier(0.34,1.56,0.64,1) both;}
   @keyframes fillReveal{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
-  .fc-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:6px;opacity:0.7;}
-  .fc-title{font-family:'Playfair Display',serif;font-size:17px;line-height:1.3;margin-bottom:6px;}
-  .fc-detail{font-size:13px;color:var(--muted);line-height:1.5;}
+  .fc-label{font-size:clamp(9px,2vw,10px);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:5px;opacity:0.7;}
+  .fc-title{font-family:'Playfair Display',serif;font-size:clamp(13px,3vw,17px);line-height:1.3;margin-bottom:5px;}
+  .fc-detail{font-size:clamp(11px,2.5vw,13px);color:var(--muted);line-height:1.5;}
   .fc-badge{
     display:inline-block;padding:3px 10px;border-radius:20px;
-    font-size:11px;font-weight:600;margin-top:8px;
+    font-size:clamp(10px,2.2vw,11px);font-weight:600;margin-top:7px;
   }
 
-  /* ── ACHIEVABLE CHOICE ── */
-  .achieve-choices{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+  /* ── ACHIEVABLE ── */
+  .achieve-choices{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
   .achieve-btn{
-    flex:1;padding:10px 14px;border-radius:10px;border:1.5px solid;
-    font-size:13px;font-weight:600;cursor:pointer;transition:all 0.25s;
+    flex:1;min-width:90px;
+    padding:clamp(7px,2vw,10px) clamp(10px,2.5vw,14px);
+    border-radius:10px;border:1.5px solid;
+    font-size:clamp(11px,2.5vw,13px);font-weight:600;
+    cursor:pointer;transition:all 0.25s;
     background:transparent;font-family:'DM Sans',sans-serif;
+    touch-action:manipulation;
   }
   .achieve-btn.yes{border-color:var(--teal);color:var(--teal);}
   .achieve-btn.yes:hover,.achieve-btn.yes.chosen{background:rgba(61,232,200,0.15);}
   .achieve-btn.no{border-color:var(--rose);color:var(--rose);}
   .achieve-btn.no:hover,.achieve-btn.no.chosen{background:rgba(255,107,138,0.15);}
   .achieve-tip{
-    margin-top:12px;padding:12px 14px;border-radius:10px;
+    margin-top:10px;padding:10px 12px;border-radius:10px;
     background:rgba(255,107,138,0.08);border:1px solid rgba(255,107,138,0.25);
-    font-size:13px;line-height:1.55;color:var(--cream);
+    font-size:clamp(11px,2.5vw,13px);line-height:1.55;color:var(--cream);
     display:none;animation:fadeUp 0.4s ease;
   }
   .achieve-tip.visible{display:block;}
-  .tip-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);font-weight:700;margin-bottom:5px;}
+  .tip-label{font-size:clamp(9px,2vw,10px);letter-spacing:2px;text-transform:uppercase;color:var(--rose);font-weight:700;margin-bottom:4px;}
 
   /* ── PROGRESS ── */
-  .progress-bar-wrap{margin:24px 0 8px;background:rgba(255,255,255,0.05);border-radius:40px;height:6px;overflow:hidden;}
+  .progress-bar-wrap{margin:clamp(14px,3vw,24px) 0 6px;background:rgba(255,255,255,0.05);border-radius:40px;height:6px;overflow:hidden;}
   .progress-bar-fill{height:100%;border-radius:40px;background:linear-gradient(90deg,var(--gold),var(--teal));transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1);}
-  .progress-label{font-size:12px;color:var(--muted);margin-bottom:18px;}
+  .progress-label{font-size:clamp(10px,2.5vw,12px);color:var(--muted);margin-bottom:clamp(12px,3vw,18px);}
   .progress-label span{color:var(--gold);font-weight:600;}
 
   /* ── SUCCESS ── */
-  .success-screen{text-align:center;padding:40px 20px;}
-  .success-emoji{font-size:64px;display:block;margin-bottom:20px;animation:successBounce 0.6s cubic-bezier(0.34,1.56,0.64,1);}
+  .success-screen{text-align:center;padding:clamp(20px,5vw,40px) clamp(10px,4vw,20px);}
+  .success-emoji{font-size:clamp(40px,10vw,64px);display:block;margin-bottom:16px;animation:successBounce 0.6s cubic-bezier(0.34,1.56,0.64,1);}
   @keyframes successBounce{from{transform:scale(0);}to{transform:scale(1);}}
-  .success-title{font-family:'Playfair Display',serif;font-size:36px;margin-bottom:12px;
+  .success-title{font-family:'Playfair Display',serif;font-size:clamp(24px,7vw,36px);margin-bottom:10px;
     background:linear-gradient(135deg,var(--gold),var(--teal));
     -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-  .success-tagline{font-size:16px;color:var(--cream);max-width:480px;margin:0 auto 30px;line-height:1.65;}
+  .success-tagline{font-size:clamp(13px,3vw,16px);color:var(--cream);max-width:480px;margin:0 auto clamp(16px,4vw,30px);line-height:1.65;}
   .goal-summary{
     background:linear-gradient(135deg,rgba(245,200,66,0.06),rgba(61,232,200,0.04));
-    border:1px solid rgba(245,200,66,0.2);border-radius:20px;
-    padding:28px;max-width:500px;margin:0 auto 32px;text-align:left;
+    border:1px solid rgba(245,200,66,0.2);border-radius:18px;
+    padding:clamp(16px,4vw,28px);max-width:500px;margin:0 auto clamp(20px,4vw,32px);text-align:left;
   }
-  .gs-title{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px;color:var(--gold);}
-  .gs-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.05);}
+  .gs-title{font-family:'Playfair Display',serif;font-size:clamp(15px,4vw,20px);margin-bottom:14px;color:var(--gold);}
+  .gs-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05);}
   .gs-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-  .gs-letter{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;font-size:16px;flex-shrink:0;}
-  .gs-content{flex:1;}
-  .gs-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:0.5;font-weight:600;margin-bottom:3px;}
-  .gs-val{font-size:14px;line-height:1.4;}
+  .gs-letter{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;font-size:14px;flex-shrink:0;}
+  .gs-content{flex:1;min-width:0;}
+  .gs-label{font-size:clamp(9px,2vw,10px);letter-spacing:2px;text-transform:uppercase;opacity:0.5;font-weight:600;margin-bottom:3px;}
+  .gs-val{font-size:clamp(12px,2.8vw,14px);line-height:1.4;}
 
   /* ── PASSCODE BLOCK ── */
   .passcode-block{
-    max-width:500px;margin:0 auto 28px;
+    max-width:500px;margin:0 auto clamp(20px,4vw,28px);
     background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(61,232,200,0.05));
     border:1px solid rgba(167,139,250,0.3);
-    border-radius:22px;padding:28px 24px;
+    border-radius:20px;padding:clamp(18px,4vw,28px) clamp(14px,4vw,24px);
     position:relative;overflow:hidden;
   }
   .passcode-block::before{
@@ -257,72 +280,70 @@
     pointer-events:none;
   }
   .passcode-label{
-    font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    font-size:clamp(9px,2vw,11px);letter-spacing:3px;text-transform:uppercase;
     color:var(--lavender);font-weight:700;margin-bottom:8px;
     display:flex;align-items:center;gap:8px;
   }
   .passcode-label::before{content:'🔑';}
-  .passcode-instruction{
-    font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.5;
-  }
+  .passcode-instruction{font-size:clamp(12px,2.8vw,14px);color:var(--muted);margin-bottom:18px;line-height:1.5;}
   .passcode-instruction strong{color:var(--cream);}
-  .passcode-digits{
-    display:flex;gap:10px;justify-content:center;margin-bottom:18px;
-    flex-wrap:wrap;
-  }
-  .pc-digit{
-    width:44px;height:56px;
+
+  #passcodeDigits{
+    cursor:pointer;
     background:rgba(255,255,255,0.04);
     border:1.5px solid rgba(167,139,250,0.35);
-    border-radius:12px;
-    display:flex;align-items:center;justify-content:center;
+    border-radius:14px;
+    padding:clamp(12px,3vw,18px) clamp(14px,4vw,24px);
+    text-align:center;
     font-family:'Playfair Display',serif;
-    font-size:22px;font-weight:900;
+    font-size:clamp(20px,5vw,28px);
+    font-weight:900;
     color:var(--gold);
-    position:relative;overflow:hidden;
-    animation:digitReveal 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
-    transition:background 0.2s, border-color 0.2s, transform 0.15s;
+    letter-spacing:2px;
+    transition:background 0.2s, border-color 0.2s;
+    margin-bottom:16px;
+    user-select:none;-webkit-user-select:none;
+    word-break:break-all;
+    touch-action:manipulation;
   }
-  .passcode-digits:hover .pc-digit{
-    border-color:rgba(245,200,66,0.6);
-    background:rgba(245,200,66,0.07);
-  }
-  .passcode-digits.copied .pc-digit{
-    background:rgba(61,232,200,0.15);
-    border-color:rgba(61,232,200,0.6);
-    color:var(--teal);
-    transform:scale(1.05);
-  }
-  .pc-digit::after{
-    content:'';position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(245,200,66,0.06),transparent);
-    pointer-events:none;
-  }
-  @keyframes digitReveal{
-    from{opacity:0;transform:translateY(20px) scale(0.7);}
-    to{opacity:1;transform:translateY(0) scale(1);}
-  }
-  .pc-digit:nth-child(1){animation-delay:0.05s;} .pc-digit:nth-child(2){animation-delay:0.10s;}
-  .pc-digit:nth-child(3){animation-delay:0.15s;} .pc-digit:nth-child(4){animation-delay:0.20s;}
-  .pc-digit:nth-child(5){animation-delay:0.25s;} .pc-digit:nth-child(6){animation-delay:0.30s;}
-  .pc-digit:nth-child(7){animation-delay:0.35s;} .pc-digit:nth-child(8){animation-delay:0.40s;}
-  .pc-digit:nth-child(9){animation-delay:0.45s;} .pc-digit:nth-child(10){animation-delay:0.50s;}
   .passcode-note{
-    font-size:12px;color:var(--muted);text-align:center;
+    font-size:clamp(11px,2.5vw,12px);color:var(--muted);text-align:center;
     display:flex;align-items:center;justify-content:center;gap:6px;
   }
   .passcode-note::before{content:'✦';color:var(--gold);font-size:10px;}
   .passcode-note::after{content:'✦';color:var(--gold);font-size:10px;}
 
-  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-  .cta-secondary{
-    padding:16px 28px;border-radius:14px;
-    background:transparent;border:1.5px solid rgba(255,255,255,0.15);
-    color:var(--text);font-size:15px;font-weight:500;
-    cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
+  .cta-primary{
+    padding:clamp(12px,3vw,16px) clamp(22px,5vw,32px);border-radius:14px;
+    background:linear-gradient(135deg,var(--gold),#e8a820);
+    border:none;color:#0d0d1a;
+    font-size:clamp(13px,3.5vw,15px);font-weight:700;
+    cursor:pointer;transition:all 0.3s;
+    display:inline-flex;align-items:center;gap:8px;
     font-family:'DM Sans',sans-serif;
+    box-shadow:0 8px 30px rgba(245,200,66,0.35);
+    touch-action:manipulation;
+  }
+  .cta-secondary{
+    padding:clamp(12px,3vw,16px) clamp(18px,4vw,28px);border-radius:14px;
+    background:transparent;border:1.5px solid rgba(255,255,255,0.15);
+    color:var(--text);font-size:clamp(13px,3.5vw,15px);font-weight:500;
+    cursor:pointer;transition:all 0.3s;text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'DM Sans',sans-serif;
+    touch-action:manipulation;
   }
   .cta-secondary:hover{border-color:var(--teal);color:var(--teal);}
+
+  /* ── DRAG HINT ── */
+  .drag-hint{
+    display:flex;align-items:center;gap:8px;
+    padding:clamp(8px,2vw,10px) clamp(10px,2.5vw,14px);
+    background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);
+    border-radius:10px;margin-bottom:clamp(12px,3vw,20px);
+    font-size:clamp(11px,2.5vw,13px);color:var(--lavender);
+  }
 
   /* ── CONFETTI ── */
   .confetti-piece{
@@ -334,18 +355,18 @@
     100%{transform:translateY(110vh) rotate(720deg);opacity:0;}
   }
 
-  /* ── TOOLTIP ── */
-  .drag-hint{
-    display:flex;align-items:center;gap:8px;padding:10px 14px;
-    background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);
-    border-radius:10px;margin-bottom:20px;font-size:13px;color:var(--lavender);
+  /* ── TOUCH DRAG CLONE ── */
+  .touch-drag-clone{
+    position:fixed;pointer-events:none;z-index:9999;
+    opacity:0.88;transition:none !important;
+    border-radius:12px;
   }
 
   /* ── PATH COLORS ── */
-  [data-path="provider"] { --pc-color: rgba(245,200,66,0.2); --pc-border: rgba(245,200,66,0.5); }
-  [data-path="homebuilder"] { --pc-color: rgba(61,232,200,0.2); --pc-border: rgba(61,232,200,0.5); }
-  [data-path="safety"] { --pc-color: rgba(255,107,138,0.2); --pc-border: rgba(255,107,138,0.5); }
-  [data-path="dreamer"] { --pc-color: rgba(167,139,250,0.2); --pc-border: rgba(167,139,250,0.5); }
+  [data-path="provider"]{--pc-color:rgba(245,200,66,0.2);--pc-border:rgba(245,200,66,0.5);}
+  [data-path="homebuilder"]{--pc-color:rgba(61,232,200,0.2);--pc-border:rgba(61,232,200,0.5);}
+  [data-path="safety"]{--pc-color:rgba(255,107,138,0.2);--pc-border:rgba(255,107,138,0.5);}
+  [data-path="dreamer"]{--pc-color:rgba(167,139,250,0.2);--pc-border:rgba(167,139,250,0.5);}
 
   /* ── SMART CARD COLORS ── */
   .sc-S{--sc-bg:rgba(245,200,66,0.06);--sc-border:rgba(245,200,66,0.25);--sc-color:#f5c842;}
@@ -356,6 +377,91 @@
 
   .dz-S{--dz-color:#f5c842;} .dz-M{--dz-color:#3de8c8;} .dz-A{--dz-color:#ff6b8a;}
   .dz-R{--dz-color:#a78bfa;} .dz-T{--dz-color:#fb923c;}
+
+  /* ══════════════════════════════
+     RESPONSIVE BREAKPOINTS
+  ══════════════════════════════ */
+
+  /* ── Small phones: single-col path grid ── */
+  @media (max-width: 480px) {
+    .paths-grid { grid-template-columns: 1fr; }
+    .builder-layout { grid-template-columns: 1fr; }
+    .cards-pool { position: static; }
+
+    /* Horizontal scroll cards row on mobile portrait */
+    .cards-pool-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+    }
+    .cards-pool-row {
+      display: flex;
+      gap: 10px;
+      min-width: max-content;
+    }
+    .cards-pool-row .smart-card {
+      margin-bottom: 0;
+      width: 130px;
+      flex-shrink: 0;
+    }
+  }
+
+  /* ── Medium phones: 2-col paths, 1-col builder ── */
+  @media (min-width: 481px) and (max-width: 640px) {
+    .builder-layout { grid-template-columns: 1fr; }
+    .cards-pool { position: static; }
+    .cards-pool-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+    }
+    .cards-pool-row {
+      display: flex;
+      gap: 10px;
+      min-width: max-content;
+    }
+    .cards-pool-row .smart-card {
+      margin-bottom: 0;
+      width: 140px;
+      flex-shrink: 0;
+    }
+  }
+
+  /* ── Landscape phones ── */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .container { padding: 8px 12px 40px; }
+    h1 { font-size: clamp(18px, 4vw, 28px); margin-bottom: 4px; }
+    .subtitle { margin-bottom: 10px; font-size: 12px; }
+
+    .mascot-wrap { padding: 10px 14px; margin-bottom: 10px; gap: 10px; }
+    .bf-svg svg { width: 40px; height: 40px; }
+    .mascot-quote { font-size: 11px; line-height: 1.5; }
+
+    .steps-row { margin-bottom: 10px; }
+
+    /* Landscape: 4-col path grid */
+    .paths-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .path-card { padding: 10px 10px; }
+    .path-icon { font-size: 18px; margin-bottom: 6px; }
+    .path-title { font-size: 11px; line-height: 1.2; margin-bottom: 4px; }
+    .path-desc { font-size: 10px; }
+
+    /* Landscape: keep 2-col builder */
+    .builder-layout { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .cards-pool { position: sticky; top: 4px; padding: 10px; }
+    .smart-card { padding: 8px 10px; margin-bottom: 6px; }
+    .sc-letter { font-size: 18px; }
+    .sc-hint { font-size: 10px; margin-top: 3px; }
+    .drop-zone { min-height: 56px; padding: 10px; }
+    .progress-bar-wrap { margin: 10px 0 4px; }
+    .smart-header { margin-bottom: 10px; }
+    .drag-hint { padding: 6px 10px; margin-bottom: 8px; font-size: 11px; }
+  }
+
+  /* ── Tall phones / phablets ── */
+  @media (min-width: 641px) and (max-width: 899px) {
+    .builder-layout { grid-template-columns: 1fr 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -365,7 +471,6 @@
 
 <div class="container">
 
-  <!-- Phase Badge + Title -->
   <div class="phase-badge">Phase 1</div>
   <h1>The SMART<br/>Goal Builder</h1>
   <p class="subtitle">Name your goal, build your mission. The money will follow when you know exactly where you're going.</p>
@@ -404,7 +509,6 @@
   <!-- ── SCREEN 1: Choose Path ── -->
   <div class="screen active" id="screen-paths">
     <div class="paths-grid">
-
       <div class="path-card" data-path="provider" onclick="selectPath(this)">
         <span class="path-icon">👶</span>
         <div class="path-label">The Provider</div>
@@ -412,7 +516,6 @@
         <div class="path-desc">By next year — build her future brick by brick.</div>
         <div class="path-check">✓</div>
       </div>
-
       <div class="path-card" data-path="homebuilder" onclick="selectPath(this)">
         <span class="path-icon">🏡</span>
         <div class="path-label">The Homebuilder</div>
@@ -420,7 +523,6 @@
         <div class="path-desc">In 2 years — plant roots where your heart belongs.</div>
         <div class="path-check">✓</div>
       </div>
-
       <div class="path-card" data-path="safety" onclick="selectPath(this)">
         <span class="path-icon">🛡️</span>
         <div class="path-label">The Safety Net</div>
@@ -428,7 +530,6 @@
         <div class="path-desc">For my parents' health — peace of mind has a price tag.</div>
         <div class="path-check">✓</div>
       </div>
-
       <div class="path-card" data-path="dreamer" onclick="selectPath(this)">
         <span class="path-icon">✂️</span>
         <div class="path-label">The Dreamer</div>
@@ -436,11 +537,8 @@
         <div class="path-desc">In 3 years — turn craft into livelihood, passion into profit.</div>
         <div class="path-check">✓</div>
       </div>
-
     </div>
-    <button class="choose-btn" id="chooseBtn" onclick="goToSmartBuilder()">
-      Lock In My Path ✦
-    </button>
+    <button class="choose-btn" id="chooseBtn" onclick="goToSmartBuilder()">Lock In My Path ✦</button>
   </div>
 
   <!-- ── SCREEN 2: SMART Builder ── -->
@@ -451,50 +549,47 @@
         <span id="chosenLabel">The Dreamer</span>
       </div>
       <div class="smart-title">Build Your SMART Goal</div>
-      <div class="smart-sub">Drag each card to its matching zone to define your mission.</div>
+      <div class="smart-sub" id="smartSubText">Drag each card to its matching zone to define your mission.</div>
     </div>
 
-    <div class="drag-hint">
+    <div class="drag-hint" id="dragHint">
       <span>👆</span>
-      <span>Drag each SMART card from the left to its matching slot on the right</span>
+      <span id="dragHintText">Drag each SMART card from the left to its matching slot on the right</span>
     </div>
 
     <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
     <div class="progress-label"><span id="progressCount">0</span> of 5 cards placed</div>
 
-    <div class="builder-layout">
+    <div class="builder-layout" id="builderLayout">
       <!-- CARDS POOL -->
-      <div class="cards-pool">
+      <div class="cards-pool" id="cardsPool">
         <div class="cards-pool-title">SMART Cards</div>
-
-        <div class="smart-card sc-S" id="card-S" draggable="true" ondragstart="dragStart(event,'S')">
-          <div class="sc-letter">S</div>
-          <div class="sc-word">Specific</div>
-          <div class="sc-hint">What exactly is your goal?</div>
-        </div>
-
-        <div class="smart-card sc-M" id="card-M" draggable="true" ondragstart="dragStart(event,'M')">
-          <div class="sc-letter">M</div>
-          <div class="sc-word">Measurable</div>
-          <div class="sc-hint">How much? How will you track it?</div>
-        </div>
-
-        <div class="smart-card sc-A" id="card-A" draggable="true" ondragstart="dragStart(event,'A')">
-          <div class="sc-letter">A</div>
-          <div class="sc-word">Achievable</div>
-          <div class="sc-hint">Can you realistically do this?</div>
-        </div>
-
-        <div class="smart-card sc-R" id="card-R" draggable="true" ondragstart="dragStart(event,'R')">
-          <div class="sc-letter">R</div>
-          <div class="sc-word">Relevant</div>
-          <div class="sc-hint">Why does this matter to you?</div>
-        </div>
-
-        <div class="smart-card sc-T" id="card-T" draggable="true" ondragstart="dragStart(event,'T')">
-          <div class="sc-letter">T</div>
-          <div class="sc-word">Time-Bound</div>
-          <div class="sc-hint">By when will you achieve this?</div>
+        <div class="cards-pool-inner" id="cardsPoolInner">
+          <div class="smart-card sc-S" id="card-S" draggable="true" ondragstart="dragStart(event,'S')">
+            <div class="sc-letter">S</div>
+            <div class="sc-word">Specific</div>
+            <div class="sc-hint">What exactly is your goal?</div>
+          </div>
+          <div class="smart-card sc-M" id="card-M" draggable="true" ondragstart="dragStart(event,'M')">
+            <div class="sc-letter">M</div>
+            <div class="sc-word">Measurable</div>
+            <div class="sc-hint">How much? How will you track it?</div>
+          </div>
+          <div class="smart-card sc-A" id="card-A" draggable="true" ondragstart="dragStart(event,'A')">
+            <div class="sc-letter">A</div>
+            <div class="sc-word">Achievable</div>
+            <div class="sc-hint">Can you realistically do this?</div>
+          </div>
+          <div class="smart-card sc-R" id="card-R" draggable="true" ondragstart="dragStart(event,'R')">
+            <div class="sc-letter">R</div>
+            <div class="sc-word">Relevant</div>
+            <div class="sc-hint">Why does this matter to you?</div>
+          </div>
+          <div class="smart-card sc-T" id="card-T" draggable="true" ondragstart="dragStart(event,'T')">
+            <div class="sc-letter">T</div>
+            <div class="sc-word">Time-Bound</div>
+            <div class="sc-hint">By when will you achieve this?</div>
+          </div>
         </div>
       </div>
 
@@ -528,11 +623,8 @@
         "You aren't just saving — you are building a bridge to your future. Every dollar is a plank, every month a step closer."
       </div>
       <div class="goal-summary" id="goalSummary"></div>
-
       <div class="cta-row">
-        <button class="cta-primary" onclick="showPasscode()" style="padding:16px 32px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#e8a820);border:none;color:#0d0d1a;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif;box-shadow:0 8px 30px rgba(245,200,66,0.35);">
-          Get Your Passcode ✦
-        </button>
+        <button class="cta-primary" onclick="showPasscode()">Get Your Passcode ✦</button>
       </div>
     </div>
   </div>
@@ -540,8 +632,8 @@
   <!-- ── SCREEN 4: Passcode ── -->
   <div class="screen" id="screen-passcode">
     <div class="success-screen">
-      <span class="success-emoji" style="font-size:56px">🔑</span>
-      <div class="success-title" style="font-size:clamp(24px,4vw,36px)">Game Complete!</div>
+      <span class="success-emoji" style="font-size:clamp(36px,8vw,56px)">🔑</span>
+      <div class="success-title">Game Complete!</div>
       <div class="success-tagline">Use this code to unlock the next game.</div>
 
       <div class="passcode-block">
@@ -549,29 +641,12 @@
         <div class="passcode-instruction">
           You've unlocked the next challenge! <strong>Enter this passcode</strong> to enter the next game. <strong>Tap it to copy!</strong>
         </div>
-        <div id="passcodeDigits" onclick="copyPasscode()" title="Tap to copy" style="
-          cursor:pointer;
-          background:rgba(255,255,255,0.04);
-          border:1.5px solid rgba(167,139,250,0.35);
-          border-radius:14px;
-          padding:18px 24px;
-          text-align:center;
-          font-family:'Playfair Display',serif;
-          font-size:28px;
-          font-weight:900;
-          color:var(--gold);
-          letter-spacing:3px;
-          transition:background 0.2s, border-color 0.2s;
-          margin-bottom:18px;
-          user-select:none;
-        ">SMARTforMe</div>
+        <div id="passcodeDigits" onclick="copyPasscode()" title="Tap to copy">SMARTforMe</div>
         <div class="passcode-note" id="passcodeNote">Tap the code to copy it!</div>
       </div>
 
       <div class="cta-row">
-        <button class="cta-secondary" onclick="restartGame()">
-          Try Another Path ↺
-        </button>
+        <button class="cta-secondary" onclick="restartGame()">Try Another Path ↺</button>
       </div>
     </div>
   </div>
@@ -582,175 +657,40 @@
 // ── DATA ──
 const pathData = {
   provider: {
-    icon: '👶',
-    label: 'The Provider',
-    color: '#f5c842',
-    S: {
-      title: 'Save for child\'s full-year education fees',
-      detail: 'Cover school fees, books, uniform, and any activity costs for one full academic year.',
-      badge: 'Education Goal',
-      badgeColor: 'rgba(245,200,66,0.15)',
-      badgeText: '#f5c842'
-    },
-    M: {
-      title: 'Target: $1,200 SGD',
-      detail: 'That\'s $100/month set aside from your salary — trackable every payday.',
-      badge: '$100 / month',
-      badgeColor: 'rgba(61,232,200,0.15)',
-      badgeText: '#3de8c8'
-    },
-    A: {
-      title: 'Can you set aside $100 monthly?',
-      detail: 'Think about your current income and monthly expenses. $100 is about 8–10% of a $1,200 salary.',
-      yesMsg: 'Great! Cutting 1–2 meals out per week or skipping unnecessary data top-ups makes this very possible.',
-      noMsg: 'That\'s okay! Start smaller — even $50/month is $600 in a year. You can top up with overtime or festive bonuses.',
-      tipLabel: '💡 Try This Instead',
-      tip: 'Break it down: set aside whatever you can after sending remittance. Even $30–50/month matters. Use a "savings envelope" method — divide cash on payday day itself.'
-    },
-    R: {
-      title: 'Her future is your proudest investment',
-      detail: 'Education opens doors your child can walk through for life. Every dollar you save now reduces the burden on her later. This is the most relevant goal for a parent.',
-      badge: 'Deeply Personal ❤️',
-      badgeColor: 'rgba(167,139,250,0.15)',
-      badgeText: '#a78bfa'
-    },
-    T: {
-      title: 'Deadline: By next year (12 months)',
-      detail: 'School year starts on a fixed date. Your goal has a real, non-negotiable deadline.',
-      badge: '12 months to go',
-      badgeColor: 'rgba(251,146,60,0.15)',
-      badgeText: '#fb923c'
-    },
-    summary: ['Save for child\'s full education year', '$1,200 SGD ($100/month)', 'Yes — achievable with budgeting', 'Her future, your purpose', '12 months']
+    icon:'👶',label:'The Provider',color:'#f5c842',
+    S:{title:"Save for child's full-year education fees",detail:"Cover school fees, books, uniform, and any activity costs for one full academic year.",badge:'Education Goal',badgeColor:'rgba(245,200,66,0.15)',badgeText:'#f5c842'},
+    M:{title:'Target: $1,200 SGD',detail:"That's $100/month set aside from your salary — trackable every payday.",badge:'$100 / month',badgeColor:'rgba(61,232,200,0.15)',badgeText:'#3de8c8'},
+    A:{title:'Can you set aside $100 monthly?',detail:'Think about your current income and monthly expenses. $100 is about 8–10% of a $1,200 salary.',yesMsg:'Great! Cutting 1–2 meals out per week or skipping unnecessary data top-ups makes this very possible.',noMsg:"That's okay! Start smaller — even $50/month is $600 in a year. You can top up with overtime or festive bonuses.",tipLabel:'💡 Try This Instead',tip:'Break it down: set aside whatever you can after sending remittance. Even $30–50/month matters. Use a "savings envelope" method — divide cash on payday day itself.'},
+    R:{title:"Her future is your proudest investment",detail:"Education opens doors your child can walk through for life. Every dollar you save now reduces the burden on her later. This is the most relevant goal for a parent.",badge:'Deeply Personal ❤️',badgeColor:'rgba(167,139,250,0.15)',badgeText:'#a78bfa'},
+    T:{title:'Deadline: By next year (12 months)',detail:'School year starts on a fixed date. Your goal has a real, non-negotiable deadline.',badge:'12 months to go',badgeColor:'rgba(251,146,60,0.15)',badgeText:'#fb923c'},
+    summary:["Save for child's full education year","$1,200 SGD ($100/month)","Yes — achievable with budgeting","Her future, your purpose","12 months"]
   },
-
   homebuilder: {
-    icon: '🏡',
-    label: 'The Homebuilder',
-    color: '#3de8c8',
-    S: {
-      title: 'Buy a plot of land in my hometown',
-      detail: 'A specific parcel of land back in your village or town — somewhere you can eventually build a home or leave as an asset.',
-      badge: 'Land Ownership',
-      badgeColor: 'rgba(61,232,200,0.15)',
-      badgeText: '#3de8c8'
-    },
-    M: {
-      title: 'Target: $5,000 SGD (≈ 18M IDR / 15,000 PHP)',
-      detail: 'That\'s $208/month over 24 months. Track savings in a dedicated bank account — zero withdrawals.',
-      badge: '$208 / month',
-      badgeColor: 'rgba(61,232,200,0.15)',
-      badgeText: '#3de8c8'
-    },
-    A: {
-      title: 'Can you save $200+ monthly for 2 years?',
-      detail: 'Consider your salary, remittance commitment, and personal expenses. $200/month requires discipline but is realistic.',
-      yesMsg: 'Yes! Many migrant workers do exactly this. Meal prepping, limiting unnecessary spending, and OT work can get you there.',
-      noMsg: 'No worries. You can extend the timeline to 3 years and lower the monthly target to $140.',
-      tipLabel: '💡 Adjust Your Plan',
-      tip: 'Extend to 3 years ($140/month) OR find a smaller plot first as a stepping stone. Land prices vary — ask family to scout affordable options in your hometown now.'
-    },
-    R: {
-      title: 'Roots, identity, and a legacy asset',
-      detail: 'Land is a tangible, appreciating asset in most home countries. It gives your family security, reflects your hard work, and builds generational wealth.',
-      badge: 'Legacy Asset 🏡',
-      badgeColor: 'rgba(167,139,250,0.15)',
-      badgeText: '#a78bfa'
-    },
-    T: {
-      title: 'Deadline: In 2 years (24 months)',
-      detail: 'A firm 2-year window with monthly milestones. Review progress every 6 months.',
-      badge: '24 months to go',
-      badgeColor: 'rgba(251,146,60,0.15)',
-      badgeText: '#fb923c'
-    },
-    summary: ['Buy a plot of land in hometown', '$5,000 SGD ($208/month)', 'Yes — with strict budgeting', 'Roots, legacy, family security', '24 months']
+    icon:'🏡',label:'The Homebuilder',color:'#3de8c8',
+    S:{title:'Buy a plot of land in my hometown',detail:'A specific parcel of land back in your village or town — somewhere you can eventually build a home or leave as an asset.',badge:'Land Ownership',badgeColor:'rgba(61,232,200,0.15)',badgeText:'#3de8c8'},
+    M:{title:'Target: $5,000 SGD (≈ 18M IDR / 15,000 PHP)',detail:"That's $208/month over 24 months. Track savings in a dedicated bank account — zero withdrawals.",badge:'$208 / month',badgeColor:'rgba(61,232,200,0.15)',badgeText:'#3de8c8'},
+    A:{title:'Can you save $200+ monthly for 2 years?',detail:'Consider your salary, remittance commitment, and personal expenses. $200/month requires discipline but is realistic.',yesMsg:'Yes! Many migrant workers do exactly this. Meal prepping, limiting unnecessary spending, and OT work can get you there.',noMsg:"No worries. You can extend the timeline to 3 years and lower the monthly target to $140.",tipLabel:'💡 Adjust Your Plan',tip:'Extend to 3 years ($140/month) OR find a smaller plot first as a stepping stone. Land prices vary — ask family to scout affordable options in your hometown now.'},
+    R:{title:'Roots, identity, and a legacy asset',detail:"Land is a tangible, appreciating asset in most home countries. It gives your family security, reflects your hard work, and builds generational wealth.",badge:'Legacy Asset 🏡',badgeColor:'rgba(167,139,250,0.15)',badgeText:'#a78bfa'},
+    T:{title:'Deadline: In 2 years (24 months)',detail:'A firm 2-year window with monthly milestones. Review progress every 6 months.',badge:'24 months to go',badgeColor:'rgba(251,146,60,0.15)',badgeText:'#fb923c'},
+    summary:['Buy a plot of land in hometown','$5,000 SGD ($208/month)','Yes — with strict budgeting','Roots, legacy, family security','24 months']
   },
-
   safety: {
-    icon: '🛡️',
-    label: 'The Safety Net',
-    color: '#ff6b8a',
-    S: {
-      title: 'Build a $2,000 emergency fund for parents\' health',
-      detail: 'A dedicated fund kept liquid (easy to access) for unexpected medical costs, hospital stays, or urgent health needs for your parents back home.',
-      badge: 'Family Health Fund',
-      badgeColor: 'rgba(255,107,138,0.15)',
-      badgeText: '#ff6b8a'
-    },
-    M: {
-      title: 'Target: $2,000 SGD',
-      detail: 'That\'s $167/month for 12 months, or $84/month for 24 months. Keep it in a separate savings account — only touch it for real emergencies.',
-      badge: '$84–167 / month',
-      badgeColor: 'rgba(61,232,200,0.15)',
-      badgeText: '#3de8c8'
-    },
-    A: {
-      title: 'Can you set aside $84–167 per month?',
-      detail: 'This depends on your salary and what you send home regularly. Even the smaller $84/month target is achievable for most with minor adjustments.',
-      yesMsg: 'Absolutely achievable! This is one of the most important financial safety nets you can build. Every month you contribute brings peace of mind.',
-      noMsg: 'That\'s honest thinking. Even $50/month for 3 years = $1,800 — almost there!',
-      tipLabel: '💡 Start Where You Are',
-      tip: 'Any amount counts. Open a separate savings jar or bank sub-account and label it "Parents Emergency". Even $30–50/month built steadily gives you a buffer within 2–3 years. Reduce one optional expense each month and transfer that directly.'
-    },
-    R: {
-      title: 'Peace of mind is priceless — and so are they',
-      detail: 'Medical emergencies don\'t wait. Having this fund means you\'re never caught scrambling to borrow money or sell assets during a family crisis. It\'s about protecting the people who made you.',
-      badge: 'Protects Family ❤️',
-      badgeColor: 'rgba(167,139,250,0.15)',
-      badgeText: '#a78bfa'
-    },
-    T: {
-      title: 'Deadline: 12–24 months',
-      detail: 'You choose the timeline based on your monthly capacity. 12 months if you can do $167/month; 24 months at $84/month.',
-      badge: '12–24 months',
-      badgeColor: 'rgba(251,146,60,0.15)',
-      badgeText: '#fb923c'
-    },
-    summary: ['$2,000 emergency fund for parents\' health', '$2,000 SGD ($84–167/month)', 'Yes — start small if needed', 'Their wellbeing, your peace of mind', '12–24 months']
+    icon:'🛡️',label:'The Safety Net',color:'#ff6b8a',
+    S:{title:"Build a $2,000 emergency fund for parents' health",detail:"A dedicated fund kept liquid (easy to access) for unexpected medical costs, hospital stays, or urgent health needs for your parents back home.",badge:'Family Health Fund',badgeColor:'rgba(255,107,138,0.15)',badgeText:'#ff6b8a'},
+    M:{title:'Target: $2,000 SGD',detail:"That's $167/month for 12 months, or $84/month for 24 months. Keep it in a separate savings account — only touch it for real emergencies.",badge:'$84–167 / month',badgeColor:'rgba(61,232,200,0.15)',badgeText:'#3de8c8'},
+    A:{title:'Can you set aside $84–167 per month?',detail:'This depends on your salary and what you send home regularly. Even the smaller $84/month target is achievable for most with minor adjustments.',yesMsg:'Absolutely achievable! This is one of the most important financial safety nets you can build. Every month you contribute brings peace of mind.',noMsg:"That's honest thinking. Even $50/month for 3 years = $1,800 — almost there!",tipLabel:'💡 Start Where You Are',tip:'Any amount counts. Open a separate savings jar or bank sub-account and label it "Parents Emergency". Even $30–50/month built steadily gives you a buffer within 2–3 years. Reduce one optional expense each month and transfer that directly.'},
+    R:{title:'Peace of mind is priceless — and so are they',detail:"Medical emergencies don't wait. Having this fund means you're never caught scrambling to borrow money or sell assets during a family crisis. It's about protecting the people who made you.",badge:'Protects Family ❤️',badgeColor:'rgba(167,139,250,0.15)',badgeText:'#a78bfa'},
+    T:{title:'Deadline: 12–24 months',detail:"You choose the timeline based on your monthly capacity. 12 months if you can do $167/month; 24 months at $84/month.",badge:'12–24 months',badgeColor:'rgba(251,146,60,0.15)',badgeText:'#fb923c'},
+    summary:["$2,000 emergency fund for parents' health","$2,000 SGD ($84–167/month)","Yes — start small if needed","Their wellbeing, your peace of mind","12–24 months"]
   },
-
   dreamer: {
-    icon: '✂️',
-    label: 'The Dreamer',
-    color: '#a78bfa',
-    S: {
-      title: 'Open a small tailoring store back home',
-      detail: 'A physical shop in your hometown offering sewing, alterations, and custom clothing — starting small with a sewing machine, fabric stock, and a rented or family-owned space.',
-      badge: 'Business Dream 🪡',
-      badgeColor: 'rgba(167,139,250,0.15)',
-      badgeText: '#a78bfa'
-    },
-    M: {
-      title: 'Target: $1,500 SGD total startup cost',
-      detail: 'Breakdown: Sewing machine ~$400, fabric stock ~$300, shop rental deposit ~$500, misc tools & signage ~$300. That\'s $42/month saved over 3 years.',
-      badge: '$42 / month for 3 yrs',
-      badgeColor: 'rgba(61,232,200,0.15)',
-      badgeText: '#3de8c8'
-    },
-    A: {
-      title: 'Is $1,500 in 3 years achievable for you?',
-      detail: 'At just $42/month, this is one of the more accessible startup goals. Do you have the sewing skills? Is there a market for tailoring in your hometown? Think honestly.',
-      yesMsg: 'Absolutely! $42/month is less than a meal out per week. You already have the skills — now you\'re just buying your freedom. This is very achievable! ✂️',
-      noMsg: 'Being honest is smart. Let\'s look at this from a different angle.',
-      tipLabel: '💡 Make It More Achievable',
-      tip: 'Consider: (1) Ask family if you can use a spare room instead of renting — cuts $500 off startup costs. (2) Buy a second-hand sewing machine to start ($100–200 instead of $400). (3) Start with alteration services first — lowest startup cost, immediate income. With these tweaks, $800–1,000 might be enough to begin!'
-    },
-    R: {
-      title: 'It makes money AND it\'s your dream',
-      detail: 'Tailoring is a trade with real demand — especially in growing towns and cities. It generates income while letting you be your own boss, stay close to family, and use a skill you love. This goal is personally meaningful AND financially sound.',
-      badge: 'Passion + Profit 💜',
-      badgeColor: 'rgba(167,139,250,0.15)',
-      badgeText: '#a78bfa'
-    },
-    T: {
-      title: 'Deadline: 3 Years (36 months)',
-      detail: 'A realistic runway that lets you save steadily without pressure, while also upskilling (maybe take a sewing or business course) and scouting the right location back home.',
-      badge: '36 months to go',
-      badgeColor: 'rgba(251,146,60,0.15)',
-      badgeText: '#fb923c'
-    },
-    summary: ['Open a small tailoring store back home', '$1,500 SGD ($42/month)', 'Yes — very achievable!', 'It makes money + it\'s my dream', '3 years (36 months)']
+    icon:'✂️',label:'The Dreamer',color:'#a78bfa',
+    S:{title:'Open a small tailoring store back home',detail:"A physical shop in your hometown offering sewing, alterations, and custom clothing — starting small with a sewing machine, fabric stock, and a rented or family-owned space.",badge:'Business Dream 🪡',badgeColor:'rgba(167,139,250,0.15)',badgeText:'#a78bfa'},
+    M:{title:'Target: $1,500 SGD total startup cost',detail:"Breakdown: Sewing machine ~$400, fabric stock ~$300, shop rental deposit ~$500, misc tools & signage ~$300. That's $42/month saved over 3 years.",badge:'$42 / month for 3 yrs',badgeColor:'rgba(61,232,200,0.15)',badgeText:'#3de8c8'},
+    A:{title:'Is $1,500 in 3 years achievable for you?',detail:"At just $42/month, this is one of the more accessible startup goals. Do you have the sewing skills? Is there a market for tailoring in your hometown? Think honestly.",yesMsg:'Absolutely! $42/month is less than a meal out per week. You already have the skills — now you\'re just buying your freedom. This is very achievable! ✂️',noMsg:"Being honest is smart. Let's look at this from a different angle.",tipLabel:'💡 Make It More Achievable',tip:"Consider: (1) Ask family if you can use a spare room instead of renting — cuts $500 off startup costs. (2) Buy a second-hand sewing machine to start ($100–200 instead of $400). (3) Start with alteration services first — lowest startup cost, immediate income. With these tweaks, $800–1,000 might be enough to begin!"},
+    R:{title:'It makes money AND it\'s your dream',detail:"Tailoring is a trade with real demand — especially in growing towns and cities. It generates income while letting you be your own boss, stay close to family, and use a skill you love. This goal is personally meaningful AND financially sound.",badge:'Passion + Profit 💜',badgeColor:'rgba(167,139,250,0.15)',badgeText:'#a78bfa'},
+    T:{title:'Deadline: 3 Years (36 months)',detail:"A realistic runway that lets you save steadily without pressure, while also upskilling (maybe take a sewing or business course) and scouting the right location back home.",badge:'36 months to go',badgeColor:'rgba(251,146,60,0.15)',badgeText:'#fb923c'},
+    summary:['Open a small tailoring store back home','$1,500 SGD ($42/month)','Yes — very achievable!','It makes money + it\'s my dream','3 years (36 months)']
   }
 };
 
@@ -763,15 +703,9 @@ let achieveChoice = null;
 // ── BG BUTTERFLIES ──
 const bfContainer = document.getElementById('bgBf');
 for(let i=0;i<8;i++){
-  const bf = document.createElement('div');
+  const bf=document.createElement('div');
   bf.className='bg-bf';
-  bf.innerHTML=`<svg width="40" height="40" viewBox="0 0 60 60" fill="none">
-    <ellipse cx="18" cy="26" rx="14" ry="10" fill="#a78bfa" transform="rotate(-25 18 26)"/>
-    <ellipse cx="42" cy="26" rx="14" ry="10" fill="#a78bfa" transform="rotate(25 42 26)"/>
-    <ellipse cx="20" cy="38" rx="9" ry="7" fill="#c4b5fd" transform="rotate(-15 20 38)"/>
-    <ellipse cx="40" cy="38" rx="9" ry="7" fill="#c4b5fd" transform="rotate(15 40 38)"/>
-    <ellipse cx="30" cy="30" rx="4" ry="12" fill="#f5c842"/>
-  </svg>`;
+  bf.innerHTML=`<svg width="40" height="40" viewBox="0 0 60 60" fill="none"><ellipse cx="18" cy="26" rx="14" ry="10" fill="#a78bfa" transform="rotate(-25 18 26)"/><ellipse cx="42" cy="26" rx="14" ry="10" fill="#a78bfa" transform="rotate(25 42 26)"/><ellipse cx="20" cy="38" rx="9" ry="7" fill="#c4b5fd" transform="rotate(-15 20 38)"/><ellipse cx="40" cy="38" rx="9" ry="7" fill="#c4b5fd" transform="rotate(15 40 38)"/><ellipse cx="30" cy="30" rx="4" ry="12" fill="#f5c842"/></svg>`;
   bf.style.left=Math.random()*100+'%';
   bf.style.animationDuration=(8+Math.random()*12)+'s';
   bf.style.animationDelay=Math.random()*10+'s';
@@ -779,108 +713,107 @@ for(let i=0;i<8;i++){
   bfContainer.appendChild(bf);
 }
 
+// ── LAYOUT ADAPTATION ──
+// On small screens, convert cards pool to horizontal scroll row
+function adaptLayout() {
+  const isMobile = window.innerWidth <= 640;
+  const isLandscape = window.innerWidth > window.innerHeight;
+  const inner = document.getElementById('cardsPoolInner');
+  const hint = document.getElementById('dragHintText');
+  const sub = document.getElementById('smartSubText');
+
+  if (isMobile && !isLandscape) {
+    // Portrait mobile: horizontal scroll row
+    inner.className = 'cards-pool-row';
+    hint.textContent = 'Scroll & drag each SMART card to its matching slot below';
+    sub.textContent = 'Drag each card down to its matching zone';
+  } else {
+    inner.className = '';
+    hint.textContent = 'Drag each SMART card from the left to its matching slot on the right';
+    sub.textContent = 'Drag each card to its matching zone to define your mission.';
+  }
+}
+
+window.addEventListener('resize', adaptLayout);
+window.addEventListener('orientationchange', () => setTimeout(adaptLayout, 200));
+adaptLayout();
+
 // ── PATH SELECTION ──
 function selectPath(card){
   document.querySelectorAll('.path-card').forEach(c=>c.classList.remove('selected'));
   card.classList.add('selected');
-  selectedPath = card.dataset.path;
-  const btn = document.getElementById('chooseBtn');
-  btn.classList.add('visible');
+  selectedPath=card.dataset.path;
+  document.getElementById('chooseBtn').classList.add('visible');
 }
 
 function goToSmartBuilder(){
   if(!selectedPath) return;
   setStep(1);
   document.getElementById('screen-paths').classList.remove('active');
-  const screen = document.getElementById('screen-smart');
+  const screen=document.getElementById('screen-smart');
   screen.classList.add('active');
-
-  const d = pathData[selectedPath];
-  document.getElementById('pathIcon').textContent = d.icon;
-  document.getElementById('chosenLabel').textContent = d.label;
-  document.getElementById('mascotQuote').textContent =
-    `"Excellent choice! Now let's make this goal SMART — so it becomes a real plan, not just a wish. Drag each card to its slot."`;
-
-  droppedCards = {};
-  achieveChoice = null;
+  const d=pathData[selectedPath];
+  document.getElementById('pathIcon').textContent=d.icon;
+  document.getElementById('chosenLabel').textContent=d.label;
+  document.getElementById('mascotQuote').textContent=`"Excellent choice! Now let's make this goal SMART — so it becomes a real plan, not just a wish. Drag each card to its slot."`;
+  droppedCards={};achieveChoice=null;
   updateProgress();
-
-  // reset drop zones
   'SMART'.split('').forEach(l=>{
-    const dz = document.getElementById('dz-'+l);
+    const dz=document.getElementById('dz-'+l);
     dz.classList.remove('filled');
+    dz.style.borderColor='';dz.style.borderStyle='';
     dz.innerHTML=`<div class="drop-placeholder"><div class="drop-letter" style="color:var(--dz-color,#fff)55">${l}</div>Drop ${getWord(l)} here</div>`;
   });
-
-  // reset cards
   'SMART'.split('').forEach(l=>{
     const c=document.getElementById('card-'+l);
-    c.style.display='block';
-    c.style.opacity='1';
-    c.style.pointerEvents='auto';
-    c.draggable=true;
+    c.style.display='';c.style.opacity='1';c.style.pointerEvents='auto';c.draggable=true;
   });
+  adaptLayout();
+  initTouchDrag();
 }
 
-function getWord(l){
-  return {S:'Specific',M:'Measurable',A:'Achievable',R:'Relevant',T:'Time-Bound'}[l];
-}
+function getWord(l){return {S:'Specific',M:'Measurable',A:'Achievable',R:'Relevant',T:'Time-Bound'}[l];}
 
-// ── DRAG AND DROP ──
-function dragStart(e, letter){
-  draggedCard = letter;
-  e.dataTransfer.setData('text/plain', letter);
-  setTimeout(()=>{
-    document.getElementById('card-'+letter).classList.add('dragging');
-  },0);
+// ── DESKTOP DRAG ──
+function dragStart(e,letter){
+  draggedCard=letter;
+  e.dataTransfer.setData('text/plain',letter);
+  setTimeout(()=>document.getElementById('card-'+letter).classList.add('dragging'),0);
 }
-
-function dragOver(e){
-  e.preventDefault();
-  e.currentTarget.classList.add('drag-over');
-}
-function dragLeave(e){
-  e.currentTarget.classList.remove('drag-over');
-}
-
-function drop(e, letter){
+function dragOver(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}
+function dragLeave(e){e.currentTarget.classList.remove('drag-over');}
+function drop(e,letter){
   e.preventDefault();
   e.currentTarget.classList.remove('drag-over');
-  const incoming = e.dataTransfer.getData('text/plain');
-  if(incoming !== letter) {
-    shakeZone(e.currentTarget);
-    return;
-  }
-  placeCard(letter, e.currentTarget);
+  const incoming=e.dataTransfer.getData('text/plain');
+  if(incoming!==letter){shakeZone(e.currentTarget);return;}
+  placeCard(letter,e.currentTarget);
 }
+document.addEventListener('dragend',()=>{
+  if(draggedCard) document.getElementById('card-'+draggedCard).classList.remove('dragging');
+  draggedCard=null;
+});
 
 function shakeZone(el){
   el.style.animation='shake 0.4s ease';
   setTimeout(()=>el.style.animation='',400);
 }
 
-function placeCard(letter, zone){
-  if(droppedCards[letter]) return;
-
-  droppedCards[letter] = true;
-  const d = pathData[selectedPath];
-  const cardData = d[letter];
-
-  // hide source card
-  const srcCard = document.getElementById('card-'+letter);
+// ── PLACE CARD ──
+function placeCard(letter,zone){
+  const d=pathData[selectedPath];
+  const cardData=d[letter];
+  const srcCard=document.getElementById('card-'+letter);
   srcCard.classList.remove('dragging');
   srcCard.style.opacity='0.2';
   srcCard.style.pointerEvents='none';
   srcCard.draggable=false;
-
   zone.classList.add('filled');
-
-  let html = '';
-  const colorMap = {S:'#f5c842',M:'#3de8c8',A:'#ff6b8a',R:'#a78bfa',T:'#fb923c'};
-  const color = colorMap[letter];
-
-  if(letter === 'A'){
-    html = `<div class="filled-content">
+  const colorMap={S:'#f5c842',M:'#3de8c8',A:'#ff6b8a',R:'#a78bfa',T:'#fb923c'};
+  const color=colorMap[letter];
+  let html='';
+  if(letter==='A'){
+    html=`<div class="filled-content">
       <div class="fc-label" style="color:${color}">${getWord(letter)}</div>
       <div class="fc-title">${cardData.title}</div>
       <div class="fc-detail">${cardData.detail}</div>
@@ -889,95 +822,67 @@ function placeCard(letter, zone){
         <button class="achieve-btn no" onclick="chooseAchievable('no','${selectedPath}')">✗ Hmm, not sure...</button>
       </div>
       <div class="achieve-tip" id="achieveTip">
-        <div class="tip-label">${cardData.tipLabel}</div>
-        ${cardData.tip}
+        <div class="tip-label">${cardData.tipLabel}</div>${cardData.tip}
       </div>
     </div>`;
+    droppedCards[letter]=false;
   } else {
-    html = `<div class="filled-content">
+    html=`<div class="filled-content">
       <div class="fc-label" style="color:${color}">${getWord(letter)}</div>
       <div class="fc-title">${cardData.title}</div>
       <div class="fc-detail">${cardData.detail}</div>
       <span class="fc-badge" style="background:${cardData.badgeColor};color:${cardData.badgeText}">${cardData.badge}</span>
     </div>`;
+    droppedCards[letter]=true;
   }
-
-  zone.innerHTML = html;
-  zone.style.borderColor = color;
-  zone.style.borderStyle = 'solid';
-
-  // sparkle effect
+  zone.innerHTML=html;
+  zone.style.borderColor=color;
+  zone.style.borderStyle='solid';
   sparkle(zone);
-
-  if(letter !== 'A'){
-    droppedCards[letter] = true;
-  } else {
-    droppedCards[letter] = false; // Wait for achievable choice
-  }
-
   updateProgress();
-
   setTimeout(()=>{
-    if(Object.values(droppedCards).filter(v=>v===true).length===5){
-      setTimeout(showSuccess, 800);
-    }
-  }, 300);
+    if(Object.values(droppedCards).filter(v=>v===true).length===5) setTimeout(showSuccess,800);
+  },300);
 }
 
-function chooseAchievable(choice, path){
-  const d = pathData[path];
-  const cardData = d['A'];
-  achieveChoice = choice;
-
+function chooseAchievable(choice,path){
+  const d=pathData[path];const cardData=d['A'];
+  achieveChoice=choice;
   document.querySelectorAll('.achieve-btn').forEach(b=>b.classList.remove('chosen'));
-
-  if(choice === 'yes'){
+  const tip=document.querySelector('.achieve-tip');
+  if(choice==='yes'){
     document.querySelector('.achieve-btn.yes').classList.add('chosen');
-    const existing = document.querySelector('.achieve-tip');
-    existing.style.background = 'rgba(61,232,200,0.08)';
-    existing.style.borderColor = 'rgba(61,232,200,0.25)';
-    existing.innerHTML = `<div class="tip-label" style="color:#3de8c8">🌟 You Got This!</div>${cardData.yesMsg}`;
-    existing.classList.add('visible');
-    droppedCards['A'] = true;
+    tip.style.background='rgba(61,232,200,0.08)';
+    tip.style.borderColor='rgba(61,232,200,0.25)';
+    tip.innerHTML=`<div class="tip-label" style="color:#3de8c8">🌟 You Got This!</div>${cardData.yesMsg}`;
   } else {
     document.querySelector('.achieve-btn.no').classList.add('chosen');
-    const existing = document.querySelector('.achieve-tip');
-    existing.innerHTML = `<div class="tip-label">${cardData.tipLabel}</div>${cardData.tip}`;
-    existing.classList.add('visible');
-    droppedCards['A'] = true;
+    tip.innerHTML=`<div class="tip-label">${cardData.tipLabel}</div>${cardData.tip}`;
   }
-
+  tip.classList.add('visible');
+  droppedCards['A']=true;
   updateProgress();
-
   setTimeout(()=>{
-    if(Object.values(droppedCards).filter(v=>v===true).length===5){
-      setTimeout(showSuccess, 1000);
-    }
-  }, 300);
+    if(Object.values(droppedCards).filter(v=>v===true).length===5) setTimeout(showSuccess,1000);
+  },300);
 }
 
 function sparkle(el){
-  const rect = el.getBoundingClientRect();
+  const rect=el.getBoundingClientRect();
   for(let i=0;i<6;i++){
-    const s = document.createElement('div');
-    s.style.cssText=`position:fixed;width:6px;height:6px;border-radius:50%;
-      background:${['#f5c842','#3de8c8','#a78bfa','#ff6b8a'][Math.floor(Math.random()*4)]};
-      left:${rect.left+rect.width/2+Math.random()*60-30}px;
-      top:${rect.top+rect.height/2+Math.random()*40-20}px;
-      pointer-events:none;z-index:999;
-      animation:sparkleAnim 0.6s ease forwards;`;
+    const s=document.createElement('div');
+    s.style.cssText=`position:fixed;width:6px;height:6px;border-radius:50%;background:${['#f5c842','#3de8c8','#a78bfa','#ff6b8a'][Math.floor(Math.random()*4)]};left:${rect.left+rect.width/2+Math.random()*60-30}px;top:${rect.top+rect.height/2+Math.random()*40-20}px;pointer-events:none;z-index:999;animation:sparkleAnim 0.6s ease forwards;`;
     document.body.appendChild(s);
     setTimeout(()=>s.remove(),700);
   }
 }
 
-const style = document.createElement('style');
-style.textContent=`@keyframes sparkleAnim{0%{transform:scale(0);opacity:1;}100%{transform:scale(1) translate(${Math.random()*40-20}px,${-Math.random()*40}px);opacity:0;}}
-@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}`;
+const style=document.createElement('style');
+style.textContent=`@keyframes sparkleAnim{0%{transform:scale(0);opacity:1;}100%{transform:scale(1) translate(${Math.random()*40-20}px,${-Math.random()*40}px);opacity:0;}}@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}`;
 document.head.appendChild(style);
 
 function updateProgress(){
-  const count = Object.values(droppedCards).filter(v=>v===true).length;
+  const count=Object.values(droppedCards).filter(v=>v===true).length;
   document.getElementById('progressFill').style.width=(count/5*100)+'%';
   document.getElementById('progressCount').textContent=count;
 }
@@ -985,31 +890,16 @@ function updateProgress(){
 function showSuccess(){
   setStep(2);
   document.getElementById('screen-smart').classList.remove('active');
-  const screen = document.getElementById('screen-success');
-  screen.classList.add('active');
-
-  const d = pathData[selectedPath];
-  const summary = d.summary;
-  const labels = ['Specific','Measurable','Achievable','Relevant','Time-Bound'];
-  const colors = ['#f5c842','#3de8c8','#ff6b8a','#a78bfa','#fb923c'];
-  const letters = ['S','M','A','R','T'];
-
-  const achieveText = achieveChoice==='yes' ? summary[2] : '→ Working on it with a revised plan!';
-
-  const rows = letters.map((l,i)=>`
-    <div class="gs-row">
-      <div class="gs-letter" style="background:${colors[i]}20;color:${colors[i]}">${l}</div>
-      <div class="gs-content">
-        <div class="gs-label">${labels[i]}</div>
-        <div class="gs-val">${i===2?achieveText:summary[i]}</div>
-      </div>
-    </div>`).join('');
-
-  document.getElementById('goalSummary').innerHTML=`
-    <div class="gs-title">${d.icon} My SMART Goal</div>${rows}`;
-
+  document.getElementById('screen-success').classList.add('active');
+  const d=pathData[selectedPath];
+  const summary=d.summary;
+  const labels=['Specific','Measurable','Achievable','Relevant','Time-Bound'];
+  const colors=['#f5c842','#3de8c8','#ff6b8a','#a78bfa','#fb923c'];
+  const letters=['S','M','A','R','T'];
+  const achieveText=achieveChoice==='yes'?summary[2]:'→ Working on it with a revised plan!';
+  const rows=letters.map((l,i)=>`<div class="gs-row"><div class="gs-letter" style="background:${colors[i]}20;color:${colors[i]}">${l}</div><div class="gs-content"><div class="gs-label">${labels[i]}</div><div class="gs-val">${i===2?achieveText:summary[i]}</div></div></div>`).join('');
+  document.getElementById('goalSummary').innerHTML=`<div class="gs-title">${d.icon} My SMART Goal</div>${rows}`;
   document.getElementById('mascotQuote').textContent=`"Goal Locked! You've earned your passcode — use it to unlock the next challenge. Every step forward is a brick in your bridge. Keep going!"`;
-
   launchConfetti();
 }
 
@@ -1030,29 +920,6 @@ function launchConfetti(){
   }
 }
 
-function copyPasscode(){
-  const passcode = 'SMARTforMe';
-  const box = document.getElementById('passcodeDigits');
-  const note = document.getElementById('passcodeNote');
-  navigator.clipboard.writeText(passcode).then(()=>{
-    box.style.background = 'rgba(61,232,200,0.12)';
-    box.style.borderColor = 'rgba(61,232,200,0.6)';
-    box.style.color = '#3de8c8';
-    note.textContent = '✓ Copied to clipboard!';
-    note.style.color = '#3de8c8';
-    setTimeout(()=>{
-      box.style.background = '';
-      box.style.borderColor = '';
-      box.style.color = '';
-      note.textContent = 'Tap the code to copy it!';
-      note.style.color = '';
-    }, 2500);
-  }).catch(()=>{
-    note.textContent = 'Passcode: SMARTforMe';
-    note.style.color = '#f5c842';
-  });
-}
-
 function setStep(n){
   [0,1,2].forEach(i=>{
     const dot=document.getElementById('dot'+i);
@@ -1067,19 +934,132 @@ function showPasscode(){
   document.getElementById('screen-passcode').classList.add('active');
 }
 
+function copyPasscode(){
+  const text='SMARTforMe';
+  const box=document.getElementById('passcodeDigits');
+  const note=document.getElementById('passcodeNote');
+  navigator.clipboard.writeText(text).then(()=>{
+    box.style.background='rgba(61,232,200,0.12)';
+    box.style.borderColor='rgba(61,232,200,0.6)';
+    box.style.color='#3de8c8';
+    note.textContent='✓ Copied to clipboard!';
+    note.style.color='#3de8c8';
+    setTimeout(()=>{box.style.background='';box.style.borderColor='';box.style.color='';note.textContent='Tap the code to copy it!';note.style.color='';},2500);
+  }).catch(()=>{note.textContent='Passcode: SMARTforMe';note.style.color='#f5c842';});
+}
+
 function restartGame(){
-  selectedPath=null;
-  droppedCards={};
-  achieveChoice=null;
+  selectedPath=null;droppedCards={};achieveChoice=null;
   document.querySelectorAll('.path-card').forEach(c=>c.classList.remove('selected'));
   document.getElementById('chooseBtn').classList.remove('visible');
-  document.getElementById('screen-success').classList.remove('active');
-  document.getElementById('screen-smart').classList.remove('active');
-  document.getElementById('screen-passcode').classList.remove('active');
+  ['screen-success','screen-smart','screen-passcode'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById('screen-paths').classList.add('active');
   setStep(0);
   document.getElementById('mascotQuote').textContent=`"What are you working for? If you don't name your goal, the money will find its own way out. Let's fix that — together."`;
 }
+
+/* ──────────────────────────────────────────────
+   TOUCH DRAG — fully rewritten, offset-aware
+──────────────────────────────────────────────── */
+let touchCard = null;
+let touchClone = null;
+let touchOffX = 0;
+let touchOffY = 0;
+
+function initTouchDrag(){
+  // Remove old listeners by cloning cards (cleanest way)
+  document.querySelectorAll('.smart-card').forEach(card => {
+    card.addEventListener('touchstart', onTouchStart, { passive: false });
+    card.addEventListener('touchmove', onTouchMove, { passive: false });
+    card.addEventListener('touchend', onTouchEnd, { passive: false });
+    card.addEventListener('touchcancel', onTouchCancel, { passive: true });
+  });
+}
+
+function onTouchStart(e) {
+  const card = e.currentTarget;
+  if (card.style.pointerEvents === 'none') return;
+  e.preventDefault();
+  touchCard = card;
+  const t = e.touches[0];
+  const rect = card.getBoundingClientRect();
+  touchOffX = t.clientX - rect.left;
+  touchOffY = t.clientY - rect.top;
+
+  // Create drag clone
+  touchClone = card.cloneNode(true);
+  touchClone.className = card.className + ' touch-drag-clone';
+  touchClone.style.cssText = `
+    width:${rect.width}px;height:${rect.height}px;
+    left:${rect.left}px;top:${rect.top}px;
+    background:linear-gradient(135deg,var(--card-color-1,#1a1a35),var(--card-color-2,#1a1a35));
+    transform:scale(1.05);
+    box-shadow:0 16px 48px rgba(0,0,0,0.5);
+  `;
+  // Preserve gradient CSS vars
+  ['--sc-bg','--sc-border','--sc-color'].forEach(v => {
+    const val = card.style.getPropertyValue(v) || getComputedStyle(card).getPropertyValue(v);
+    if(val) touchClone.style.setProperty(v, val);
+  });
+  document.body.appendChild(touchClone);
+  card.style.opacity = '0.3';
+}
+
+function onTouchMove(e) {
+  if (!touchClone) return;
+  e.preventDefault();
+  const t = e.touches[0];
+  touchClone.style.left = (t.clientX - touchOffX) + 'px';
+  touchClone.style.top  = (t.clientY - touchOffY) + 'px';
+
+  // Highlight zones under finger
+  document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+  touchClone.style.display = 'none';
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  touchClone.style.display = '';
+  const zone = el ? el.closest('.drop-zone') : null;
+  if (zone && !zone.classList.contains('filled')) zone.classList.add('drag-over');
+}
+
+function onTouchEnd(e) {
+  if (!touchClone || !touchCard) return;
+  e.preventDefault();
+  const t = e.changedTouches[0];
+
+  touchClone.style.display = 'none';
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  touchClone.style.display = '';
+  touchClone.remove(); touchClone = null;
+
+  document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+
+  // Find card letter
+  const letter = touchCard.id.replace('card-', '');
+  const zone = el ? el.closest('.drop-zone') : null;
+
+  if (zone && !zone.classList.contains('filled')) {
+    const expected = zone.id.replace('dz-', '');
+    if (letter === expected) {
+      touchCard.style.opacity = '';
+      placeCard(letter, zone);
+    } else {
+      touchCard.style.opacity = '1';
+      shakeZone(zone);
+    }
+  } else {
+    touchCard.style.opacity = '1';
+  }
+  touchCard = null;
+}
+
+function onTouchCancel() {
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  if (touchCard) { touchCard.style.opacity = '1'; touchCard = null; }
+  document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+}
+
+// Init on load
+initTouchDrag();
 </script>
 </body>
 </html>
