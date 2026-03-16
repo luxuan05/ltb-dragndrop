@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Singapore Helper Cards Game</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
 <style>
@@ -17,7 +17,12 @@
     --soft: #F0F7FF;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    touch-action: manipulation;
+  }
 
   body {
     font-family: 'Nunito', sans-serif;
@@ -26,94 +31,113 @@
     overflow-x: hidden;
   }
 
+  /* ─── HEADER ─── */
   header {
     background: linear-gradient(90deg, var(--red) 0%, #C62828 100%);
     color: white;
-    padding: 14px 24px;
+    padding: 10px 16px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     box-shadow: 0 4px 20px rgba(232,41,59,0.4);
+    flex-wrap: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 50;
   }
 
   .sg-flag {
-    width: 50px; height: 33px;
-    border-radius: 4px;
+    width: 44px; height: 30px;
+    border-radius: 3px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     border: 2px solid rgba(255,255,255,0.3);
+    flex-shrink: 0;
   }
-  .flag-red { background: #EF2626; flex: 1; display: flex; align-items: center; padding-left: 6px; gap: 3px; }
+  .flag-red { background: #EF2626; flex: 1; display: flex; align-items: center; padding-left: 5px; gap: 2px; }
   .flag-white { background: white; flex: 1; }
-  .flag-star { color: white; font-size: 7px; }
-  .flag-moon { color: white; font-size: 10px; margin-right: 2px; }
+  .flag-star { color: white; font-size: 6px; }
+  .flag-moon { color: white; font-size: 9px; margin-right: 1px; }
 
-  header h1 { font-family: 'Baloo 2', cursive; font-size: 1.5rem; font-weight: 800; letter-spacing: 0.5px; }
-  header p { font-size: 0.8rem; opacity: 0.85; }
+  .header-text { flex: 1; min-width: 0; }
+  header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(0.85rem, 3.5vw, 1.4rem);
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  header p {
+    font-size: clamp(0.6rem, 2vw, 0.8rem);
+    opacity: 0.85;
+    white-space: nowrap;
+  }
 
   .score-badge {
-    margin-left: auto;
+    flex-shrink: 0;
     background: rgba(255,255,255,0.2);
     border: 2px solid rgba(255,255,255,0.5);
     border-radius: 20px;
-    padding: 6px 18px;
+    padding: 5px 14px;
     font-weight: 800;
-    font-size: 1rem;
+    font-size: clamp(0.8rem, 3vw, 1rem);
+    white-space: nowrap;
   }
 
+  /* ─── GAME AREA ─── */
   .game-area {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 24px 16px;
+    padding: 16px 12px;
   }
 
+  /* ─── MAP / DROP ZONES ─── */
   .map-section {
-    position: relative;
     background: #D4EDDA;
-    border-radius: 24px;
+    border-radius: 20px;
     overflow: hidden;
-    padding: 20px;
+    padding: 14px 12px;
     box-shadow: 0 8px 40px rgba(0,0,0,0.1);
-    margin-bottom: 28px;
+    margin-bottom: 16px;
     border: 3px solid #A5D6A7;
   }
 
   .map-title {
     text-align: center;
     font-family: 'Baloo 2', cursive;
-    font-size: 1.1rem;
+    font-size: clamp(0.7rem, 2.5vw, 1rem);
     color: #2E7D32;
     font-weight: 700;
-    margin-bottom: 16px;
-    letter-spacing: 1px;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
   }
 
-  .sg-map {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 380px; height: 160px;
-    background: #B8D9B8;
-    border-radius: 40% 60% 50% 70% / 50% 40% 60% 50%;
-    opacity: 0.5;
-    pointer-events: none;
-  }
-
+  /* Portrait: 2-col + 3-col rows (2+3) */
   .drop-zones-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
     position: relative;
     z-index: 2;
+  }
+
+  /* Make 5th card span full width on portrait mobile to fill row */
+  .drop-zone:last-child {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .drop-zone {
     background: white;
     border: 3px dashed #90CAF9;
-    border-radius: 16px;
-    padding: 14px 8px;
-    min-height: 130px;
+    border-radius: 14px;
+    padding: 12px 8px;
+    min-height: 110px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -153,60 +177,64 @@
   }
 
   .zone-question {
-    font-size: 0.72rem;
+    font-size: clamp(0.6rem, 2vw, 0.72rem);
     color: #555;
     line-height: 1.4;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
-  .zone-label { font-size: 0.65rem; color: #999; font-style: italic; }
+  .zone-label { font-size: 0.6rem; color: #999; font-style: italic; }
 
   .zone-answer {
-    font-size: 0.8rem;
+    font-size: clamp(0.65rem, 2vw, 0.8rem);
     font-weight: 800;
     color: #2E7D32;
     display: none;
+    line-height: 1.4;
   }
 
   .drop-zone.correct .zone-answer { display: block; }
   .drop-zone.correct .zone-label { display: none; }
 
+  /* ─── CARDS ─── */
   .cards-section {
     background: white;
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 18px;
+    padding: 14px 12px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   }
 
   .cards-title {
     font-family: 'Baloo 2', cursive;
-    font-size: 1rem;
+    font-size: clamp(0.7rem, 2.5vw, 1rem);
     color: #555;
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     text-align: center;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
   }
 
   .cards-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
+    gap: 10px;
     justify-content: center;
   }
 
   .entity-card {
     background: linear-gradient(135deg, var(--card-color-1), var(--card-color-2));
-    border-radius: 16px;
-    padding: 16px 20px;
-    width: 170px;
+    border-radius: 14px;
+    padding: 12px 14px;
+    width: clamp(130px, 28vw, 170px);
     text-align: center;
     cursor: grab;
     user-select: none;
+    -webkit-user-select: none;
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
     border: 3px solid rgba(255,255,255,0.5);
+    touch-action: none;
   }
 
   .entity-card:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
@@ -214,68 +242,92 @@
   .entity-card.dragging { opacity: 0.4; transform: scale(0.95); }
   .entity-card.used { display: none; }
 
-  .card-emoji { font-size: 2rem; margin-bottom: 8px; display: block; }
-  .card-name { font-weight: 800; font-size: 0.85rem; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.3); line-height: 1.3; }
-  .card-sub { font-size: 0.65rem; color: rgba(255,255,255,0.8); margin-top: 3px; }
+  .card-emoji { font-size: clamp(1.4rem, 5vw, 2rem); margin-bottom: 6px; display: block; }
+  .card-name { font-weight: 800; font-size: clamp(0.7rem, 2.5vw, 0.85rem); color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.3); line-height: 1.3; }
+  .card-sub { font-size: clamp(0.55rem, 1.8vw, 0.65rem); color: rgba(255,255,255,0.8); margin-top: 3px; }
 
+  /* ─── BUTTERFLY MASCOT ─── */
   .butterfly {
     position: fixed;
-    bottom: 20px; right: 20px;
+    bottom: 16px; right: 16px;
     background: white;
-    border-radius: 20px;
-    padding: 14px 18px;
+    border-radius: 18px;
+    padding: 12px 14px;
     box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    max-width: 260px;
+    max-width: min(260px, 80vw);
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
     border: 3px solid var(--yellow);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 100;
   }
 
-  .butterfly.hidden { transform: translateY(120%); opacity: 0; }
+  .butterfly.hidden { transform: translateY(120%); opacity: 0; pointer-events: none; }
   .butterfly.show { transform: translateY(0); opacity: 1; }
 
-  .bf-icon { font-size: 2rem; flex-shrink: 0; animation: flutter 0.6s ease-in-out infinite alternate; }
+  .bf-icon { font-size: 1.8rem; flex-shrink: 0; animation: flutter 0.6s ease-in-out infinite alternate; }
   @keyframes flutter { from { transform: rotate(-10deg) scale(1); } to { transform: rotate(10deg) scale(1.1); } }
 
-  .bf-text { font-size: 0.82rem; font-weight: 700; color: #333; line-height: 1.5; }
+  .bf-text { font-size: clamp(0.7rem, 2.5vw, 0.82rem); font-weight: 700; color: #333; line-height: 1.5; }
   .bf-text.correct { color: #2E7D32; }
   .bf-text.wrong { color: #C62828; }
 
-  /* Win overlay */
+  /* ─── BING ─── */
+  .sound-bing {
+    position: fixed;
+    top: 70px; left: 50%;
+    transform: translateX(-50%) scale(0);
+    background: var(--green);
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 800;
+    padding: 8px 22px;
+    border-radius: 50px;
+    z-index: 150;
+    transition: transform 0.2s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .sound-bing.pop { transform: translateX(-50%) scale(1); }
+
+  /* ─── WIN OVERLAY ─── */
   .win-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.6);
     backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 200;
+    padding: 16px;
+    overflow-y: auto;
   }
   .win-overlay.show { display: flex; }
 
   .win-box {
     background: white;
-    border-radius: 28px;
-    padding: 36px 40px;
+    border-radius: 24px;
+    padding: clamp(20px, 5vw, 36px) clamp(18px, 5vw, 40px);
     text-align: center;
     max-width: 440px;
-    width: 92%;
+    width: 100%;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-height: 90vh;
+    overflow-y: auto;
   }
   @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-  .win-emoji { font-size: 4rem; margin-bottom: 10px; }
-  .win-title { font-family: 'Baloo 2', cursive; font-size: 2rem; font-weight: 800; color: var(--red); margin-bottom: 8px; }
-  .win-msg { font-size: 1rem; color: #555; margin-bottom: 22px; line-height: 1.6; }
+  .win-emoji { font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom: 8px; }
+  .win-title { font-family: 'Baloo 2', cursive; font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 800; color: var(--red); margin-bottom: 8px; }
+  .win-msg { font-size: clamp(0.8rem, 3vw, 1rem); color: #555; margin-bottom: 18px; line-height: 1.6; }
 
-  /* Passcode section */
+  /* ─── PASSCODE ─── */
   .passcode-section {
     display: none;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     animation: slideDown 0.4s ease;
   }
   @keyframes slideDown {
@@ -289,37 +341,35 @@
   }
 
   .passcode-label {
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     color: #555;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-weight: 700;
   }
   .passcode-box {
     background: linear-gradient(135deg, #1A237E, #283593);
     color: #FFD600;
     font-family: 'Baloo 2', cursive;
-    font-size: 1.35rem;
+    font-size: clamp(1rem, 4vw, 1.35rem);
     font-weight: 800;
-    padding: 16px 24px;
-    border-radius: 14px;
-    letter-spacing: 2px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    letter-spacing: 1.5px;
     border: 3px solid #FFD600;
     box-shadow: 0 4px 24px rgba(26,35,126,0.35), 0 0 30px rgba(255,214,0,0.15);
     animation: passcodeReveal 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     user-select: all;
+    -webkit-user-select: all;
     cursor: pointer;
     word-break: break-all;
   }
-  .passcode-box:hover {
-    box-shadow: 0 4px 24px rgba(26,35,126,0.5), 0 0 40px rgba(255,214,0,0.3);
-  }
-  .passcode-hint { font-size: 0.72rem; color: #aaa; margin-top: 7px; }
+  .passcode-hint { font-size: 0.68rem; color: #aaa; margin-top: 6px; }
 
   .copied-toast {
     display: none;
     background: #4CAF50;
     color: white;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 800;
     padding: 4px 14px;
     border-radius: 20px;
@@ -337,15 +387,16 @@
     background: linear-gradient(135deg, var(--red), #C62828);
     color: white;
     border: none;
-    padding: 13px 28px;
+    padding: 11px 22px;
     border-radius: 50px;
     font-family: 'Nunito', sans-serif;
-    font-size: 0.95rem;
+    font-size: clamp(0.8rem, 3vw, 0.95rem);
     font-weight: 800;
     cursor: pointer;
     box-shadow: 0 4px 16px rgba(232,41,59,0.4);
     transition: transform 0.15s, box-shadow 0.15s;
     margin: 5px;
+    touch-action: manipulation;
   }
   .btn-restart:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(232,41,59,0.5); }
   .btn-green {
@@ -354,7 +405,7 @@
   }
   .btn-green:hover { box-shadow: 0 6px 20px rgba(56,142,60,0.5); }
 
-  /* Confetti */
+  /* ─── CONFETTI ─── */
   .confetti-piece {
     position: fixed;
     width: 10px; height: 10px;
@@ -368,21 +419,107 @@
     100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
   }
 
-  .sound-bing {
+  /* ─── DRAG CLONE (touch) ─── */
+  .touch-drag-clone {
     position: fixed;
-    top: 80px; left: 50%;
-    transform: translateX(-50%) scale(0);
-    background: var(--green);
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 800;
-    padding: 8px 24px;
-    border-radius: 50px;
-    z-index: 150;
-    transition: transform 0.2s;
     pointer-events: none;
+    z-index: 999;
+    opacity: 0.88;
+    transition: none !important;
+    border-radius: 14px;
   }
-  .sound-bing.pop { transform: translateX(-50%) scale(1); }
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE BREAKPOINTS
+  ══════════════════════════════════════════ */
+
+  /* ── Tablet portrait & small desktop: 3 cols ── */
+  @media (min-width: 600px) {
+    .drop-zones-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .drop-zone:last-child {
+      grid-column: auto;
+      max-width: 100%;
+      margin: 0;
+    }
+    /* 5 items in 3-col grid: last 2 of row 2 center nicely */
+    .drop-zone:nth-child(4),
+    .drop-zone:nth-child(5) {
+      grid-column: auto;
+    }
+    /* Push last 2 to center using auto margins trick */
+    .drop-zones-grid::after {
+      content: "";
+    }
+  }
+
+  /* ── Large: 5-col ── */
+  @media (min-width: 900px) {
+    .drop-zones-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .drop-zone:last-child {
+      grid-column: auto;
+      max-width: 100%;
+    }
+    .drop-zone {
+      min-height: 130px;
+    }
+  }
+
+  /* ── Landscape phones (height < 500px) ── */
+  @media (max-height: 500px) and (orientation: landscape) {
+    header {
+      padding: 6px 12px;
+    }
+    header h1 { font-size: 0.9rem; }
+    header p { display: none; }
+    .score-badge { padding: 4px 10px; font-size: 0.85rem; }
+
+    .game-area { padding: 8px 10px; }
+
+    .map-section { padding: 8px 10px; margin-bottom: 10px; }
+    .map-title { margin-bottom: 8px; font-size: 0.7rem; }
+
+    .drop-zones-grid {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+    .drop-zone:last-child { grid-column: auto; max-width: 100%; }
+    .drop-zone { min-height: 80px; padding: 8px 6px; }
+    .zone-question { font-size: 0.58rem; margin-bottom: 4px; }
+    .zone-label { font-size: 0.55rem; }
+    .zone-answer { font-size: 0.6rem; }
+
+    .cards-section { padding: 8px 10px; }
+    .cards-title { margin-bottom: 8px; font-size: 0.7rem; }
+    .cards-grid { gap: 7px; }
+    .entity-card { padding: 8px 10px; width: clamp(100px, 18vw, 140px); border-radius: 10px; }
+    .card-emoji { font-size: 1.2rem; margin-bottom: 4px; }
+    .card-name { font-size: 0.65rem; }
+    .card-sub { font-size: 0.52rem; }
+
+    .butterfly { bottom: 8px; right: 8px; padding: 8px 10px; max-width: 200px; }
+    .bf-icon { font-size: 1.4rem; }
+    .bf-text { font-size: 0.68rem; }
+
+    .sound-bing { font-size: 1rem; padding: 5px 16px; top: 55px; }
+  }
+
+  /* ── Medium phones portrait (360–599px) ── */
+  @media (max-width: 599px) {
+    .drop-zone {
+      min-height: 100px;
+      padding: 10px 6px;
+    }
+  }
+
+  /* ── Very small phones (< 360px) ── */
+  @media (max-width: 360px) {
+    .entity-card { width: clamp(110px, 42vw, 150px); }
+    .drop-zone { min-height: 90px; }
+  }
 </style>
 </head>
 <body>
@@ -395,7 +532,7 @@
     </div>
     <div class="flag-white"></div>
   </div>
-  <div>
+  <div class="header-text">
     <h1>&#127480;&#127468; Who Helps You in Singapore?</h1>
     <p>Drag each card to the correct role!</p>
   </div>
@@ -405,7 +542,6 @@
 <div class="game-area">
 
   <div class="map-section">
-    <div class="sg-map"></div>
     <div class="map-title">&#128205; SINGAPORE MAP &mdash; Drop the Cards Below!</div>
 
     <div class="drop-zones-grid">
@@ -518,7 +654,6 @@
     <div class="win-title">Excellent!</div>
     <div class="win-msg">You matched all 5 cards correctly!<br>You now know who helps you in Singapore. Stay safe, stay informed! &#127480;&#127468;</div>
 
-    <!-- Passcode section — hidden until button pressed -->
     <div class="passcode-section" id="passcodeSection">
       <div class="passcode-label">&#128273; Your Passcode:</div>
       <div class="passcode-box" id="passcodeBox" onclick="copyPasscode()" title="Tap to copy">KnowMyWayAround!</div>
@@ -532,10 +667,16 @@
 </div>
 
 <script>
+/* ─────────────────────────────────────────────
+   STATE
+───────────────────────────────────────────── */
 let dragging = null;
 let score = 0;
 let bfTimer = null;
 
+/* ─────────────────────────────────────────────
+   MOUSE / DESKTOP DRAG
+───────────────────────────────────────────── */
 function onDragStart(e) {
   dragging = e.currentTarget;
   dragging.classList.add('dragging');
@@ -560,13 +701,22 @@ function onDrop(e) {
   const zone = e.currentTarget;
   zone.classList.remove('drag-over');
   if (!dragging) return;
+  handleMatch(dragging, zone);
+  dragging = null;
+}
 
-  const cardId = dragging.dataset.id;
+/* ─────────────────────────────────────────────
+   SHARED MATCH LOGIC
+───────────────────────────────────────────── */
+function handleMatch(card, zone) {
+  if (zone.classList.contains('correct')) return;
+
+  const cardId = card.dataset.id;
   const answer = zone.dataset.answer;
 
   if (cardId === answer) {
     zone.classList.add('correct');
-    dragging.classList.add('used');
+    card.classList.add('used');
     score++;
     document.getElementById('scoreNum').textContent = score;
     showButterfly('correct', 'Correct! Knowing this keeps you safe. Great job!');
@@ -578,9 +728,97 @@ function onDrop(e) {
     showButterfly('wrong', 'Not quite. Try again! MOM protects rights, Banks protect money.');
     setTimeout(() => zone.classList.remove('wrong'), 500);
   }
-  dragging = null;
 }
 
+/* ─────────────────────────────────────────────
+   TOUCH DRAG — fully rewritten for reliability
+───────────────────────────────────────────── */
+let touchCard = null;
+let touchClone = null;
+let touchOffsetX = 0;
+let touchOffsetY = 0;
+
+function initTouchDrag() {
+  document.querySelectorAll('.entity-card').forEach(card => {
+
+    card.addEventListener('touchstart', e => {
+      if (card.classList.contains('used')) return;
+      e.preventDefault(); // prevent scroll hijack
+
+      touchCard = card;
+      const t = e.touches[0];
+      const rect = card.getBoundingClientRect();
+
+      // offset so finger holds card from where it was touched
+      touchOffsetX = t.clientX - rect.left;
+      touchOffsetY = t.clientY - rect.top;
+
+      // Build clone
+      touchClone = card.cloneNode(true);
+      touchClone.className = 'touch-drag-clone';
+      touchClone.style.cssText = `
+        width:${rect.width}px;
+        height:${rect.height}px;
+        left:${rect.left}px;
+        top:${rect.top}px;
+        opacity:0.88;
+        transform:scale(1.05);
+        box-shadow:0 12px 36px rgba(0,0,0,0.3);
+      `;
+      // Copy gradient styles
+      touchClone.style.setProperty('--card-color-1', card.style.getPropertyValue('--card-color-1'));
+      touchClone.style.setProperty('--card-color-2', card.style.getPropertyValue('--card-color-2'));
+      touchClone.style.background = `linear-gradient(135deg, var(--card-color-1), var(--card-color-2))`;
+      document.body.appendChild(touchClone);
+
+      card.style.opacity = '0.3';
+    }, { passive: false });
+
+    card.addEventListener('touchmove', e => {
+      if (!touchClone) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      touchClone.style.left = (t.clientX - touchOffsetX) + 'px';
+      touchClone.style.top  = (t.clientY - touchOffsetY) + 'px';
+
+      // Highlight zones under finger
+      document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const zone = el ? el.closest('.drop-zone') : null;
+      if (zone && !zone.classList.contains('correct')) zone.classList.add('drag-over');
+    }, { passive: false });
+
+    card.addEventListener('touchend', e => {
+      if (!touchClone || !touchCard) return;
+      e.preventDefault();
+
+      const t = e.changedTouches[0];
+      touchClone.remove();
+      touchClone = null;
+      touchCard.style.opacity = '';
+
+      // Remove all highlights
+      document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+
+      // Find zone under finger
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const zone = el ? el.closest('.drop-zone') : null;
+
+      if (zone) handleMatch(touchCard, zone);
+      touchCard = null;
+    }, { passive: false });
+
+    card.addEventListener('touchcancel', () => {
+      if (touchClone) { touchClone.remove(); touchClone = null; }
+      if (touchCard) { touchCard.style.opacity = ''; touchCard = null; }
+      document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+    }, { passive: true });
+  });
+}
+
+/* ─────────────────────────────────────────────
+   UI HELPERS
+───────────────────────────────────────────── */
 function showButterfly(type, msg) {
   const bf = document.getElementById('butterfly');
   const txt = document.getElementById('bfText');
@@ -618,7 +856,6 @@ function confetti() {
 
 function showWin() {
   confetti(); confetti(); confetti();
-  // Reset passcode UI each time
   document.getElementById('passcodeSection').style.display = 'none';
   document.getElementById('passcodeBtn').style.display = 'inline-block';
   document.getElementById('winOverlay').classList.add('show');
@@ -627,29 +864,23 @@ function showWin() {
 function revealPasscode() {
   const section = document.getElementById('passcodeSection');
   const btn = document.getElementById('passcodeBtn');
-
   section.style.display = 'block';
   btn.style.display = 'none';
-
-  // Re-trigger animation
   const box = document.getElementById('passcodeBox');
   box.style.animation = 'none';
-  box.offsetHeight; // force reflow
+  box.offsetHeight;
   box.style.animation = 'passcodeReveal 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-
   confetti();
 }
 
 function copyPasscode() {
   const text = 'KnowMyWayAround!';
   const toast = document.getElementById('copiedToast');
-
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
   } else {
     fallbackCopy(text);
   }
-
   toast.style.display = 'block';
   toast.style.animation = 'none';
   toast.offsetHeight;
@@ -660,8 +891,7 @@ function copyPasscode() {
 function fallbackCopy(text) {
   const ta = document.createElement('textarea');
   ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.opacity = '0';
+  ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
   document.body.appendChild(ta);
   ta.focus(); ta.select();
   try { document.execCommand('copy'); } catch(e) {}
@@ -672,70 +902,23 @@ function restartGame() {
   document.getElementById('winOverlay').classList.remove('show');
   score = 0;
   document.getElementById('scoreNum').textContent = 0;
-  document.querySelectorAll('.drop-zone').forEach(z => z.className = 'drop-zone');
+  document.querySelectorAll('.drop-zone').forEach(z => {
+    z.className = 'drop-zone';
+    // Re-attach drop events
+    z.ondragover = onDragOver;
+    z.ondragleave = onDragLeave;
+    z.ondrop = onDrop;
+  });
   document.querySelectorAll('.entity-card').forEach(c => c.classList.remove('used', 'dragging'));
   document.getElementById('butterfly').classList.add('hidden');
+  // Re-init touch after DOM restore
+  initTouchDrag();
 }
 
-// ——— Touch support ———
-let touchCard = null;
-let touchClone = null;
-
-document.querySelectorAll('.entity-card').forEach(card => {
-
-  card.addEventListener('touchstart', e => {
-    if (card.classList.contains('used')) return;
-    touchCard = card;
-    const rect = card.getBoundingClientRect();
-    touchClone = card.cloneNode(true);
-    touchClone.style.cssText = `
-      position:fixed;width:${rect.width}px;opacity:0.88;
-      pointer-events:none;z-index:999;
-      top:${rect.top}px;left:${rect.left}px;transition:none;
-    `;
-    document.body.appendChild(touchClone);
-    card.style.opacity = '0.3';
-  }, { passive: true });
-
-  card.addEventListener('touchmove', e => {
-    if (!touchClone) return;
-    e.preventDefault();
-    const t = e.touches[0];
-    touchClone.style.top  = (t.clientY - 60) + 'px';
-    touchClone.style.left = (t.clientX - 85) + 'px';
-  }, { passive: false });
-
-  card.addEventListener('touchend', e => {
-    if (!touchClone || !touchCard) return;
-    const t = e.changedTouches[0];
-    touchClone.remove(); touchClone = null;
-    touchCard.style.opacity = '';
-
-    const el = document.elementFromPoint(t.clientX, t.clientY);
-    const zone = el ? el.closest('.drop-zone') : null;
-
-    if (zone && !zone.classList.contains('correct')) {
-      const cardId = touchCard.dataset.id;
-      const answer = zone.dataset.answer;
-
-      if (cardId === answer) {
-        zone.classList.add('correct');
-        touchCard.classList.add('used');
-        score++;
-        document.getElementById('scoreNum').textContent = score;
-        showButterfly('correct', 'Correct! Knowing this keeps you safe. Great job!');
-        showBing();
-        confetti();
-        if (score === 5) setTimeout(showWin, 800);
-      } else {
-        zone.classList.add('wrong');
-        showButterfly('wrong', 'Not quite. Try again! MOM protects rights, Banks protect money.');
-        setTimeout(() => zone.classList.remove('wrong'), 500);
-      }
-    }
-    touchCard = null;
-  });
-});
+/* ─────────────────────────────────────────────
+   INIT
+───────────────────────────────────────────── */
+initTouchDrag();
 </script>
 </body>
 </html>
