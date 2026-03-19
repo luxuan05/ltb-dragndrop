@@ -325,6 +325,65 @@
   }
   .btn-restart:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
 
+
+  /* ══════════════════════════════
+     SCREEN 3: TRADE-OFF
+  ══════════════════════════════ */
+  #screen-tradeoff {
+    background: linear-gradient(180deg, #111122 0%, #17172a 100%);
+    padding: 0;
+    align-items: stretch;
+  }
+  .tradeoff-header {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(1rem, 4vw, 2rem);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    background: linear-gradient(to right, #10101d, #18182a, #10101d);
+  }
+  .tradeoff-title { font-family: 'Playfair Display', serif; font-size: clamp(1.15rem, 4vw, 1.45rem); margin-bottom: 0.35rem; }
+  .tradeoff-sub { color: var(--muted); font-size: clamp(0.8rem, 2.5vw, 0.9rem); line-height: 1.55; }
+  .tradeoff-body {
+    flex: 1; padding: clamp(1rem, 4vw, 2rem);
+    max-width: 760px; width: 100%; margin: 0 auto;
+  }
+  .stats-panel {
+    display: grid; gap: 0.8rem; margin-bottom: 1rem;
+    background: var(--card); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px; padding: clamp(0.9rem, 2.5vw, 1.2rem);
+  }
+  .stats-topline { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; color: var(--muted); font-size: 0.82rem; }
+  .stat-row { display: grid; grid-template-columns: 84px 1fr 48px; gap: 0.6rem; align-items: center; }
+  .stat-label { font-size: 0.8rem; color: var(--text); }
+  .stat-bar { height: 10px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+  .stat-fill { height: 100%; border-radius: 999px; transition: width 0.35s ease; }
+  .stat-fill.health { background: linear-gradient(to right, #4ecb71, #8ae88b); }
+  .stat-fill.energy { background: linear-gradient(to right, #c9a84c, #e8c97a); }
+  .stat-fill.savings { background: linear-gradient(to right, #6cc3ff, #98dcff); }
+  .stat-value { font-size: 0.78rem; color: var(--muted); text-align: right; }
+  .tradeoff-grid { display: grid; gap: 0.8rem; margin: 1rem 0 1.2rem; }
+  .tradeoff-card {
+    background: var(--card); border: 2px solid rgba(255,255,255,0.07); border-radius: 16px;
+    padding: 1rem 1rem 0.95rem; cursor: pointer; transition: all 0.25s ease;
+  }
+  .tradeoff-card:hover { transform: translateY(-2px); border-color: rgba(201,168,76,0.35); }
+  .tradeoff-card.selected { border-color: var(--gold); box-shadow: 0 10px 30px rgba(201,168,76,0.12); }
+  .tradeoff-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.45rem; }
+  .tradeoff-name { font-size: 1rem; font-weight: 600; }
+  .tradeoff-icon { font-size: 1.35rem; }
+  .tradeoff-desc { color: var(--muted); font-size: 0.82rem; line-height: 1.55; margin-bottom: 0.7rem; }
+  .impact-row { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+  .impact-pill { padding: 0.32rem 0.58rem; border-radius: 999px; font-size: 0.72rem; border: 1px solid rgba(255,255,255,0.1); }
+  .impact-pill.good { background: rgba(78,203,113,0.12); color: var(--accent-green); border-color: rgba(78,203,113,0.25); }
+  .impact-pill.bad { background: rgba(244,132,95,0.12); color: var(--accent-warm); border-color: rgba(244,132,95,0.25); }
+  .impact-pill.neutral { background: rgba(201,168,76,0.12); color: var(--gold-light); border-color: rgba(201,168,76,0.25); }
+  .tradeoff-confirm {
+    width: 100%; background: linear-gradient(135deg, var(--gold), #9a6820);
+    color: #050500; border: none; padding: clamp(0.9rem, 3vw, 1.05rem); font-weight: 700;
+    border-radius: 14px; opacity: 0.4; pointer-events: none; transition: all 0.2s;
+  }
+  .tradeoff-confirm.ready { opacity: 1; pointer-events: all; box-shadow: 0 8px 30px rgba(201,168,76,0.24); }
+  .tradeoff-confirm.ready:hover { transform: translateY(-2px); }
+  .micro-reflect { margin-top: 0.8rem; color: var(--muted); font-size: 0.78rem; line-height: 1.5; }
+
   /* ══════════════════════════════
      LANDSCAPE PHONE OVERRIDES
   ══════════════════════════════ */
@@ -411,6 +470,7 @@
   <div class="dot" id="dot1"></div>
   <div class="dot" id="dot2"></div>
   <div class="dot" id="dot3"></div>
+  <div class="dot" id="dot4"></div>
 </div>
 
 <!-- ═══ SCREEN 1: INTRO ═══ -->
@@ -453,7 +513,43 @@
   </div>
 </div>
 
-<!-- ═══ SCREEN 3: FAMILY ═══ -->
+
+<!-- ═══ SCREEN 3: TRADE-OFF ═══ -->
+<div id="screen-tradeoff" class="screen">
+  <div class="tradeoff-header">
+    <div class="tradeoff-title">Your choice has a trade-off</div>
+    <div class="tradeoff-sub" id="tradeoffPrompt">Pick what happens to your own life this month after sending money home.</div>
+  </div>
+  <div class="tradeoff-body">
+    <div class="stats-panel">
+      <div class="stats-topline">
+        <span id="tradeoffSentLabel">Sent home: $0</span>
+        <span id="tradeoffKeptLabel">Kept for yourself: $0</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">Health</div>
+        <div class="stat-bar"><div class="stat-fill health" id="projectedHealthFill" style="width:0%"></div></div>
+        <div class="stat-value" id="projectedHealthValue">0</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">Energy</div>
+        <div class="stat-bar"><div class="stat-fill energy" id="projectedEnergyFill" style="width:0%"></div></div>
+        <div class="stat-value" id="projectedEnergyValue">0</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">Savings</div>
+        <div class="stat-bar"><div class="stat-fill savings" id="projectedSavingsFill" style="width:0%"></div></div>
+        <div class="stat-value" id="projectedSavingsValue">0</div>
+      </div>
+    </div>
+
+    <div class="tradeoff-grid" id="tradeoffGrid"></div>
+    <button class="tradeoff-confirm" id="tradeoffConfirmBtn" onclick="confirmTradeoff()">Lock This In →</button>
+    <div class="micro-reflect" id="reflectText">A stronger game decision needs a consequence. Choose what you are protecting or sacrificing this month.</div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 4: FAMILY ═══ -->
 <div id="screen-family" class="screen">
   <div class="family-inner">
     <div class="family-scene">
@@ -473,7 +569,7 @@
   </div>
 </div>
 
-<!-- ═══ SCREEN 4: MOTIVATION ═══ -->
+<!-- ═══ SCREEN 5: MOTIVATION ═══ -->
 <div id="screen-motivation" class="screen">
   <div class="motivation-inner">
     <div class="cup-icon">☕</div>
@@ -487,7 +583,7 @@
   </div>
 </div>
 
-<!-- ═══ SCREEN 5: PASSCODE ═══ -->
+<!-- ═══ SCREEN 6: PASSCODE ═══ -->
 <div id="screen-passcode" class="screen">
   <div class="passcode-inner">
     <div class="key-icon">🔑</div>
@@ -536,7 +632,23 @@
     },
   ];
 
+  const tradeoffSets = {
+    low: [
+      { id: 'save', icon: '💰', name: 'Keep an emergency cushion', desc: 'You save a little for yourself in case something goes wrong this month.', effects: { health: 0, energy: 0, savings: 18 }, reflect: 'You protected your future self.' },
+      { id: 'groceries', icon: '🥬', name: 'Buy proper groceries', desc: 'You spend part of what you kept on healthier meals and daily essentials.', effects: { health: 10, energy: 6, savings: -4 }, reflect: 'You chose nourishment over short-term guilt.' },
+      { id: 'rest', icon: '🛏️', name: 'Take one rest day', desc: 'You keep enough money and energy to recover instead of always pushing harder.', effects: { health: 8, energy: 10, savings: -2 }, reflect: 'Rest is also a responsible choice.' }
+    ],
+    high: [
+      { id: 'cheapmeals', icon: '🍜', name: 'Eat cheaper meals', desc: 'You stretch your budget by cutting food quality and portions.', effects: { health: -12, energy: -8, savings: 6 }, reflect: 'The family gains now, but your body pays some of the price.' },
+      { id: 'overtime', icon: '⏰', name: 'Work overtime', desc: 'You chase extra money to survive the month, but your body gets less rest.', effects: { health: -8, energy: -16, savings: 10 }, reflect: 'You turned sacrifice into extra labour.' },
+      { id: 'delaycheckup', icon: '🏥', name: 'Delay your check-up', desc: 'You skip a clinic visit to free up cash this month.', effects: { health: -18, energy: -4, savings: 8 }, reflect: 'This keeps cash today, but increases risk later.' },
+      { id: 'pausesaving', icon: '🪙', name: 'Pause your own savings', desc: 'You stop building your safety net so the transfer can still go through.', effects: { health: 0, energy: 0, savings: -20 }, reflect: 'No immediate pain — but you are less protected later.' }
+    ]
+  };
+
   let selectedChoice = null;
+  let selectedTradeoff = null;
+  let gameState = { health: 72, energy: 74, savings: 45, kept: 0, sent: 0, ending: '' };
 
   // Build bg lines
   const bgLines = document.getElementById('bgLines');
@@ -576,15 +688,96 @@
 
   function confirmChoice() {
     if (selectedChoice === null) return;
+    selectedTradeoff = null;
+    buildTradeoffScreen();
+    goToScreen('tradeoff');
+  }
+
+  function buildTradeoffScreen() {
+    const c = choices[selectedChoice];
+    const sent = parseInt(c.amount.replace('$','').replace(',',''));
+    const kept = 1500 - sent;
+    gameState.kept = kept;
+    gameState.sent = sent;
+
+    document.getElementById('tradeoffSentLabel').textContent = `Sent home: ${c.amount}`;
+    document.getElementById('tradeoffKeptLabel').textContent = `Kept for yourself: $${kept.toLocaleString()}`;
+
+    const highSacrifice = c.pct >= 50;
+    const options = highSacrifice ? tradeoffSets.high : tradeoffSets.low;
+    document.getElementById('tradeoffPrompt').textContent = highSacrifice
+      ? 'You sent a large amount home. What happens to your own life this month?'
+      : 'You kept a healthier amount. How do you use it for yourself this month?';
+    document.getElementById('reflectText').textContent = highSacrifice
+      ? 'This is where the game becomes more than clicking: your transfer choice now changes your health, energy, and safety net.'
+      : 'Balanced choices still matter. Decide what kind of stability you want to build for yourself.';
+
+    const grid = document.getElementById('tradeoffGrid');
+    grid.innerHTML = '';
+    options.forEach((opt, i) => {
+      const card = document.createElement('div');
+      card.className = 'tradeoff-card';
+      card.onclick = () => selectTradeoff(i, highSacrifice ? 'high' : 'low');
+      const pills = [];
+      for (const [k,v] of Object.entries(opt.effects)) {
+        const cls = v > 0 ? 'good' : v < 0 ? 'bad' : 'neutral';
+        const sign = v > 0 ? '+' : '';
+        pills.push(`<span class="impact-pill ${cls}">${k[0].toUpperCase()+k.slice(1)} ${sign}${v}</span>`);
+      }
+      card.innerHTML = `
+        <div class="tradeoff-head">
+          <div class="tradeoff-name">${opt.name}</div>
+          <div class="tradeoff-icon">${opt.icon}</div>
+        </div>
+        <div class="tradeoff-desc">${opt.desc}</div>
+        <div class="impact-row">${pills.join('')}</div>
+      `;
+      grid.appendChild(card);
+    });
+    document.getElementById('tradeoffConfirmBtn').classList.remove('ready');
+    updateProjectedStats();
+  }
+
+  function selectTradeoff(index, bucket) {
+    selectedTradeoff = { bucket, index, ...tradeoffSets[bucket][index] };
+    document.querySelectorAll('.tradeoff-card').forEach((c, i) => c.classList.toggle('selected', i === index));
+    document.getElementById('tradeoffConfirmBtn').classList.add('ready');
+    document.getElementById('reflectText').textContent = selectedTradeoff.reflect;
+    updateProjectedStats();
+  }
+
+  function updateProjectedStats() {
+    const base = { health: 72, energy: 74, savings: 45 };
+    const eff = selectedTradeoff ? selectedTradeoff.effects : { health: 0, energy: 0, savings: 0 };
+    const projected = {
+      health: Math.max(0, Math.min(100, base.health + eff.health)),
+      energy: Math.max(0, Math.min(100, base.energy + eff.energy)),
+      savings: Math.max(0, Math.min(100, base.savings + eff.savings))
+    };
+    gameState.health = projected.health;
+    gameState.energy = projected.energy;
+    gameState.savings = projected.savings;
+    ['Health','Energy','Savings'].forEach(key => {
+      const lower = key.toLowerCase();
+      document.getElementById(`projected${key}Fill`).style.width = projected[lower] + '%';
+      document.getElementById(`projected${key}Value`).textContent = projected[lower];
+    });
+  }
+
+  function confirmTradeoff() {
+    if (!selectedTradeoff) return;
     buildFamilyScreen();
     goToScreen('family');
   }
 
   function buildFamilyScreen() {
     const c = choices[selectedChoice];
+    const tradeoffLine = selectedTradeoff ? ` ${selectedTradeoff.icon} This month, you chose to ${selectedTradeoff.name.toLowerCase()}.` : '';
+    const adjustedHappiness = Math.max(58, Math.min(99, c.happiness + (selectedTradeoff && selectedTradeoff.bucket === 'high' ? 2 : 0)));
+
     document.getElementById('transferAmount').textContent = c.amount;
-    document.getElementById('reactionText').textContent = c.reaction;
-    document.getElementById('happinessLabel').textContent = `Family Happiness: ${c.happiness}%`;
+    document.getElementById('reactionText').textContent = c.reaction + tradeoffLine;
+    document.getElementById('happinessLabel').textContent = `Family Happiness: ${adjustedHappiness}%`;
 
     const container = document.getElementById('familyMembers');
     container.innerHTML = '';
@@ -596,15 +789,33 @@
       container.appendChild(div);
     });
 
-    setTimeout(() => { document.getElementById('happinessFill').style.width = c.happiness + '%'; }, 300);
+    setTimeout(() => { document.getElementById('happinessFill').style.width = adjustedHappiness + '%'; }, 300);
     spawnParticles(c.color);
 
-    const kept = 1500 - parseInt(c.amount.replace('$','').replace(',',''));
-    document.getElementById('motivationNote').textContent = c.note;
+    const ending = getEndingLabel(c.pct, gameState);
+    gameState.ending = ending;
+    document.getElementById('motivationNote').textContent = `${c.note} ${ending.note}`;
     document.getElementById('choicesRecap').innerHTML = `
       <div class="recap-pill sent">Sent: ${c.amount}</div>
-      <div class="recap-pill kept">Kept: $${kept.toLocaleString()}</div>
+      <div class="recap-pill kept">Kept: $${gameState.kept.toLocaleString()}</div>
+      <div class="recap-pill kept">Health: ${gameState.health}</div>
+      <div class="recap-pill kept">Energy: ${gameState.energy}</div>
+      <div class="recap-pill kept">Savings: ${gameState.savings}</div>
+      <div class="recap-pill sent">Ending: ${ending.title}</div>
     `;
+  }
+
+  function getEndingLabel(pct, state) {
+    if (pct >= 50 && (state.health < 60 || state.energy < 58)) {
+      return { title: 'Burnout Risk', note: 'Your family benefits today, but the game shows the hidden cost: your own body and future buffer are under strain.' };
+    }
+    if (pct <= 40 && state.savings >= 55) {
+      return { title: 'Steady Planner', note: 'You supported home while still building a safety net. This is the most sustainable path.' };
+    }
+    if (pct <= 40 && state.health >= 80) {
+      return { title: 'Balanced Provider', note: 'You made room for both family duty and personal wellbeing.' };
+    }
+    return { title: 'Heavy Sacrifice', note: 'You kept your promise to home, but the month remains fragile. One bad event could still hurt.' };
   }
 
   function spawnParticles(color) {
@@ -635,6 +846,7 @@
     const map = {
       'intro': 'screen-intro',
       'remittance': 'screen-remittance',
+      'tradeoff': 'screen-tradeoff',
       'family': 'screen-family',
       'motivation': 'screen-motivation',
       'passcode': 'screen-passcode'
@@ -649,7 +861,7 @@
   }
 
   function updateDots(name) {
-    const order = ['intro','remittance','family','motivation'];
+    const order = ['intro','remittance','tradeoff','family','motivation'];
     const idx = order.indexOf(name);
     order.forEach((_, i) => {
       const dot = document.getElementById('dot' + i);
@@ -680,8 +892,12 @@
 
   function restart() {
     selectedChoice = null;
+    selectedTradeoff = null;
+    gameState = { health: 72, energy: 74, savings: 45, kept: 0, sent: 0, ending: '' };
     document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.tradeoff-card').forEach(c => c.classList.remove('selected'));
     document.getElementById('confirmBtn').classList.remove('ready');
+    document.getElementById('tradeoffConfirmBtn').classList.remove('ready');
     document.getElementById('happinessFill').style.width = '0%';
     goToScreen('intro');
   }

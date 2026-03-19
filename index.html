@@ -18,11 +18,7 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  html, body {
-    height: 100%;
-    touch-action: manipulation;
-  }
+  html, body { height: 100%; touch-action: manipulation; }
 
   body {
     font-family: 'Nunito', sans-serif;
@@ -70,11 +66,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  header p {
-    font-size: clamp(0.6rem, 2vw, 0.8rem);
-    opacity: 0.85;
-    white-space: nowrap;
-  }
+  header p { font-size: clamp(0.6rem, 2vw, 0.8rem); opacity: 0.85; white-space: nowrap; }
 
   .score-badge {
     flex-shrink: 0;
@@ -87,12 +79,25 @@
     white-space: nowrap;
   }
 
-  /* ─── GAME AREA ─── */
-  .game-area {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 16px 12px;
+  /* Help button in header */
+  .help-btn {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.25);
+    border: 2px solid rgba(255,255,255,0.6);
+    border-radius: 50%;
+    width: 34px; height: 34px;
+    color: white;
+    font-weight: 900;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    touch-action: manipulation;
   }
+  .help-btn:hover { background: rgba(255,255,255,0.4); }
+
+  /* ─── GAME AREA ─── */
+  .game-area { max-width: 1100px; margin: 0 auto; padding: 16px 12px; }
 
   /* ─── MAP / DROP ZONES ─── */
   .map-section {
@@ -104,7 +109,6 @@
     margin-bottom: 16px;
     border: 3px solid #A5D6A7;
   }
-
   .map-title {
     text-align: center;
     font-family: 'Baloo 2', cursive;
@@ -115,7 +119,6 @@
     letter-spacing: 0.5px;
   }
 
-  /* Portrait: 2-col + 3-col rows (2+3) */
   .drop-zones-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -123,8 +126,6 @@
     position: relative;
     z-index: 2;
   }
-
-  /* Make 5th card span full width on portrait mobile to fill row */
   .drop-zone:last-child {
     grid-column: 1 / -1;
     max-width: 50%;
@@ -147,27 +148,23 @@
     cursor: default;
     position: relative;
   }
-
   .drop-zone.drag-over {
     border-color: var(--sky);
     background: #E3F2FD;
     transform: scale(1.03);
     box-shadow: 0 0 0 4px rgba(79,195,247,0.3);
   }
-
   .drop-zone.correct {
     border-color: var(--green);
     border-style: solid;
     background: #E8F5E9;
     pointer-events: none;
   }
-
   .drop-zone.wrong {
     animation: shake 0.4s ease;
     border-color: var(--coral);
     background: #FFEBEE;
   }
-
   @keyframes shake {
     0%,100% { transform: translateX(0); }
     20% { transform: translateX(-8px); }
@@ -176,24 +173,9 @@
     80% { transform: translateX(5px); }
   }
 
-  .zone-question {
-    font-size: clamp(0.6rem, 2vw, 0.72rem);
-    color: #555;
-    line-height: 1.4;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-
+  .zone-question { font-size: clamp(0.6rem, 2vw, 0.72rem); color: #555; line-height: 1.4; font-weight: 700; margin-bottom: 6px; }
   .zone-label { font-size: 0.6rem; color: #999; font-style: italic; }
-
-  .zone-answer {
-    font-size: clamp(0.65rem, 2vw, 0.8rem);
-    font-weight: 800;
-    color: #2E7D32;
-    display: none;
-    line-height: 1.4;
-  }
-
+  .zone-answer { font-size: clamp(0.65rem, 2vw, 0.8rem); font-weight: 800; color: #2E7D32; display: none; line-height: 1.4; }
   .drop-zone.correct .zone-answer { display: block; }
   .drop-zone.correct .zone-label { display: none; }
 
@@ -204,7 +186,6 @@
     padding: 14px 12px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   }
-
   .cards-title {
     font-family: 'Baloo 2', cursive;
     font-size: clamp(0.7rem, 2.5vw, 1rem);
@@ -214,13 +195,7 @@
     text-align: center;
     letter-spacing: 0.5px;
   }
-
-  .cards-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
+  .cards-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 
   .entity-card {
     background: linear-gradient(135deg, var(--card-color-1), var(--card-color-2));
@@ -236,7 +211,6 @@
     border: 3px solid rgba(255,255,255,0.5);
     touch-action: none;
   }
-
   .entity-card:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
   .entity-card:active { cursor: grabbing; }
   .entity-card.dragging { opacity: 0.4; transform: scale(0.95); }
@@ -262,13 +236,11 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 100;
   }
-
   .butterfly.hidden { transform: translateY(120%); opacity: 0; pointer-events: none; }
   .butterfly.show { transform: translateY(0); opacity: 1; }
 
   .bf-icon { font-size: 1.8rem; flex-shrink: 0; animation: flutter 0.6s ease-in-out infinite alternate; }
   @keyframes flutter { from { transform: rotate(-10deg) scale(1); } to { transform: rotate(10deg) scale(1.1); } }
-
   .bf-text { font-size: clamp(0.7rem, 2.5vw, 0.82rem); font-weight: 700; color: #333; line-height: 1.5; }
   .bf-text.correct { color: #2E7D32; }
   .bf-text.wrong { color: #C62828; }
@@ -305,7 +277,6 @@
     overflow-y: auto;
   }
   .win-overlay.show { display: flex; }
-
   .win-box {
     background: white;
     border-radius: 24px;
@@ -319,33 +290,19 @@
     overflow-y: auto;
   }
   @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
   .win-emoji { font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom: 8px; }
   .win-title { font-family: 'Baloo 2', cursive; font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 800; color: var(--red); margin-bottom: 8px; }
   .win-msg { font-size: clamp(0.8rem, 3vw, 1rem); color: #555; margin-bottom: 18px; line-height: 1.6; }
 
   /* ─── PASSCODE ─── */
-  .passcode-section {
-    display: none;
-    margin-bottom: 18px;
-    animation: slideDown 0.4s ease;
-  }
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  .passcode-section { display: none; margin-bottom: 18px; animation: slideDown 0.4s ease; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes passcodeReveal {
     0%   { transform: scale(0.5) rotate(-5deg); opacity: 0; }
     70%  { transform: scale(1.08) rotate(1deg); }
     100% { transform: scale(1) rotate(0deg); opacity: 1; }
   }
-
-  .passcode-label {
-    font-size: 0.85rem;
-    color: #555;
-    margin-bottom: 8px;
-    font-weight: 700;
-  }
+  .passcode-label { font-size: 0.85rem; color: #555; margin-bottom: 8px; font-weight: 700; }
   .passcode-box {
     background: linear-gradient(135deg, #1A237E, #283593);
     color: #FFD600;
@@ -358,140 +315,327 @@
     border: 3px solid #FFD600;
     box-shadow: 0 4px 24px rgba(26,35,126,0.35), 0 0 30px rgba(255,214,0,0.15);
     animation: passcodeReveal 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    user-select: all;
-    -webkit-user-select: all;
-    cursor: pointer;
-    word-break: break-all;
+    user-select: all; -webkit-user-select: all; cursor: pointer; word-break: break-all;
   }
   .passcode-hint { font-size: 0.68rem; color: #aaa; margin-top: 6px; }
-
   .copied-toast {
     display: none;
-    background: #4CAF50;
-    color: white;
-    font-size: 0.78rem;
-    font-weight: 800;
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-top: 8px;
+    background: #4CAF50; color: white; font-size: 0.78rem; font-weight: 800;
+    padding: 4px 14px; border-radius: 20px; margin-top: 8px;
     animation: fadeInOut 1.6s ease forwards;
   }
-  @keyframes fadeInOut {
-    0%   { opacity: 0; transform: scale(0.8); }
-    15%  { opacity: 1; transform: scale(1); }
-    75%  { opacity: 1; }
-    100% { opacity: 0; }
-  }
+  @keyframes fadeInOut { 0%{opacity:0;transform:scale(0.8)}15%{opacity:1;transform:scale(1)}75%{opacity:1}100%{opacity:0} }
 
   .btn-restart {
     background: linear-gradient(135deg, var(--red), #C62828);
-    color: white;
-    border: none;
-    padding: 11px 22px;
-    border-radius: 50px;
-    font-family: 'Nunito', sans-serif;
-    font-size: clamp(0.8rem, 3vw, 0.95rem);
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(232,41,59,0.4);
-    transition: transform 0.15s, box-shadow 0.15s;
-    margin: 5px;
-    touch-action: manipulation;
+    color: white; border: none; padding: 11px 22px; border-radius: 50px;
+    font-family: 'Nunito', sans-serif; font-size: clamp(0.8rem, 3vw, 0.95rem);
+    font-weight: 800; cursor: pointer; box-shadow: 0 4px 16px rgba(232,41,59,0.4);
+    transition: transform 0.15s, box-shadow 0.15s; margin: 5px; touch-action: manipulation;
   }
   .btn-restart:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(232,41,59,0.5); }
-  .btn-green {
-    background: linear-gradient(135deg, #388E3C, #1B5E20);
-    box-shadow: 0 4px 16px rgba(56,142,60,0.4);
-  }
+  .btn-green { background: linear-gradient(135deg, #388E3C, #1B5E20); box-shadow: 0 4px 16px rgba(56,142,60,0.4); }
   .btn-green:hover { box-shadow: 0 6px 20px rgba(56,142,60,0.5); }
 
   /* ─── CONFETTI ─── */
   .confetti-piece {
-    position: fixed;
-    width: 10px; height: 10px;
-    border-radius: 2px;
-    animation: confettiFall 3s ease-in forwards;
-    z-index: 300;
-    pointer-events: none;
+    position: fixed; width: 10px; height: 10px; border-radius: 2px;
+    animation: confettiFall 3s ease-in forwards; z-index: 300; pointer-events: none;
   }
-  @keyframes confettiFall {
-    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-  }
+  @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
 
-  /* ─── DRAG CLONE (touch) ─── */
+  /* ─── TOUCH DRAG CLONE ─── */
   .touch-drag-clone {
-    position: fixed;
-    pointer-events: none;
-    z-index: 999;
-    opacity: 0.88;
-    transition: none !important;
+    position: fixed; pointer-events: none; z-index: 999; opacity: 0.88;
+    transition: none !important; border-radius: 14px;
+  }
+
+  /* ══════════════════════════════════
+     TUTORIAL OVERLAY
+  ══════════════════════════════════ */
+  .tutorial-overlay {
+    position: fixed; inset: 0;
+    background: rgba(10, 30, 70, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    padding: 16px;
+    overflow-y: auto;
+  }
+  .tutorial-overlay.hidden { display: none; }
+
+  .tutorial-box {
+    background: white;
+    border-radius: 28px;
+    max-width: 480px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    animation: popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+
+  /* Tutorial top bar */
+  .tut-topbar {
+    background: linear-gradient(90deg, var(--red), #C62828);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .tut-topbar-icon { font-size: 1.8rem; }
+  .tut-topbar-text { flex: 1; }
+  .tut-topbar-text h2 {
+    font-family: 'Baloo 2', cursive;
+    color: white; font-size: clamp(1rem, 4vw, 1.3rem);
+    font-weight: 800; margin: 0;
+  }
+  .tut-topbar-text p { color: rgba(255,255,255,0.85); font-size: 0.75rem; margin: 2px 0 0; }
+
+  /* Step dots */
+  .tut-dots {
+    display: flex; gap: 7px; justify-content: center;
+    padding: 14px 0 0;
+  }
+  .tut-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #ddd; transition: background 0.3s, transform 0.3s;
+  }
+  .tut-dot.active { background: var(--red); transform: scale(1.3); }
+  .tut-dot.done { background: var(--green); }
+
+  /* Step content area */
+  .tut-steps { position: relative; overflow: hidden; }
+
+  .tut-step {
+    display: none;
+    padding: 18px 22px 20px;
+    animation: stepFadeIn 0.35s ease;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .tut-step.active { display: flex; }
+  @keyframes stepFadeIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+
+  .tut-big-emoji { font-size: clamp(2.5rem, 9vw, 3.5rem); margin-bottom: 10px; }
+  .tut-step-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    font-weight: 800; color: #1A237E;
+    margin-bottom: 8px; line-height: 1.3;
+  }
+  .tut-step-body {
+    font-size: clamp(0.82rem, 3vw, 0.95rem);
+    color: #444; line-height: 1.6;
+    max-width: 360px;
+  }
+  .tut-step-body strong { color: var(--red); }
+
+  /* ── STEP 2: Interactive practice drag area ── */
+  .tut-practice {
+    margin-top: 16px;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .tut-practice-label {
+    font-size: 0.75rem; color: #888; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .tut-practice-area {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+
+  /* Practice card (draggable) */
+  .tut-card {
+    background: linear-gradient(135deg, #1565C0, #283593);
+    border-radius: 12px;
+    padding: 10px 18px;
+    display: flex; align-items: center; gap: 10px;
+    color: white; font-weight: 800;
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    cursor: grab;
+    user-select: none; -webkit-user-select: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    border: 3px solid rgba(255,255,255,0.4);
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+    touch-action: none;
+    width: 100%;
+    justify-content: center;
+  }
+  .tut-card:hover { transform: translateY(-2px) scale(1.02); }
+  .tut-card.tut-dragging { opacity: 0.35; transform: scale(0.95); }
+  .tut-card.tut-placed { display: none; }
+
+  /* Animated arrow between card and zone */
+  .tut-arrow {
+    font-size: 1.8rem;
+    color: var(--sky);
+    animation: bounceDown 0.8s ease-in-out infinite;
+  }
+  @keyframes bounceDown {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  /* Practice drop zone */
+  .tut-drop-zone {
+    width: 100%;
+    min-height: 70px;
+    border: 3px dashed #90CAF9;
     border-radius: 14px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: #F0F7FF;
+    transition: all 0.2s;
+    cursor: default;
+    text-align: center;
+    padding: 10px;
+  }
+  .tut-drop-zone.tut-drag-over {
+    border-color: var(--sky);
+    background: #E3F2FD;
+    transform: scale(1.04);
+    box-shadow: 0 0 0 4px rgba(79,195,247,0.35);
+  }
+  .tut-drop-zone.tut-correct {
+    border-color: var(--green);
+    border-style: solid;
+    background: #E8F5E9;
+  }
+  .tut-drop-zone.tut-wrong {
+    animation: shake 0.4s ease;
+    border-color: var(--coral);
+    background: #FFEBEE;
   }
 
-  /* ══════════════════════════════════════════
-     RESPONSIVE BREAKPOINTS
-  ══════════════════════════════════════════ */
+  .tut-zone-label { font-size: 0.78rem; color: #777; font-weight: 700; }
+  .tut-zone-hint { font-size: 0.65rem; color: #aaa; font-style: italic; }
+  .tut-zone-success { display: none; font-size: 0.9rem; font-weight: 800; color: #2E7D32; }
+  .tut-drop-zone.tut-correct .tut-zone-success { display: block; }
+  .tut-drop-zone.tut-correct .tut-zone-label,
+  .tut-drop-zone.tut-correct .tut-zone-hint { display: none; }
 
-  /* ── Tablet portrait & small desktop: 3 cols ── */
+  /* Practice success message */
+  .tut-success-msg {
+    display: none;
+    margin-top: 10px;
+    background: #E8F5E9;
+    border: 2px solid #A5D6A7;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #2E7D32;
+    text-align: center;
+    animation: stepFadeIn 0.3s ease;
+  }
+  .tut-success-msg.show { display: block; }
+
+  /* Wrong zone feedback */
+  .tut-wrong-msg {
+    display: none;
+    margin-top: 8px;
+    background: #FFEBEE;
+    border: 2px solid #FFCDD2;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 0.8rem; font-weight: 700; color: #C62828;
+    animation: stepFadeIn 0.3s ease;
+  }
+  .tut-wrong-msg.show { display: block; }
+
+  /* ── Step 3: Cards overview ── */
+  .tut-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+    width: 100%;
+    max-width: 360px;
+  }
+  .tut-card-row {
+    display: flex; align-items: center; gap: 10px;
+    background: #F8FAFB;
+    border-radius: 10px;
+    padding: 9px 12px;
+    border: 2px solid #E0E0E0;
+    text-align: left;
+  }
+  .tut-card-row-emoji { font-size: 1.4rem; flex-shrink: 0; }
+  .tut-card-row-info { flex: 1; }
+  .tut-card-row-name { font-weight: 800; font-size: 0.82rem; color: #222; }
+  .tut-card-row-desc { font-size: 0.7rem; color: #666; margin-top: 2px; line-height: 1.4; }
+
+  /* ── Tutorial footer buttons ── */
+  .tut-footer {
+    padding: 14px 22px 22px;
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    border-top: 2px solid #F0F0F0;
+  }
+
+  .tut-btn {
+    padding: 10px 24px;
+    border-radius: 50px; border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(0.8rem, 3vw, 0.95rem);
+    font-weight: 800; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    touch-action: manipulation;
+  }
+  .tut-btn-next {
+    background: linear-gradient(135deg, var(--red), #C62828);
+    color: white;
+    box-shadow: 0 4px 16px rgba(232,41,59,0.4);
+  }
+  .tut-btn-next:hover { transform: scale(1.05); }
+  .tut-btn-skip {
+    background: #F5F5F5; color: #888;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .tut-btn-skip:hover { background: #EEE; }
+  .tut-btn-start {
+    background: linear-gradient(135deg, #388E3C, #1B5E20);
+    color: white;
+    box-shadow: 0 4px 16px rgba(56,142,60,0.4);
+    display: none;
+  }
+  .tut-btn-start:hover { transform: scale(1.05); }
+
+  /* ── RESPONSIVE ── */
   @media (min-width: 600px) {
-    .drop-zones-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .drop-zone:last-child {
-      grid-column: auto;
-      max-width: 100%;
-      margin: 0;
-    }
-    /* 5 items in 3-col grid: last 2 of row 2 center nicely */
-    .drop-zone:nth-child(4),
-    .drop-zone:nth-child(5) {
-      grid-column: auto;
-    }
-    /* Push last 2 to center using auto margins trick */
-    .drop-zones-grid::after {
-      content: "";
-    }
+    .drop-zones-grid { grid-template-columns: repeat(3, 1fr); }
+    .drop-zone:last-child { grid-column: auto; max-width: 100%; margin: 0; }
   }
-
-  /* ── Large: 5-col ── */
   @media (min-width: 900px) {
-    .drop-zones-grid {
-      grid-template-columns: repeat(5, 1fr);
-    }
-    .drop-zone:last-child {
-      grid-column: auto;
-      max-width: 100%;
-    }
-    .drop-zone {
-      min-height: 130px;
-    }
+    .drop-zones-grid { grid-template-columns: repeat(5, 1fr); }
+    .drop-zone:last-child { grid-column: auto; max-width: 100%; }
+    .drop-zone { min-height: 130px; }
   }
-
-  /* ── Landscape phones (height < 500px) ── */
   @media (max-height: 500px) and (orientation: landscape) {
-    header {
-      padding: 6px 12px;
-    }
+    header { padding: 6px 12px; }
     header h1 { font-size: 0.9rem; }
     header p { display: none; }
     .score-badge { padding: 4px 10px; font-size: 0.85rem; }
-
     .game-area { padding: 8px 10px; }
-
     .map-section { padding: 8px 10px; margin-bottom: 10px; }
     .map-title { margin-bottom: 8px; font-size: 0.7rem; }
-
-    .drop-zones-grid {
-      grid-template-columns: repeat(5, 1fr);
-      gap: 6px;
-    }
+    .drop-zones-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
     .drop-zone:last-child { grid-column: auto; max-width: 100%; }
     .drop-zone { min-height: 80px; padding: 8px 6px; }
     .zone-question { font-size: 0.58rem; margin-bottom: 4px; }
     .zone-label { font-size: 0.55rem; }
     .zone-answer { font-size: 0.6rem; }
-
     .cards-section { padding: 8px 10px; }
     .cards-title { margin-bottom: 8px; font-size: 0.7rem; }
     .cards-grid { gap: 7px; }
@@ -499,31 +643,163 @@
     .card-emoji { font-size: 1.2rem; margin-bottom: 4px; }
     .card-name { font-size: 0.65rem; }
     .card-sub { font-size: 0.52rem; }
-
     .butterfly { bottom: 8px; right: 8px; padding: 8px 10px; max-width: 200px; }
     .bf-icon { font-size: 1.4rem; }
     .bf-text { font-size: 0.68rem; }
-
     .sound-bing { font-size: 1rem; padding: 5px 16px; top: 55px; }
   }
-
-  /* ── Medium phones portrait (360–599px) ── */
-  @media (max-width: 599px) {
-    .drop-zone {
-      min-height: 100px;
-      padding: 10px 6px;
-    }
-  }
-
-  /* ── Very small phones (< 360px) ── */
-  @media (max-width: 360px) {
-    .entity-card { width: clamp(110px, 42vw, 150px); }
-    .drop-zone { min-height: 90px; }
-  }
+  @media (max-width: 599px) { .drop-zone { min-height: 100px; padding: 10px 6px; } }
+  @media (max-width: 360px) { .entity-card { width: clamp(110px, 42vw, 150px); } .drop-zone { min-height: 90px; } }
 </style>
 </head>
 <body>
 
+<!-- ══════════════════════════════════════════
+     TUTORIAL OVERLAY (shows first)
+══════════════════════════════════════════ -->
+<div class="tutorial-overlay" id="tutorialOverlay">
+  <div class="tutorial-box">
+
+    <!-- Top bar -->
+    <div class="tut-topbar">
+      <span class="tut-topbar-icon">🦋</span>
+      <div class="tut-topbar-text">
+        <h2>How to Play</h2>
+        <p>Quick guide — only 3 steps!</p>
+      </div>
+    </div>
+
+    <!-- Step dots -->
+    <div class="tut-dots">
+      <div class="tut-dot active" id="dot0"></div>
+      <div class="tut-dot" id="dot1"></div>
+      <div class="tut-dot" id="dot2"></div>
+    </div>
+
+    <!-- Steps -->
+    <div class="tut-steps">
+
+      <!-- STEP 1: What is this game? -->
+      <div class="tut-step active" id="tut-step-0">
+        <div class="tut-big-emoji">🇸🇬</div>
+        <div class="tut-step-title">Welcome! Let's Learn Who Helps You in Singapore</div>
+        <div class="tut-step-body">
+          In Singapore, there are <strong>5 important helpers</strong> you must know.<br><br>
+          Each helper has a <strong>job</strong> — like protecting your work rights, keeping your money safe, or helping you send money home.<br><br>
+          In this game, you will <strong>match each helper card to the correct description</strong>. 🎯
+        </div>
+      </div>
+
+      <!-- STEP 2: Interactive practice drag -->
+      <div class="tut-step" id="tut-step-1">
+        <div class="tut-big-emoji">✋</div>
+        <div class="tut-step-title">Try It! Drag the Card to the Box</div>
+        <div class="tut-step-body">
+          <strong>Hold the card</strong> and move it to the green box below.<br>
+          On phone: <strong>press and drag</strong>. On computer: <strong>click and drag</strong>.
+        </div>
+
+        <div class="tut-practice">
+          <div class="tut-practice-label">👇 Practice here</div>
+          <div class="tut-practice-area">
+
+            <!-- Practice card -->
+            <div class="tut-card" id="tutPracticeCard" draggable="true"
+                 ondragstart="tutDragStart(event)">
+              <span>🏛️</span> MOM — Ministry of Manpower
+            </div>
+
+            <!-- Arrow -->
+            <div class="tut-arrow" id="tutArrow">⬇️</div>
+
+            <!-- Practice drop zone (wrong) -->
+            <div class="tut-drop-zone" id="tutWrongZone"
+                 style="border-color:#FFCDD2; background:#FFF8F8;"
+                 ondragover="tutDragOver(event,'wrong')" ondragleave="tutDragLeave(event,'wrong')" ondrop="tutDrop(event,'wrong')">
+              <div class="tut-zone-label">📦 Wrong box — don't drop here!</div>
+              <div class="tut-zone-hint">This is just for practice</div>
+              <div class="tut-zone-success">❌ Oops! Try the correct box ⬇️</div>
+            </div>
+
+            <!-- Practice drop zone (correct) -->
+            <div class="tut-drop-zone" id="tutCorrectZone"
+                 ondragover="tutDragOver(event,'correct')" ondragleave="tutDragLeave(event,'correct')" ondrop="tutDrop(event,'correct')">
+              <div class="tut-zone-label">✅ Correct box — drop here!</div>
+              <div class="tut-zone-hint">Drop the MOM card into this box</div>
+              <div class="tut-zone-success">🎉 Perfect! That's how you play!</div>
+            </div>
+
+          </div>
+
+          <div class="tut-success-msg" id="tutSuccessMsg">
+            🌟 Great job! You got it! Now you know how to drag and drop. Let's see all the cards next!
+          </div>
+          <div class="tut-wrong-msg" id="tutWrongMsg">
+            ❌ Not quite! Try dropping the card into the <strong>✅ Correct box</strong> below it.
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Meet the 5 cards -->
+      <div class="tut-step" id="tut-step-2">
+        <div class="tut-big-emoji">🃏</div>
+        <div class="tut-step-title">Meet Your 5 Helper Cards</div>
+        <div class="tut-step-body">Remember these helpers — they are here for you in Singapore!</div>
+
+        <div class="tut-cards-list">
+          <div class="tut-card-row">
+            <span class="tut-card-row-emoji">🏛️</span>
+            <div class="tut-card-row-info">
+              <div class="tut-card-row-name">MOM — Ministry of Manpower</div>
+              <div class="tut-card-row-desc">Issues your Work Permit. Protects your rights.</div>
+            </div>
+          </div>
+          <div class="tut-card-row">
+            <span class="tut-card-row-emoji">🏦</span>
+            <div class="tut-card-row-info">
+              <div class="tut-card-row-name">The Bank (POSB / DBS / OCBC)</div>
+              <div class="tut-card-row-desc">Keeps your money safe. Don't carry too much cash.</div>
+            </div>
+          </div>
+          <div class="tut-card-row">
+            <span class="tut-card-row-emoji">🏠</span>
+            <div class="tut-card-row-info">
+              <div class="tut-card-row-name">Your Employer (Moral Home)</div>
+              <div class="tut-card-row-desc">Pays your salary. Sets your work hours.</div>
+            </div>
+          </div>
+          <div class="tut-card-row">
+            <span class="tut-card-row-emoji">✈️</span>
+            <div class="tut-card-row-info">
+              <div class="tut-card-row-name">Remittance Service</div>
+              <div class="tut-card-row-desc">Helps you send money back to your family at home.</div>
+            </div>
+          </div>
+          <div class="tut-card-row">
+            <span class="tut-card-row-emoji">❤️‍🩹</span>
+            <div class="tut-card-row-info">
+              <div class="tut-card-row-name">Employer Medical Insurance</div>
+              <div class="tut-card-row-desc">Pays your hospital bill if you get sick or injured.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end tut-steps -->
+
+    <!-- Footer buttons -->
+    <div class="tut-footer">
+      <button class="tut-btn tut-btn-skip" onclick="closeTutorial()">Skip Tutorial</button>
+      <button class="tut-btn tut-btn-next" id="tutNextBtn" onclick="tutNext()">Next →</button>
+      <button class="tut-btn tut-btn-start" id="tutStartBtn" onclick="closeTutorial()">▶ Start Game!</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN GAME
+══════════════════════════════════════════ -->
 <header>
   <div class="sg-flag">
     <div class="flag-red">
@@ -536,6 +812,7 @@
     <h1>&#127480;&#127468; Who Helps You in Singapore?</h1>
     <p>Drag each card to the correct role!</p>
   </div>
+  <button class="help-btn" onclick="openTutorial()" title="How to play">?</button>
   <div class="score-badge">&#11088; <span id="scoreNum">0</span> / 5</div>
 </header>
 
@@ -543,7 +820,6 @@
 
   <div class="map-section">
     <div class="map-title">&#128205; SINGAPORE MAP &mdash; Drop the Cards Below!</div>
-
     <div class="drop-zones-grid">
 
       <div class="drop-zone" data-answer="employer"
@@ -588,46 +864,36 @@
     <div class="cards-title">&#127183; ENTITY CARDS &mdash; Drag these up to match!</div>
     <div class="cards-grid" id="cardsGrid">
 
-      <div class="entity-card" id="card-mom" draggable="true"
-           data-id="mom"
-           style="--card-color-1:#1565C0;--card-color-2:#283593"
-           ondragstart="onDragStart(event)">
+      <div class="entity-card" id="card-mom" draggable="true" data-id="mom"
+           style="--card-color-1:#1565C0;--card-color-2:#283593" ondragstart="onDragStart(event)">
         <span class="card-emoji">&#127963;&#65039;</span>
         <div class="card-name">MOM</div>
         <div class="card-sub">Ministry of Manpower</div>
       </div>
 
-      <div class="entity-card" id="card-bank" draggable="true"
-           data-id="bank"
-           style="--card-color-1:#00695C;--card-color-2:#004D40"
-           ondragstart="onDragStart(event)">
+      <div class="entity-card" id="card-bank" draggable="true" data-id="bank"
+           style="--card-color-1:#00695C;--card-color-2:#004D40" ondragstart="onDragStart(event)">
         <span class="card-emoji">&#127970;</span>
         <div class="card-name">The Bank</div>
         <div class="card-sub">POSB / DBS / OCBC</div>
       </div>
 
-      <div class="entity-card" id="card-employer" draggable="true"
-           data-id="employer"
-           style="--card-color-1:#E65100;--card-color-2:#BF360C"
-           ondragstart="onDragStart(event)">
+      <div class="entity-card" id="card-employer" draggable="true" data-id="employer"
+           style="--card-color-1:#E65100;--card-color-2:#BF360C" ondragstart="onDragStart(event)">
         <span class="card-emoji">&#127968;</span>
         <div class="card-name">Your Employer</div>
         <div class="card-sub">Moral Home</div>
       </div>
 
-      <div class="entity-card" id="card-remittance" draggable="true"
-           data-id="remittance"
-           style="--card-color-1:#6A1B9A;--card-color-2:#4A148C"
-           ondragstart="onDragStart(event)">
+      <div class="entity-card" id="card-remittance" draggable="true" data-id="remittance"
+           style="--card-color-1:#6A1B9A;--card-color-2:#4A148C" ondragstart="onDragStart(event)">
         <span class="card-emoji">&#9992;&#65039;</span>
         <div class="card-name">Remittance Service</div>
         <div class="card-sub">Send money home</div>
       </div>
 
-      <div class="entity-card" id="card-insurance" draggable="true"
-           data-id="insurance"
-           style="--card-color-1:#C62828;--card-color-2:#880E4F"
-           ondragstart="onDragStart(event)">
+      <div class="entity-card" id="card-insurance" draggable="true" data-id="insurance"
+           style="--card-color-1:#C62828;--card-color-2:#880E4F" ondragstart="onDragStart(event)">
         <span class="card-emoji">&#10084;&#65039;&#8205;&#129657;</span>
         <div class="card-name">Employer Medical Insurance</div>
         <div class="card-sub">Your health cover</div>
@@ -635,7 +901,6 @@
 
     </div>
   </div>
-
 </div>
 
 <!-- Butterfly mascot -->
@@ -653,49 +918,235 @@
     <div class="win-emoji">&#127882;&#129419;&#127882;</div>
     <div class="win-title">Excellent!</div>
     <div class="win-msg">You matched all 5 cards correctly!<br>You now know who helps you in Singapore. Stay safe, stay informed! &#127480;&#127468;</div>
-
     <div class="passcode-section" id="passcodeSection">
       <div class="passcode-label">&#128273; Your Passcode:</div>
       <div class="passcode-box" id="passcodeBox" onclick="copyPasscode()" title="Tap to copy">KnowMyWayAround!</div>
       <div class="passcode-hint">Tap the passcode to copy it to your clipboard!</div>
       <div class="copied-toast" id="copiedToast">&#9989; Copied to clipboard!</div>
     </div>
-
     <button class="btn-restart" id="passcodeBtn" onclick="revealPasscode()">&#128273; Get Passcode</button>
     <button class="btn-restart btn-green" onclick="restartGame()">&#128260; Play Again</button>
   </div>
 </div>
 
 <script>
-/* ─────────────────────────────────────────────
-   STATE
-───────────────────────────────────────────── */
+/* ══════════════════════════════════════
+   TUTORIAL LOGIC
+══════════════════════════════════════ */
+let tutStep = 0;
+let tutPracticeDone = false;
+let tutDragging = null;
+
+function updateTutDots() {
+  for (let i = 0; i < 3; i++) {
+    const d = document.getElementById('dot' + i);
+    d.classList.remove('active','done');
+    if (i < tutStep) d.classList.add('done');
+    else if (i === tutStep) d.classList.add('active');
+  }
+}
+
+function tutNext() {
+  // Step 1 (practice): only advance if practice done
+  if (tutStep === 1 && !tutPracticeDone) {
+    document.getElementById('tutWrongMsg').classList.remove('show');
+    document.getElementById('tutWrongMsg').textContent = '💡 Tip: Drag the blue MOM card and drop it into the ✅ Correct box to continue.';
+    document.getElementById('tutWrongMsg').classList.add('show');
+    return;
+  }
+  document.querySelectorAll('.tut-step').forEach(s => s.classList.remove('active'));
+  tutStep++;
+  if (tutStep > 2) { closeTutorial(); return; }
+  document.getElementById('tut-step-' + tutStep).classList.add('active');
+  updateTutDots();
+
+  const nextBtn = document.getElementById('tutNextBtn');
+  const startBtn = document.getElementById('tutStartBtn');
+  if (tutStep === 2) {
+    nextBtn.style.display = 'none';
+    startBtn.style.display = 'inline-block';
+  } else {
+    nextBtn.style.display = 'inline-block';
+    startBtn.style.display = 'none';
+  }
+}
+
+function closeTutorial() {
+  document.getElementById('tutorialOverlay').classList.add('hidden');
+}
+
+function openTutorial() {
+  // Reset tutorial state
+  tutStep = 0;
+  tutPracticeDone = false;
+  document.querySelectorAll('.tut-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('tut-step-0').classList.add('active');
+  updateTutDots();
+  document.getElementById('tutNextBtn').style.display = 'inline-block';
+  document.getElementById('tutStartBtn').style.display = 'none';
+  // Reset practice area
+  document.getElementById('tutPracticeCard').classList.remove('tut-placed','tut-dragging');
+  document.getElementById('tutCorrectZone').classList.remove('tut-correct','tut-wrong','tut-drag-over');
+  document.getElementById('tutWrongZone').classList.remove('tut-correct','tut-wrong','tut-drag-over');
+  document.getElementById('tutSuccessMsg').classList.remove('show');
+  document.getElementById('tutWrongMsg').classList.remove('show');
+  document.getElementById('tutArrow').style.display = 'block';
+  document.getElementById('tutorialOverlay').classList.remove('hidden');
+}
+
+/* ── Tutorial practice: mouse drag ── */
+function tutDragStart(e) {
+  tutDragging = e.currentTarget;
+  tutDragging.classList.add('tut-dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+document.addEventListener('dragend', () => {
+  if (tutDragging) tutDragging.classList.remove('tut-dragging');
+});
+
+function tutDragOver(e, type) {
+  e.preventDefault();
+  const zone = type === 'correct' ? document.getElementById('tutCorrectZone') : document.getElementById('tutWrongZone');
+  if (!zone.classList.contains('tut-correct')) zone.classList.add('tut-drag-over');
+}
+function tutDragLeave(e, type) {
+  const zone = type === 'correct' ? document.getElementById('tutCorrectZone') : document.getElementById('tutWrongZone');
+  zone.classList.remove('tut-drag-over');
+}
+function tutDrop(e, type) {
+  e.preventDefault();
+  const correctZone = document.getElementById('tutCorrectZone');
+  const wrongZone = document.getElementById('tutWrongZone');
+  correctZone.classList.remove('tut-drag-over');
+  wrongZone.classList.remove('tut-drag-over');
+  if (!tutDragging) return;
+
+  if (type === 'correct') {
+    correctZone.classList.add('tut-correct');
+    tutDragging.classList.add('tut-placed');
+    tutDragging.classList.remove('tut-dragging');
+    document.getElementById('tutArrow').style.display = 'none';
+    document.getElementById('tutSuccessMsg').classList.add('show');
+    document.getElementById('tutWrongMsg').classList.remove('show');
+    tutPracticeDone = true;
+    tutDragging = null;
+    // Auto highlight next button
+    document.getElementById('tutNextBtn').style.boxShadow = '0 0 0 4px rgba(232,41,59,0.5)';
+    setTimeout(() => document.getElementById('tutNextBtn').style.boxShadow = '', 1500);
+  } else {
+    wrongZone.classList.add('tut-wrong');
+    setTimeout(() => wrongZone.classList.remove('tut-wrong'), 500);
+    document.getElementById('tutWrongMsg').textContent = '❌ Not quite! Drop the card into the ✅ Correct box below.';
+    document.getElementById('tutWrongMsg').classList.add('show');
+    tutDragging.classList.remove('tut-dragging');
+    tutDragging = null;
+  }
+}
+
+/* ── Tutorial practice: touch drag ── */
+let tutTouchCard = null;
+let tutTouchClone = null;
+let tutTouchOffX = 0, tutTouchOffY = 0;
+
+function initTutTouch() {
+  const card = document.getElementById('tutPracticeCard');
+
+  card.addEventListener('touchstart', e => {
+    if (card.classList.contains('tut-placed')) return;
+    e.preventDefault();
+    tutTouchCard = card;
+    const t = e.touches[0];
+    const rect = card.getBoundingClientRect();
+    tutTouchOffX = t.clientX - rect.left;
+    tutTouchOffY = t.clientY - rect.top;
+
+    tutTouchClone = card.cloneNode(true);
+    tutTouchClone.className = 'touch-drag-clone';
+    tutTouchClone.style.cssText = `
+      width:${rect.width}px; height:${rect.height}px;
+      left:${rect.left}px; top:${rect.top}px;
+      opacity:0.9; transform:scale(1.05);
+      box-shadow:0 12px 36px rgba(0,0,0,0.3);
+      background:linear-gradient(135deg,#1565C0,#283593);
+      border:3px solid rgba(255,255,255,0.4); border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      color:white; font-weight:800; font-size:0.85rem; gap:8px;
+      padding:10px 18px; z-index:9999;
+    `;
+    tutTouchClone.innerHTML = card.innerHTML;
+    document.body.appendChild(tutTouchClone);
+    card.style.opacity = '0.3';
+  }, { passive: false });
+
+  card.addEventListener('touchmove', e => {
+    if (!tutTouchClone) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    tutTouchClone.style.left = (t.clientX - tutTouchOffX) + 'px';
+    tutTouchClone.style.top = (t.clientY - tutTouchOffY) + 'px';
+
+    document.querySelectorAll('.tut-drop-zone').forEach(z => z.classList.remove('tut-drag-over'));
+    const el = document.elementFromPoint(t.clientX, t.clientY);
+    const zone = el ? el.closest('.tut-drop-zone') : null;
+    if (zone && !zone.classList.contains('tut-correct')) zone.classList.add('tut-drag-over');
+  }, { passive: false });
+
+  card.addEventListener('touchend', e => {
+    if (!tutTouchClone || !tutTouchCard) return;
+    e.preventDefault();
+    const t = e.changedTouches[0];
+    tutTouchClone.remove(); tutTouchClone = null;
+    tutTouchCard.style.opacity = '';
+    document.querySelectorAll('.tut-drop-zone').forEach(z => z.classList.remove('tut-drag-over'));
+
+    const el = document.elementFromPoint(t.clientX, t.clientY);
+    const zone = el ? el.closest('.tut-drop-zone') : null;
+
+    const correctZone = document.getElementById('tutCorrectZone');
+    const wrongZone = document.getElementById('tutWrongZone');
+
+    if (zone === correctZone) {
+      correctZone.classList.add('tut-correct');
+      tutTouchCard.classList.add('tut-placed');
+      document.getElementById('tutArrow').style.display = 'none';
+      document.getElementById('tutSuccessMsg').classList.add('show');
+      document.getElementById('tutWrongMsg').classList.remove('show');
+      tutPracticeDone = true;
+      document.getElementById('tutNextBtn').style.boxShadow = '0 0 0 4px rgba(232,41,59,0.5)';
+      setTimeout(() => document.getElementById('tutNextBtn').style.boxShadow = '', 1500);
+    } else if (zone === wrongZone) {
+      wrongZone.classList.add('tut-wrong');
+      setTimeout(() => wrongZone.classList.remove('tut-wrong'), 500);
+      document.getElementById('tutWrongMsg').textContent = '❌ Not quite! Drop the card into the ✅ Correct box below.';
+      document.getElementById('tutWrongMsg').classList.add('show');
+    }
+    // else dropped nowhere — do nothing
+    tutTouchCard = null;
+  }, { passive: false });
+
+  card.addEventListener('touchcancel', () => {
+    if (tutTouchClone) { tutTouchClone.remove(); tutTouchClone = null; }
+    if (tutTouchCard) { tutTouchCard.style.opacity = ''; tutTouchCard = null; }
+    document.querySelectorAll('.tut-drop-zone').forEach(z => z.classList.remove('tut-drag-over'));
+  });
+}
+
+/* ══════════════════════════════════════
+   MAIN GAME LOGIC
+══════════════════════════════════════ */
 let dragging = null;
 let score = 0;
 let bfTimer = null;
 
-/* ─────────────────────────────────────────────
-   MOUSE / DESKTOP DRAG
-───────────────────────────────────────────── */
 function onDragStart(e) {
   dragging = e.currentTarget;
   dragging.classList.add('dragging');
   e.dataTransfer.effectAllowed = 'move';
 }
+document.addEventListener('dragend', () => { if (dragging) dragging.classList.remove('dragging'); });
 
-document.addEventListener('dragend', () => {
-  if (dragging) dragging.classList.remove('dragging');
-});
-
-function onDragOver(e) {
-  e.preventDefault();
-  e.currentTarget.classList.add('drag-over');
-}
-
-function onDragLeave(e) {
-  e.currentTarget.classList.remove('drag-over');
-}
-
+function onDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function onDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
 function onDrop(e) {
   e.preventDefault();
   const zone = e.currentTarget;
@@ -705,15 +1156,10 @@ function onDrop(e) {
   dragging = null;
 }
 
-/* ─────────────────────────────────────────────
-   SHARED MATCH LOGIC
-───────────────────────────────────────────── */
 function handleMatch(card, zone) {
   if (zone.classList.contains('correct')) return;
-
   const cardId = card.dataset.id;
   const answer = zone.dataset.answer;
-
   if (cardId === answer) {
     zone.classList.add('correct');
     card.classList.add('used');
@@ -730,47 +1176,28 @@ function handleMatch(card, zone) {
   }
 }
 
-/* ─────────────────────────────────────────────
-   TOUCH DRAG — fully rewritten for reliability
-───────────────────────────────────────────── */
-let touchCard = null;
-let touchClone = null;
-let touchOffsetX = 0;
-let touchOffsetY = 0;
+/* Touch drag for main game */
+let touchCard = null, touchClone = null;
+let touchOffsetX = 0, touchOffsetY = 0;
 
 function initTouchDrag() {
   document.querySelectorAll('.entity-card').forEach(card => {
-
     card.addEventListener('touchstart', e => {
       if (card.classList.contains('used')) return;
-      e.preventDefault(); // prevent scroll hijack
-
+      e.preventDefault();
       touchCard = card;
       const t = e.touches[0];
       const rect = card.getBoundingClientRect();
-
-      // offset so finger holds card from where it was touched
       touchOffsetX = t.clientX - rect.left;
       touchOffsetY = t.clientY - rect.top;
 
-      // Build clone
       touchClone = card.cloneNode(true);
       touchClone.className = 'touch-drag-clone';
-      touchClone.style.cssText = `
-        width:${rect.width}px;
-        height:${rect.height}px;
-        left:${rect.left}px;
-        top:${rect.top}px;
-        opacity:0.88;
-        transform:scale(1.05);
-        box-shadow:0 12px 36px rgba(0,0,0,0.3);
-      `;
-      // Copy gradient styles
+      touchClone.style.cssText = `width:${rect.width}px;height:${rect.height}px;left:${rect.left}px;top:${rect.top}px;opacity:0.88;transform:scale(1.05);box-shadow:0 12px 36px rgba(0,0,0,0.3);`;
       touchClone.style.setProperty('--card-color-1', card.style.getPropertyValue('--card-color-1'));
       touchClone.style.setProperty('--card-color-2', card.style.getPropertyValue('--card-color-2'));
       touchClone.style.background = `linear-gradient(135deg, var(--card-color-1), var(--card-color-2))`;
       document.body.appendChild(touchClone);
-
       card.style.opacity = '0.3';
     }, { passive: false });
 
@@ -779,9 +1206,7 @@ function initTouchDrag() {
       e.preventDefault();
       const t = e.touches[0];
       touchClone.style.left = (t.clientX - touchOffsetX) + 'px';
-      touchClone.style.top  = (t.clientY - touchOffsetY) + 'px';
-
-      // Highlight zones under finger
+      touchClone.style.top = (t.clientY - touchOffsetY) + 'px';
       document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
       const el = document.elementFromPoint(t.clientX, t.clientY);
       const zone = el ? el.closest('.drop-zone') : null;
@@ -791,19 +1216,12 @@ function initTouchDrag() {
     card.addEventListener('touchend', e => {
       if (!touchClone || !touchCard) return;
       e.preventDefault();
-
       const t = e.changedTouches[0];
-      touchClone.remove();
-      touchClone = null;
+      touchClone.remove(); touchClone = null;
       touchCard.style.opacity = '';
-
-      // Remove all highlights
       document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
-
-      // Find zone under finger
       const el = document.elementFromPoint(t.clientX, t.clientY);
       const zone = el ? el.closest('.drop-zone') : null;
-
       if (zone) handleMatch(touchCard, zone);
       touchCard = null;
     }, { passive: false });
@@ -816,9 +1234,7 @@ function initTouchDrag() {
   });
 }
 
-/* ─────────────────────────────────────────────
-   UI HELPERS
-───────────────────────────────────────────── */
+/* UI helpers */
 function showButterfly(type, msg) {
   const bf = document.getElementById('butterfly');
   const txt = document.getElementById('bfText');
@@ -827,10 +1243,7 @@ function showButterfly(type, msg) {
   bf.classList.remove('hidden');
   bf.classList.add('show');
   clearTimeout(bfTimer);
-  bfTimer = setTimeout(() => {
-    bf.classList.remove('show');
-    bf.classList.add('hidden');
-  }, 3500);
+  bfTimer = setTimeout(() => { bf.classList.remove('show'); bf.classList.add('hidden'); }, 3500);
 }
 
 function showBing() {
@@ -867,8 +1280,7 @@ function revealPasscode() {
   section.style.display = 'block';
   btn.style.display = 'none';
   const box = document.getElementById('passcodeBox');
-  box.style.animation = 'none';
-  box.offsetHeight;
+  box.style.animation = 'none'; box.offsetHeight;
   box.style.animation = 'passcodeReveal 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
   confetti();
 }
@@ -878,12 +1290,9 @@ function copyPasscode() {
   const toast = document.getElementById('copiedToast');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
-  } else {
-    fallbackCopy(text);
-  }
+  } else { fallbackCopy(text); }
   toast.style.display = 'block';
-  toast.style.animation = 'none';
-  toast.offsetHeight;
+  toast.style.animation = 'none'; toast.offsetHeight;
   toast.style.animation = 'fadeInOut 1.6s ease forwards';
   setTimeout(() => { toast.style.display = 'none'; }, 1700);
 }
@@ -904,21 +1313,18 @@ function restartGame() {
   document.getElementById('scoreNum').textContent = 0;
   document.querySelectorAll('.drop-zone').forEach(z => {
     z.className = 'drop-zone';
-    // Re-attach drop events
     z.ondragover = onDragOver;
     z.ondragleave = onDragLeave;
     z.ondrop = onDrop;
   });
-  document.querySelectorAll('.entity-card').forEach(c => c.classList.remove('used', 'dragging'));
+  document.querySelectorAll('.entity-card').forEach(c => c.classList.remove('used','dragging'));
   document.getElementById('butterfly').classList.add('hidden');
-  // Re-init touch after DOM restore
   initTouchDrag();
 }
 
-/* ─────────────────────────────────────────────
-   INIT
-───────────────────────────────────────────── */
+/* Init */
 initTouchDrag();
+initTutTouch();
 </script>
 </body>
 </html>

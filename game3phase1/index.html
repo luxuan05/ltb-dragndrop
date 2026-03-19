@@ -233,13 +233,93 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 #passcodeCopyBox.copied #passcodeSub{
   color:var(--legit)!important;
 }
+
+
+/* TUTORIAL */
+#s-tutorial-start,#s-tutorial-case{align-items:center;justify-content:center;padding:2rem;text-align:center;}
+.tutorial-shell{width:min(100%,520px);margin:auto;background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:2rem 1.25rem;box-shadow:0 20px 50px rgba(0,0,0,0.32);}
+.tutorial-badge{display:inline-flex;align-items:center;gap:0.45rem;background:rgba(0,214,143,0.12);border:1px solid rgba(0,214,143,0.28);color:var(--legit);padding:0.35rem 0.95rem;border-radius:999px;font-family:var(--fm);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1rem;}
+.tutorial-title{font-family:var(--fd);font-size:clamp(2.6rem,9vw,4.4rem);line-height:0.95;margin-bottom:0.65rem;}
+.tutorial-title .red{color:var(--scam);text-shadow:0 0 40px var(--scam-glow);} 
+.tutorial-title .green{color:var(--legit);text-shadow:0 0 40px var(--legit-glow);} 
+.tutorial-sub{color:var(--muted);font-size:0.96rem;line-height:1.7;max-width:430px;margin:0 auto 1.35rem;}
+.tutorial-list{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem 1rem 0.8rem;text-align:left;margin:0 auto 1.25rem;max-width:430px;}
+.tutorial-row{display:flex;gap:0.7rem;align-items:flex-start;padding:0.55rem 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.93rem;line-height:1.55;}
+.tutorial-row:last-child{border-bottom:none;}
+.tutorial-row span:first-child{font-size:1rem;line-height:1.3;}
+.tutorial-actions{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.14);color:var(--text);padding:0.95rem 1.25rem;border-radius:999px;font-family:var(--fb);font-weight:600;cursor:pointer;transition:all 0.2s;}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.28);transform:translateY(-1px);} 
+.practice-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid var(--border);border-radius:18px;padding:1rem;text-align:left;max-width:440px;margin:0 auto 1rem;}
+.practice-kicker{font-family:var(--fm);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);margin-bottom:0.7rem;}
+.practice-title{font-size:1.15rem;font-weight:700;margin-bottom:0.6rem;}
+.practice-scenario{color:var(--muted);font-size:0.92rem;line-height:1.65;margin-bottom:0.9rem;}
+.practice-message{background:#101117;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:0.95rem;font-size:0.95rem;line-height:1.65;color:var(--text);}
+.practice-message .fake-link{display:block;margin-top:0.55rem;color:var(--scam);font-family:var(--fm);word-break:break-all;}
+.practice-tip{max-width:440px;margin:0 auto 1rem;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.2);color:var(--text);border-radius:14px;padding:0.9rem 1rem;font-size:0.9rem;line-height:1.55;text-align:left;}
+.practice-choices{display:flex;gap:0.85rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem;}
+.practice-btn{min-width:135px;padding:0.95rem 1.2rem;border-radius:14px;border:1.5px solid transparent;font-family:var(--fb);font-size:0.98rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.practice-btn.scam{background:rgba(255,59,59,0.12);color:var(--scam);border-color:rgba(255,59,59,0.28);} 
+.practice-btn.legit{background:rgba(0,214,143,0.12);color:var(--legit);border-color:rgba(0,214,143,0.28);} 
+.practice-btn:hover{transform:translateY(-1px);filter:brightness(1.08);} 
+.tutorial-feedback{display:none;max-width:440px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem;text-align:left;}
+.tutorial-feedback.show{display:block;animation:fadeInT 0.25s ease both;}
+@keyframes fadeInT{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.tf-head{font-weight:800;font-size:1.05rem;margin-bottom:0.55rem;}
+.tf-head.good{color:var(--legit);} .tf-head.bad{color:var(--scam);} 
+.tf-copy{color:var(--muted);font-size:0.94rem;line-height:1.65;margin-bottom:0.9rem;}
+.tf-points{list-style:none;padding:0;margin:0 0 0.9rem 0;display:grid;gap:0.45rem;}
+.tf-points li{background:rgba(255,255,255,0.03);border-radius:10px;padding:0.65rem 0.8rem;font-size:0.9rem;line-height:1.5;}
+.tf-note{padding:0.8rem 0.9rem;border-radius:12px;background:rgba(255,59,59,0.08);border:1px solid rgba(255,59,59,0.16);font-size:0.9rem;line-height:1.6;margin-bottom:1rem;}
+@media (max-width:520px){.tutorial-shell{padding:1.5rem 1rem;}.tutorial-actions,.practice-choices{flex-direction:column;}.btn-ghost,.btn-play,.practice-btn{width:100%;}.practice-card,.practice-tip,.tutorial-feedback,.tutorial-list{max-width:none;}}
+
 </style>
 </head>
 <body>
 <div id="fl" class="flash"></div>
 
+<!-- TUTORIAL START -->
+<div id="s-tutorial-start" class="screen active">
+  <div class="tutorial-shell">
+    <div class="tutorial-badge">🧭 Tutorial Available</div>
+    <h1 class="tutorial-title"><span class="red">SCAM</span><br>or<br><span class="green">LEGIT?</span></h1>
+    <p class="tutorial-sub">Before the real cases begin, you can try a safe example round. It shows how to play and warns you that wrong answers may trigger a disruption mini-game.</p>
+    <div class="tutorial-list">
+      <div class="tutorial-row"><span>👆</span><span>Read the scenario and decide whether it is <strong>SCAM</strong> or <strong>LEGIT</strong>.</span></div>
+      <div class="tutorial-row"><span>🧪</span><span>In the tutorial, you will try <strong>one practice case</strong> with guided feedback.</span></div>
+      <div class="tutorial-row"><span>⚠️</span><span>In the real game, <strong>wrong answers can trigger disruptions</strong> that you must clear before moving on.</span></div>
+    </div>
+    <div class="tutorial-actions">
+      <button class="btn-ghost" id="btnSkipTutorial">Skip Tutorial</button>
+      <button class="btn-play" id="btnContinueTutorial">Continue with Tutorial</button>
+    </div>
+  </div>
+</div>
+
+<!-- TUTORIAL EXAMPLE -->
+<div id="s-tutorial-case" class="screen">
+  <div class="tutorial-shell">
+    <div class="tutorial-badge">🧪 Practice Case</div>
+    <div class="practice-card">
+      <div class="practice-kicker">Example round</div>
+      <div class="practice-title">Urgent bank suspension message</div>
+      <div class="practice-scenario">Imagine you receive this text right before payday. Decide whether it is a scam or legitimate message.</div>
+      <div class="practice-message">
+        Hi, this is SingBank. Your account will be suspended today due to suspicious login activity. Verify now to avoid lockout.
+        <span class="fake-link">http://singbank-secure-login.co</span>
+      </div>
+    </div>
+    <div class="practice-tip">💡 <strong>How to think:</strong> look for urgency, fear, suspicious links, and whether the sender wants you to click immediately.</div>
+    <div class="practice-choices">
+      <button class="practice-btn scam" id="tutorialScamBtn">SCAM</button>
+      <button class="practice-btn legit" id="tutorialLegitBtn">LEGIT</button>
+    </div>
+    <div class="tutorial-feedback" id="tutorialFeedback"></div>
+  </div>
+</div>
+
 <!-- INTRO -->
-<div id="s-intro" class="screen active">
+<div id="s-intro" class="screen">
   <div style="max-width:480px;margin:auto;padding:2.5rem 1.5rem;display:flex;flex-direction:column;align-items:center;">
     <div class="intro-badge">&#127918; Scam Awareness &middot; 9 Cases</div>
     <h1 class="intro-title"><span class="red">SCAM</span><br>or<br><span class="green">LEGIT?</span></h1>
@@ -395,8 +475,60 @@ var swDone=[];
 var flagFound=0,flagTotal=4;
 var chatStep=0,chatBadCount=0,chatDone=false;
 
+document.getElementById("btnSkipTutorial").onclick=openIntroFromTutorial;
+document.getElementById("btnContinueTutorial").onclick=openTutorialCase;
+document.getElementById("tutorialScamBtn").onclick=function(){tutorialAnswer("scam");};
+document.getElementById("tutorialLegitBtn").onclick=function(){tutorialAnswer("legit");};
 document.getElementById("btnPlay").onclick=startGame;
 document.getElementById("btnRestart").onclick=startGame;
+
+
+
+function openIntroFromTutorial(){
+  goScreen("s-intro");
+}
+
+function openTutorialCase(){
+  var fb=document.getElementById("tutorialFeedback");
+  if(fb){fb.className="tutorial-feedback";fb.innerHTML="";}
+  goScreen("s-tutorial-case");
+}
+
+function tutorialAnswer(kind){
+  var fb = document.getElementById("tutorialFeedback");
+  if(!fb) return;
+
+  var correct = kind === "scam";
+
+  if(correct){
+    fb.innerHTML = `
+      <div class="tf-head good">✅ Correct — this is a scam.</div>
+      <div class="tf-copy">This message is trying to scare you into clicking fast. Real banks do not send suspicious links like this for account verification.</div>
+      <ul class="tf-points">
+        <li>🚩 It creates panic: “suspended today”.</li>
+        <li>🚩 It pushes you to act immediately.</li>
+        <li>🚩 The link is not an official bank domain.</li>
+      </ul>
+      <div class="tf-note">In the real game, if you pick the wrong answer, a disruption mini-game may appear before you can continue.</div>
+      <button class="btn-play" onclick="openIntroFromTutorial()">Start Real Game</button>
+    `;
+  } else {
+    fb.innerHTML = `
+      <div class="tf-head bad">⚠️ Not quite — this was a scam.</div>
+      <div class="tf-copy">That is exactly how scammers work: they imitate trusted brands, create urgency, and push you to unsafe links.</div>
+      <ul class="tf-points">
+        <li>🚩 Pressure and fear are major scam signs.</li>
+        <li>🚩 A weird URL is a red flag.</li>
+        <li>🚩 In real life, verify through the official app or website yourself.</li>
+      </ul>
+      <div class="tf-note">In the actual game, a wrong answer can trigger a disruption, so slow down and inspect each case carefully.</div>
+      <button class="btn-play" onclick="openIntroFromTutorial()">Continue to Real Game</button>
+    `;
+  }
+
+  fb.className = "tutorial-feedback show";
+  fb.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
 
 function startGame(){
   cIdx=0;nCorrect=0;nWrong=0;answered=false;

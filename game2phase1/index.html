@@ -256,9 +256,6 @@
     .drop-zone.filled .fc-detail { display: none; }
     .drop-zone.filled .fc-badge  { display: none; }
     .drop-zone.filled .fc-title  { margin-bottom: 0; font-size: 13px; }
-    /* Keep achievable zone a bit taller for the buttons */
-    .drop-zone.filled:has(.achieve-choices) { min-height: auto; }
-    .drop-zone.filled:has(.achieve-choices) .fc-detail { display: block; }
 
     /* Sticky cards pool */
     .cards-pool.scroll-mode {
@@ -274,6 +271,15 @@
   }
 
   /* ── ACHIEVABLE ── */
+  .achieve-zone-expanded{min-height:auto !important;}
+  .achieve-zone-collapsed{min-height:54px !important;}
+  .achieve-zone-collapsed .fc-detail,
+  .achieve-zone-collapsed .achieve-tip,
+  .achieve-zone-collapsed .achieve-choices{display:none !important;}
+  .achieve-zone-collapsed .fc-title{margin-bottom:0;font-size:13px;}
+  .achieve-zone-collapsed .fc-badge{display:inline-block !important;margin-top:6px;}
+  .achieve-summary{display:none;margin-top:8px;}
+  .achieve-zone-collapsed .achieve-summary{display:inline-block;}
   .achieve-choices{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
   .achieve-btn{
     flex:1;min-width:90px;
@@ -496,9 +502,161 @@
   @media (min-width: 701px) and (max-width: 899px) {
     .builder-layout { grid-template-columns: 1fr 1fr; }
   }
+
+
+  /* ── TUTORIAL OVERLAY ── */
+  .tutorial-overlay{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(7,7,18,0.88);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+  }
+  .tutorial-overlay.hidden{display:none;}
+  .tutorial-card{
+    width:min(100%,460px);
+    background:linear-gradient(135deg,rgba(26,26,53,0.98),rgba(19,19,42,0.98));
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:22px;
+    padding:22px 18px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.45);
+    position:relative;
+    overflow:hidden;
+    text-align:center;
+  }
+  .tutorial-card::before{
+    content:'';
+    position:absolute;
+    top:-50px;
+    right:-50px;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(167,139,250,0.15),transparent 70%);
+    pointer-events:none;
+  }
+  .tutorial-badge{
+    display:inline-block;
+    margin-bottom:10px;
+    padding:5px 12px;
+    border-radius:999px;
+    border:1px solid rgba(245,200,66,0.28);
+    background:rgba(245,200,66,0.08);
+    color:var(--gold);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:2px;
+    text-transform:uppercase;
+  }
+  .tutorial-title{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(22px,5vw,30px);
+    line-height:1.15;
+    margin-bottom:10px;
+    color:var(--cream);
+  }
+  .tutorial-text{
+    min-height:72px;
+    font-size:clamp(14px,3.3vw,16px);
+    line-height:1.7;
+    color:var(--text);
+    margin-bottom:18px;
+    padding:0 4px;
+  }
+  .tutorial-visual{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .tutorial-pill{
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    border:1px solid rgba(255,255,255,0.12);
+    background:rgba(255,255,255,0.04);
+    color:var(--cream);
+  }
+  .tutorial-progress{
+    display:flex;
+    gap:6px;
+    margin-bottom:18px;
+  }
+  .tutorial-dot{
+    flex:1;
+    height:4px;
+    border-radius:4px;
+    background:rgba(255,255,255,0.14);
+    transition:background 0.25s, box-shadow 0.25s;
+  }
+  .tutorial-dot.active{
+    background:var(--gold);
+    box-shadow:0 0 10px rgba(245,200,66,0.4);
+  }
+  .tutorial-actions{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .tutorial-skip,
+  .tutorial-next{
+    border:none;
+    border-radius:12px;
+    padding:12px 16px;
+    font-family:'DM Sans',sans-serif;
+    font-size:14px;
+    cursor:pointer;
+    touch-action:manipulation;
+  }
+  .tutorial-skip{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.12);
+    flex:1;
+  }
+  .tutorial-next{
+    background:linear-gradient(135deg,var(--gold),#e8a820);
+    color:#0d0d1a;
+    font-weight:800;
+    flex:1;
+    box-shadow:0 10px 30px rgba(245,200,66,0.25);
+  }
+  .tutorial-skip:hover{border-color:rgba(255,255,255,0.24);color:var(--text);}
+  .tutorial-next:hover{transform:translateY(-1px);}
+
 </style>
 </head>
 <body>
+
+<!-- ── TUTORIAL OVERLAY ── -->
+<div class="tutorial-overlay" id="tutorialOverlay">
+  <div class="tutorial-card">
+    <div class="tutorial-badge">How to Play</div>
+    <div class="tutorial-title">Quick Tutorial</div>
+    <div class="tutorial-text" id="tutorialText">Choose a goal to begin your game journey.</div>
+    <div class="tutorial-visual" id="tutorialVisual">
+      <div class="tutorial-pill">1. Choose a goal</div>
+      <div class="tutorial-pill">2. Build it with SMART</div>
+    </div>
+    <div class="tutorial-progress">
+      <div class="tutorial-dot active" id="tutorialDot0"></div>
+      <div class="tutorial-dot" id="tutorialDot1"></div>
+      <div class="tutorial-dot" id="tutorialDot2"></div>
+    </div>
+    <div class="tutorial-actions">
+      <button class="tutorial-skip" type="button" onclick="skipTutorial()">Skip Tutorial</button>
+      <button class="tutorial-next" type="button" id="tutorialNextBtn" onclick="nextTutorial()">Next</button>
+    </div>
+  </div>
+</div>
+
 
 <!-- BG BUTTERFLIES -->
 <div class="bg-butterflies" id="bgBf"></div>
@@ -734,6 +892,49 @@ let droppedCards = {};
 let draggedCard = null;
 let achieveChoice = null;
 
+
+
+// ── TUTORIAL ──
+let tutorialStep = 0;
+const tutorialSteps = [
+  {
+    text: 'Choose any goal to start. The examples help you understand what kind of future you are building toward.',
+    pills: ['1. Choose a goal', 'Pick the one you like']
+  },
+  {
+    text: 'Next, drag the SMART cards into the matching slots. This turns your goal into a clear plan.',
+    pills: ['Drag cards', 'Match the right slot']
+  },
+  {
+    text: 'Finish all parts to complete the game. You can skip this tutorial anytime and start playing right away.',
+    pills: ['Complete all steps', 'Unlock the next challenge']
+  }
+];
+
+function renderTutorialStep(){
+  const step = tutorialSteps[tutorialStep];
+  document.getElementById('tutorialText').textContent = step.text;
+  document.getElementById('tutorialVisual').innerHTML = step.pills.map(p => `<div class="tutorial-pill">${p}</div>`).join('');
+  document.querySelectorAll('.tutorial-dot').forEach((dot, idx) => {
+    dot.classList.toggle('active', idx === tutorialStep);
+  });
+  document.getElementById('tutorialNextBtn').textContent = tutorialStep === tutorialSteps.length - 1 ? 'Start Game' : 'Next';
+}
+
+function nextTutorial(){
+  if(tutorialStep >= tutorialSteps.length - 1){
+    skipTutorial();
+    return;
+  }
+  tutorialStep += 1;
+  renderTutorialStep();
+}
+
+function skipTutorial(){
+  const overlay = document.getElementById('tutorialOverlay');
+  if(overlay) overlay.classList.add('hidden');
+}
+
 // ── BG BUTTERFLIES ──
 const bfContainer = document.getElementById('bgBf');
 for(let i=0;i<8;i++){
@@ -795,6 +996,7 @@ function adaptLayout() {
 window.addEventListener('resize', adaptLayout);
 window.addEventListener('orientationchange', () => setTimeout(adaptLayout, 200));
 adaptLayout();
+renderTutorialStep();
 
 // ── PATH SELECTION ──
 function selectPath(card){
@@ -829,7 +1031,7 @@ function goToSmartBuilder(){
   document.getElementById('cardsPool').classList.remove('scroll-mode');
   'SMART'.split('').forEach(l=>{
     const dz=document.getElementById('dz-'+l);
-    dz.classList.remove('filled');
+    dz.classList.remove('filled','achieve-zone-expanded','achieve-zone-collapsed');
     dz.style.borderColor='';dz.style.borderStyle='';
     dz.innerHTML=`<div class="drop-placeholder"><div class="drop-letter" style="color:var(--dz-color,#fff)55">${l}</div>Drop ${getWord(l)} here</div>`;
   });
@@ -882,6 +1084,7 @@ function placeCard(letter,zone){
   const color=colorMap[letter];
   let html='';
   if(letter==='A'){
+    zone.classList.add('achieve-zone-expanded');
     html=`<div class="filled-content">
       <div class="fc-label" style="color:${color}">${getWord(letter)}</div>
       <div class="fc-title">${cardData.title}</div>
@@ -893,6 +1096,7 @@ function placeCard(letter,zone){
       <div class="achieve-tip" id="achieveTip">
         <div class="tip-label">${cardData.tipLabel}</div>${cardData.tip}
       </div>
+      <span class="fc-badge achieve-summary" id="achieveSummaryBadge" style="background:${cardData.badgeColor};color:${cardData.badgeText}">Waiting for your answer</span>
     </div>`;
     droppedCards[letter]=false;
   } else {
@@ -919,21 +1123,39 @@ function chooseAchievable(choice,path){
   achieveChoice=choice;
   document.querySelectorAll('.achieve-btn').forEach(b=>b.classList.remove('chosen'));
   const tip=document.querySelector('.achieve-tip');
+  const zone=document.getElementById('dz-A');
+  const summaryBadge=document.getElementById('achieveSummaryBadge');
   if(choice==='yes'){
     document.querySelector('.achieve-btn.yes').classList.add('chosen');
     tip.style.background='rgba(61,232,200,0.08)';
     tip.style.borderColor='rgba(61,232,200,0.25)';
     tip.innerHTML=`<div class="tip-label" style="color:#3de8c8">🌟 You Got This!</div>${cardData.yesMsg}`;
+    if(summaryBadge){
+      summaryBadge.textContent='✓ Yes — achievable';
+      summaryBadge.style.background='rgba(61,232,200,0.15)';
+      summaryBadge.style.color='#3de8c8';
+    }
   } else {
     document.querySelector('.achieve-btn.no').classList.add('chosen');
     tip.innerHTML=`<div class="tip-label">${cardData.tipLabel}</div>${cardData.tip}`;
+    if(summaryBadge){
+      summaryBadge.textContent='✗ Needs adjustment';
+      summaryBadge.style.background='rgba(255,107,138,0.15)';
+      summaryBadge.style.color='#ff6b8a';
+    }
   }
   tip.classList.add('visible');
   droppedCards['A']=true;
   updateProgress();
+
+  setTimeout(()=>{
+    zone.classList.remove('achieve-zone-expanded');
+    zone.classList.add('achieve-zone-collapsed');
+  },3000);
+
   setTimeout(()=>{
     if(Object.values(droppedCards).filter(v=>v===true).length===5) setTimeout(showSuccess,1000);
-  },300);
+  },3000);
 }
 
 function sparkle(el){
